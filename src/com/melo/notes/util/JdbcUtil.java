@@ -23,28 +23,18 @@ public class JdbcUtil {
      * 释放资源
      * @param ps
      * @param rs
-     * @param conn
      */
-    public static void close(PreparedStatement ps, ResultSet rs, Connection conn) {
+    public static void close(PreparedStatement ps, ResultSet rs) {
         if (ps != null) {
             try {
                 ps.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-
         }
         if (rs != null) {
             try {
                 rs.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-        }
-        if (conn != null) {
-            try {
-                conn.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
