@@ -6,8 +6,7 @@ import com.melo.notes.impl.BaseDaoImpl;
 
 import java.sql.*;
 
-import static com.melo.notes.util.JdbcUtil.close;
-import static com.melo.notes.util.JdbcUtil.getConnection;
+import static com.melo.notes.util.JdbcUtil.*;
 import static com.melo.notes.util.Md5Utils.getDigest;
 
 
@@ -39,7 +38,8 @@ public class LoginDao extends BaseDaoImpl {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
-            close(ps,rs,conn);
+            freeConnection(conn);
+            close(ps,rs);
         }
         return true;
     }
@@ -69,7 +69,8 @@ public class LoginDao extends BaseDaoImpl {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
-            close(ps,rs,conn);
+            freeConnection(conn);
+            close(ps,rs);
         }
         return false;
     }

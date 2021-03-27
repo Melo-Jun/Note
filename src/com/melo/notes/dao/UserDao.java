@@ -38,8 +38,8 @@ public class UserDao extends BaseDaoImpl {
         } catch (SQLException | DaoException throwables) {
             throwables.printStackTrace();
         }finally {
-            close(ps,null,null);
             freeConnection(conn);
+            close(ps,null);
         }
         return false;
     }
