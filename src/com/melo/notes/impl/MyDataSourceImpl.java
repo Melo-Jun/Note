@@ -11,6 +11,9 @@ import java.util.Properties;
 
 /**
  * @author Jun
+ * @program Note
+ * @description 数据库连接池实现类
+ * @date 2021-3-27 10:30
  */
 public class MyDataSourceImpl implements MyDataSource {
     /**

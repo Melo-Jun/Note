@@ -5,6 +5,9 @@ import java.sql.SQLException;
 
 /**
  * @author Jun
+ * @program Note
+ * @description 数据库连接池接口
+ * @date 2021-3-27 10：27
  */
 public interface MyDataSource {
     /**
