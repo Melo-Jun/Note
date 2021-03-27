@@ -4,21 +4,51 @@
 
 package com.melo.notes.view;
 
+import com.melo.notes.dao.LoginDao;
+import com.melo.notes.entity.User;
+import com.sun.xml.internal.ws.util.StringUtils;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 
 /**
- * @author 1
+ * @author Jun
  */
 public class LoginView extends JFrame {
-    public LoginView() {
+    /*public LoginView() {
         initComponents();
     }
 
     private void loginActionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(null,"登录成功");
+        //获取文本框内容
+        String userName = userNameText.getText();
+        String password = String.valueOf(passwordField.getPassword());
+        //获取下拉权限值
+        String permission = (String) this.permission.getSelectedItem();
+        //判断信息是否都有填完整
+        if (userName==null) {
+            JOptionPane.showMessageDialog(null, "用户名不能为空");
+            //重新输入
+            return;
+        }
+        if (password==null) {
+            JOptionPane.showMessageDialog(null, "密码不能为空");
+            //重新输入
+            return;
+        }
+        //验证用户名和密码
+        if (LoginDao.login(new User(userName,password))) {
+            //验证权限
+            if (LoginDao.permission(permission, new User(userName,password))) {
+                JOptionPane.showMessageDialog(null, "登录成功");
+            } else {
+                JOptionPane.showMessageDialog(null, "登录失败");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "登录失败");
+        }
 
     }
 
@@ -27,9 +57,9 @@ public class LoginView extends JFrame {
         userNameText = new JTextField();
         userName = new JLabel();
         password = new JLabel();
-        passwordText = new JTextField();
         login = new JButton();
         permission = new JComboBox<>();
+        passwordField = new JPasswordField();
 
         //======== this ========
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -64,15 +94,14 @@ public class LoginView extends JFrame {
                         .addComponent(userName, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
                         .addComponent(password, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(contentPaneLayout.createParallelGroup()
+                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                         .addGroup(contentPaneLayout.createSequentialGroup()
                             .addGap(27, 27, 27)
                             .addComponent(permission, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                             .addGap(36, 36, 36)
                             .addComponent(login))
-                        .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                            .addComponent(userNameText, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
-                            .addComponent(passwordText, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)))
+                        .addComponent(userNameText, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+                        .addComponent(passwordField, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE))
                     .addContainerGap(182, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
@@ -83,14 +112,14 @@ public class LoginView extends JFrame {
                         .addComponent(userNameText, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
                         .addComponent(userName, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
-                    .addGroup(contentPaneLayout.createParallelGroup()
+                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(password, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(passwordText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                     .addGap(53, 53, 53)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(login)
                         .addComponent(permission, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(180, Short.MAX_VALUE))
+                    .addContainerGap(179, Short.MAX_VALUE))
         );
         pack();
         setLocationRelativeTo(getOwner());
@@ -101,8 +130,8 @@ public class LoginView extends JFrame {
     private JTextField userNameText;
     private JLabel userName;
     private JLabel password;
-    private JTextField passwordText;
     private JButton login;
     private JComboBox<String> permission;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables
+    private JPasswordField passwordField;
+    // JFormDesigner - End of variables declaration  //GEN-END:variables*/
 }
