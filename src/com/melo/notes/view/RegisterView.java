@@ -30,29 +30,29 @@ public class RegisterView extends JFrame {
         String firstPassword = String.valueOf(passwordField1.getPassword());
         String secondPassword = String.valueOf(passwordField2.getPassword());
         if(userName==null){
-            JOptionPane.showMessageDialog(null, "ÓÃ»§Ãû²»ÄÜÎª¿Õ");
-            //ÖØĞÂÊäÈë
+            JOptionPane.showMessageDialog(null, "ç”¨æˆ·åä¸èƒ½ä¸ºç©º");
+            //é‡æ–°è¾“å…¥
             return;
         }
         if(firstPassword==null){
-            JOptionPane.showMessageDialog(null, "ÃÜÂë²»ÄÜÎª¿Õ");
-            //ÖØĞÂÊäÈë
+            JOptionPane.showMessageDialog(null, "å¯†ç ä¸èƒ½ä¸ºç©º");
+            //é‡æ–°è¾“å…¥
             return;
         }
         if(secondPassword==null){
-            JOptionPane.showMessageDialog(null, "ÇëÊäÈëÁ½´ÎÃÜÂë");
-            //ÖØĞÂÊäÈë
+            JOptionPane.showMessageDialog(null, "è¯·è¾“å…¥ä¸¤æ¬¡å¯†ç ");
+            //é‡æ–°è¾“å…¥
             return;
         }
         if(firstPassword.equals(secondPassword)){
             User user = new User(userName, getDigest(secondPassword));
             if(new LoginDao().register(user)==true){
                 new UserDao().insert(user);
-                JOptionPane.showMessageDialog(null, "×¢²á³É¹¦");
+                JOptionPane.showMessageDialog(null, "æ³¨å†ŒæˆåŠŸ");
                 this.dispose();
             }
         }else{
-            JOptionPane.showMessageDialog(null, "Á½´ÎÊäÈë²»Ò»ÖÂ£¬ÇëÖØĞÂÊäÈë");
+            JOptionPane.showMessageDialog(null, "ä¸¤æ¬¡è¾“å…¥ä¸ä¸€è‡´ï¼Œè¯·é‡æ–°è¾“å…¥");
             return;
         }
 

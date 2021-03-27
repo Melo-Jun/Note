@@ -18,7 +18,7 @@ import javax.swing.GroupLayout;
  */
 public class LoginView extends JFrame {
 
-    private static String ADMIN="¹ÜÀíÔ±";
+    private static String ADMIN="ç®¡ç†å‘˜";
 
     public LoginView() {
         initComponents();
@@ -27,20 +27,20 @@ public class LoginView extends JFrame {
     }
 
     private void loginActionPerformed(ActionEvent e) {
-        //»ñÈ¡ÎÄ±¾¿òÄÚÈİ
+        //è·å–æ–‡æœ¬æ¡†å†…å®¹
         String userName = userNameText.getText();
         String password = String.valueOf(passwordField.getPassword());
-        //»ñÈ¡ÏÂÀ­È¨ÏŞÖµ
+        //è·å–ä¸‹æ‹‰æƒé™å€¼
         String access = (String) this.access.getSelectedItem();
-        //ÅĞ¶ÏĞÅÏ¢ÊÇ·ñ¶¼ÓĞÌîÍêÕû
+        //åˆ¤æ–­ä¿¡æ¯æ˜¯å¦éƒ½æœ‰å¡«å®Œæ•´
         if (userName==null) {
-            JOptionPane.showMessageDialog(null, "ÓÃ»§Ãû²»ÄÜÎª¿Õ");
-            //ÖØĞÂÊäÈë
+            JOptionPane.showMessageDialog(null, "ç”¨æˆ·åä¸èƒ½ä¸ºç©º");
+            //é‡æ–°è¾“å…¥
             return;
         }
         if (password==null) {
-            JOptionPane.showMessageDialog(null, "ÃÜÂë²»ÄÜÎª¿Õ");
-            //ÖØĞÂÊäÈë
+            JOptionPane.showMessageDialog(null, "å¯†ç ä¸èƒ½ä¸ºç©º");
+            //é‡æ–°è¾“å…¥
             return;
         }
         if(access==ADMIN){
@@ -48,13 +48,15 @@ public class LoginView extends JFrame {
         }
         else{
             /**
-             * ÑéÖ¤ÓÃ»§ÃûºÍÃÜÂë
+             * éªŒè¯ç”¨æˆ·åå’Œå¯†ç 
              */
             if (new LoginDao().login(new User(userName,password))) {
-                JOptionPane.showMessageDialog(null, "µÇÂ¼³É¹¦");
+                JOptionPane.showMessageDialog(null, "ç™»å½•æˆåŠŸ");
+                this.dispose();
+                new UserView().setVisible(true);
             }
             else {
-                JOptionPane.showMessageDialog(null, "µÇÂ¼Ê§°Ü");
+                JOptionPane.showMessageDialog(null, "ç™»å½•å¤±è´¥");
             }
         }
 
@@ -139,7 +141,7 @@ public class LoginView extends JFrame {
                                     .addComponent(userName)
                                     .addGap(46, 46, 46)
                                     .addComponent(userNameText, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)))))
-                    .addGap(129, 176, Short.MAX_VALUE))
+                    .addGap(129, 185, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
