@@ -51,7 +51,7 @@ public class LoginDao extends BaseDaoImpl {
      * @notice 需要将输入进来的密码Md5解码看对不对应数据库中的字段
      * @return
      */
-    public static boolean login(User user){
+    public boolean login(User user){
         Connection conn= getConnection();
         PreparedStatement ps=null;
         ResultSet rs=null;
