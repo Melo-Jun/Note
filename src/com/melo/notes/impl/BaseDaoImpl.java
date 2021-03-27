@@ -48,9 +48,9 @@ public class BaseDaoImpl implements BaseDao {
 
     /**
      * 将对象映射成属性名和属性值
-     * @param obj
-     * @param fieldNames
-     * @param fieldValues
+     * @param obj 对象
+     * @param fieldNames 属性名
+     * @param fieldValues 属性值
      */
     @Override
     public void fieldMapper(Object obj, LinkedList fieldNames, LinkedList fieldValues) throws DaoException {
@@ -63,6 +63,7 @@ public class BaseDaoImpl implements BaseDao {
          */
         LinkedList<Method> methods = getMethods(obj);
         LinkedList<Field> fields = getFields(obj);
+        //剔除掉id(insert时id会默认自增)
         fields.pop();
         for (Field field : fields) {
             /**
@@ -73,7 +74,6 @@ public class BaseDaoImpl implements BaseDao {
                     Object value = null;
                     try {
                         value = method.invoke(obj);
-                        System.out.println(value);
                     } catch (Exception e) {
                         e.printStackTrace();
                         throw new DaoException("反射执行get方法异常：" + method.getName(), e);
@@ -86,7 +86,7 @@ public class BaseDaoImpl implements BaseDao {
                         /**
                          * 取出该属性的名称，映射成数据库字段名
                          */
-                        //fieldNames.add(field2SqlField(field.getName()));
+                       // fieldNames.add(field2SqlField(field.getName()));
                     }
                 }
             }
