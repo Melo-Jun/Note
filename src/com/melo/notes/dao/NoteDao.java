@@ -73,9 +73,10 @@ public class NoteDao extends BaseDaoImpl {
         Connection conn = getConnection();
         PreparedStatement ps = null;
         try {
-            String sql = "insert into note values (id,?,?,?,?,?,?,?,?)";
+            String sql = "insert into note values (id,?,?,?,?,create_time,update_time,?,?)";
             ps = conn.prepareStatement(sql);
             setParam(ps,note);
+            ps.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {

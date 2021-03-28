@@ -12,25 +12,21 @@ public class Note {
 
     private Integer id;
     private String title;
-    private String author;
+    private String authorName;
     private String text;
     private String access;
-    private Date creatTime;
-    private Date updateTime;
     private Integer likeCount;
     private String locatedGroup;
 
     public Note() {
     }
 
-    public Note(Integer id, String title, String author, String text, String access, Date creatTime, Date updateTime, Integer likeCount, String locatedGroup) {
+    public Note(Integer id, String title, String authorName, String text, String access, Integer likeCount, String locatedGroup) {
         this.id = id;
         this.title = title;
-        this.author = author;
+        this.authorName = authorName;
         this.text = text;
         this.access = access;
-        this.creatTime = creatTime;
-        this.updateTime = updateTime;
         this.likeCount = likeCount;
         this.locatedGroup = locatedGroup;
     }
@@ -43,8 +39,8 @@ public class Note {
         return title;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getAuthorName() {
+        return authorName;
     }
 
     public String getText() {
@@ -53,14 +49,6 @@ public class Note {
 
     public String getAccess() {
         return access;
-    }
-
-    public Date getCreatTime() {
-        return creatTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
     }
 
     public Integer getLikeCount() {
@@ -80,7 +68,7 @@ public class Note {
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        this.authorName = author;
     }
 
     public void setText(String text) {
@@ -89,14 +77,6 @@ public class Note {
 
     public void setAccess(String access) {
         this.access = access;
-    }
-
-    public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
     public void setLikeCount(Integer likeCount) {
@@ -112,11 +92,9 @@ public class Note {
         return "Note{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
+                ", author='" + authorName + '\'' +
                 ", text='" + text + '\'' +
                 ", access='" + access + '\'' +
-                ", creatTime=" + creatTime +
-                ", updateTime=" + updateTime +
                 ", likeCount=" + likeCount +
                 ", locatedGroup='" + locatedGroup + '\'' +
                 '}';
