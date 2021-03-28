@@ -1,5 +1,6 @@
 package com.melo.notes.text;
 
+import com.melo.notes.entity.User;
 import com.melo.notes.view.AddNoteView;
 
 /**
@@ -11,6 +12,7 @@ import com.melo.notes.view.AddNoteView;
 public class TextAddNote {
 
     public static void main(String[] args) {
-        new AddNoteView().setVisible(true);
+        User user = new User("鸣人", "1111");
+        new AddNoteView(user).setVisible(true);
     }
 }

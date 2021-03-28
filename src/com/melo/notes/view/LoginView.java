@@ -4,8 +4,7 @@
 
 package com.melo.notes.view;
 
-import javax.swing.plaf.*;
-import com.melo.notes.dao.LoginDao;
+import com.melo.notes.dao.impl.LoginDaoImpl;
 import com.melo.notes.entity.User;
 
 import java.awt.*;
@@ -15,11 +14,11 @@ import javax.swing.GroupLayout;
 
 /**
  * @author Jun
- * @description ç™»å½•ç•Œé¢
+ * @description µÇÂ¼½çÃæ
  */
 public class LoginView extends JFrame {
 
-    private static String ADMIN="ç®¡ç†å‘˜";
+    private static String ADMIN="¹ÜÀíÔ±";
 
     public LoginView() {
         initComponents();
@@ -28,20 +27,22 @@ public class LoginView extends JFrame {
     }
 
     private void loginActionPerformed(ActionEvent e) {
-        //è·å–æ–‡æœ¬æ¡†å†…å®¹
+        //»ñÈ¡ÎÄ±¾¿òÄÚÈİ
         String userName = userNameText.getText();
         String password = String.valueOf(passwordField.getPassword());
-        //è·å–ä¸‹æ‹‰æƒé™å€¼
+        System.out.println(userName);
+        System.out.println(password);
+        //»ñÈ¡ÏÂÀ­È¨ÏŞÖµ
         String access = (String) this.access.getSelectedItem();
-        //åˆ¤æ–­ä¿¡æ¯æ˜¯å¦éƒ½æœ‰å¡«å®Œæ•´
+        //ÅĞ¶ÏĞÅÏ¢ÊÇ·ñ¶¼ÓĞÌîÍêÕû
         if (userName==null) {
-            JOptionPane.showMessageDialog(null, "ç”¨æˆ·åä¸èƒ½ä¸ºç©º");
-            //é‡æ–°è¾“å…¥
+            JOptionPane.showMessageDialog(null, "ÓÃ»§Ãû²»ÄÜÎª¿Õ");
+            //ÖØĞÂÊäÈë
             return;
         }
         if (password==null) {
-            JOptionPane.showMessageDialog(null, "å¯†ç ä¸èƒ½ä¸ºç©º");
-            //é‡æ–°è¾“å…¥
+            JOptionPane.showMessageDialog(null, "ÃÜÂë²»ÄÜÎª¿Õ");
+            //ÖØĞÂÊäÈë
             return;
         }
         if(access==ADMIN){
@@ -49,18 +50,19 @@ public class LoginView extends JFrame {
         }
         else{
             /**
-             * éªŒè¯ç”¨æˆ·åå’Œå¯†ç 
+             * ÑéÖ¤ÓÃ»§ÃûºÍÃÜÂë
              */
-            if (new LoginDao().login(new User(userName,password))) {
-                JOptionPane.showMessageDialog(null, "ç™»å½•æˆåŠŸ");
+            User user = new User(userName, password);
+            if (new LoginDaoImpl().login(user)) {
+                JOptionPane.showMessageDialog(null, "µÇÂ¼³É¹¦");
                 /**
-                 * é”€æ¯å½“å‰çª—å£ï¼Œè·³è½¬åˆ°ç”¨æˆ·ç•Œé¢
+                 * Ïú»Ùµ±Ç°´°¿Ú£¬Ìø×ªµ½ÓÃ»§½çÃæ
                  */
                 this.dispose();
-                new UserView().setVisible(true);
+                new UserView(user).setVisible(true);
             }
             else {
-                JOptionPane.showMessageDialog(null, "ç™»å½•å¤±è´¥");
+                JOptionPane.showMessageDialog(null, "µÇÂ¼Ê§°Ü");
             }
         }
 

@@ -4,6 +4,8 @@
 
 package com.melo.notes.view;
 
+import com.melo.notes.entity.User;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -20,20 +22,20 @@ public class UserView extends JFrame {
      */
     private final String ADDNOTE="新增笔记";
 
-    public UserView() {
-        initComponents();
+    public UserView(User user) {
+        initComponents(user);
         setSize(1300, 800);
         setLocation(330,120);
     }
 
-    private void optionActionPerformed(ActionEvent e) {
+    private void optionActionPerformed(ActionEvent e,User user) {
         String  selectedNoteOption = (String)(noteOption.getSelectedItem());
         switch (selectedNoteOption){
             case ADDNOTE:
-                System.out.println(111);
+                new AddNoteView(user).setVisible(true);
                 break;
             default:
-                System.out.println(222);
+                new AddNoteView(user).setVisible(true);
                 break;
         }
 
@@ -50,7 +52,7 @@ public class UserView extends JFrame {
 
     }
 
-    private void initComponents() {
+    private void initComponents(User user) {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         menuBar = new JMenuBar();
         note = new JMenu();
@@ -99,7 +101,7 @@ public class UserView extends JFrame {
             "\u67e5\u770b\u7b14\u8bb0"
         }));
         noteOption.setFont(new Font("\u5fae\u8f6f\u96c5\u9ed1", Font.PLAIN, 18));
-        noteOption.addActionListener(e -> optionActionPerformed(e));
+        noteOption.addActionListener(e -> optionActionPerformed(e,user));
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
@@ -113,9 +115,9 @@ public class UserView extends JFrame {
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(contentPaneLayout.createSequentialGroup()
-                    .addGap(135, 135, 135)
+                    .addGap(215, 215, 215)
                     .addComponent(noteOption, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(421, Short.MAX_VALUE))
+                    .addContainerGap(341, Short.MAX_VALUE))
         );
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents

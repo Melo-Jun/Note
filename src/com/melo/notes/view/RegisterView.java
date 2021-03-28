@@ -4,8 +4,8 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.dao.LoginDao;
-import com.melo.notes.dao.UserDao;
+import com.melo.notes.dao.impl.LoginDaoImpl;
+import com.melo.notes.dao.impl.UserDaoImpl;
 import com.melo.notes.entity.User;
 
 import java.awt.*;
@@ -17,7 +17,7 @@ import static com.melo.notes.util.Md5Utils.getDigest;
 
 /**
  * @author Jun
- * @description æ³¨å†Œç•Œé¢
+ * @description ×¢²á½çÃæ
  */
 public class RegisterView extends JFrame {
     public RegisterView() {
@@ -31,29 +31,29 @@ public class RegisterView extends JFrame {
         String firstPassword = String.valueOf(passwordField1.getPassword());
         String secondPassword = String.valueOf(passwordField2.getPassword());
         if(userName==null){
-            JOptionPane.showMessageDialog(null, "ç”¨æˆ·åä¸èƒ½ä¸ºç©º");
-            //é‡æ–°è¾“å…¥
+            JOptionPane.showMessageDialog(null, "ÓÃ»§Ãû²»ÄÜÎª¿Õ");
+            //ÖØĞÂÊäÈë
             return;
         }
         if(firstPassword==null){
-            JOptionPane.showMessageDialog(null, "å¯†ç ä¸èƒ½ä¸ºç©º");
-            //é‡æ–°è¾“å…¥
+            JOptionPane.showMessageDialog(null, "ÃÜÂë²»ÄÜÎª¿Õ");
+            //ÖØĞÂÊäÈë
             return;
         }
         if(secondPassword==null){
-            JOptionPane.showMessageDialog(null, "è¯·è¾“å…¥ä¸¤æ¬¡å¯†ç ");
-            //é‡æ–°è¾“å…¥
+            JOptionPane.showMessageDialog(null, "ÇëÊäÈëÁ½´ÎÃÜÂë");
+            //ÖØĞÂÊäÈë
             return;
         }
         if(firstPassword.equals(secondPassword)){
             User user = new User(userName, getDigest(secondPassword));
-            if(new LoginDao().register(user)==true){
-                new UserDao().insert(user);
-                JOptionPane.showMessageDialog(null, "æ³¨å†ŒæˆåŠŸ");
+            if(new LoginDaoImpl().register(user)==true){
+                new UserDaoImpl().insert(user);
+                JOptionPane.showMessageDialog(null, "×¢²á³É¹¦");
                 this.dispose();
             }
         }else{
-            JOptionPane.showMessageDialog(null, "ä¸¤æ¬¡è¾“å…¥ä¸ä¸€è‡´ï¼Œè¯·é‡æ–°è¾“å…¥");
+            JOptionPane.showMessageDialog(null, "Á½´ÎÊäÈë²»Ò»ÖÂ£¬ÇëÖØĞÂÊäÈë");
             return;
         }
 

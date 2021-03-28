@@ -4,12 +4,12 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.dao.NoteDao;
+import com.melo.notes.dao.impl.NoteDaoImpl;
 import com.melo.notes.entity.Note;
+import com.melo.notes.entity.User;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Date;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 
@@ -17,24 +17,22 @@ import javax.swing.GroupLayout;
  * @author Jun
  */
 public class AddNoteView extends JFrame {
-    public AddNoteView() {
-        initComponents();
+    public AddNoteView(User user) {
+        initComponents(user);
         setSize(1300, 800);
         setLocation(330,120);
+        groupSelect.addItem("学习");
     }
 
-    private void summitActionPerformed(ActionEvent e) {
+    private void summitActionPerformed(ActionEvent e,User user) {
         String title = titleField.getText();
         String text = textArea.getText();
         String access = (String) this.accessSelect.getSelectedItem();
-        System.out.println(title);
-        System.out.println(text);
-        System.out.println(access);
-        Note note = new Note(2, title, "鸣人", text, access, 0, "0");
-        new NoteDao().addNote(note);
+        Note note = new Note(null, title, user.getUserName(), text, access, 0, "0");
+        new NoteDaoImpl().addNote(note);
     }
 
-    private void initComponents() {
+    private void initComponents(User user) {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         titleField = new JTextField();
         title = new JLabel();
@@ -62,7 +60,7 @@ public class AddNoteView extends JFrame {
 
         //---- summit ----
         summit.setText("\u63d0\u4ea4");
-        summit.addActionListener(e -> summitActionPerformed(e));
+        summit.addActionListener(e -> summitActionPerformed(e,user));
 
         //---- accessSelect ----
         accessSelect.setModel(new DefaultComboBoxModel<>(new String[] {
