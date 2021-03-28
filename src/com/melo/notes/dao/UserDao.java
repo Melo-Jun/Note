@@ -27,7 +27,7 @@ public class UserDao extends BaseDaoImpl {
     public boolean insert(User user){
         Connection conn = getConnection();
         PreparedStatement ps=null;
-        String sql="insert into user values (id,?,?)";
+        String sql="insert into user values (id,?,?,photo)";
         try{
             ps=conn.prepareStatement(sql);
             setParam(ps,user);

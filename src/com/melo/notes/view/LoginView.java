@@ -15,6 +15,7 @@ import javax.swing.GroupLayout;
 
 /**
  * @author Jun
+ * @description 登录界面
  */
 public class LoginView extends JFrame {
 
@@ -52,6 +53,9 @@ public class LoginView extends JFrame {
              */
             if (new LoginDao().login(new User(userName,password))) {
                 JOptionPane.showMessageDialog(null, "登录成功");
+                /**
+                 * 销毁当前窗口，跳转到用户界面
+                 */
                 this.dispose();
                 new UserView().setVisible(true);
             }

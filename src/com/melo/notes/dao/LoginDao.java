@@ -58,7 +58,7 @@ public class LoginDao extends BaseDaoImpl {
         try {
             String sql="select password from user where user_name=? ";
             ps=conn.prepareStatement(sql);
-            ps.setString(1, user.getUserName() );
+            ps.setString(1, user.getUserName());
             rs=ps.executeQuery();
             if(rs.next()){
                 String uPass=rs.getString("password");

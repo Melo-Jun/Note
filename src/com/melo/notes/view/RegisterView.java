@@ -17,6 +17,7 @@ import static com.melo.notes.util.Md5Utils.getDigest;
 
 /**
  * @author Jun
+ * @description 注册界面
  */
 public class RegisterView extends JFrame {
     public RegisterView() {
