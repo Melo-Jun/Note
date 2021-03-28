@@ -1,7 +1,7 @@
-package com.melo.notes.impl;
+package com.melo.notes.dao.impl;
 
+import com.melo.notes.dao.inter.MyDataSource;
 
-import com.melo.notes.inter.MyDataSource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,29 +12,29 @@ import java.util.Properties;
 /**
  * @author Jun
  * @program Note
- * @description Êı¾İ¿âÁ¬½Ó³ØÊµÏÖÀà
- * @date 2021-3-27 10:30
+ * @description æ•°æ®åº“è¿æ¥æ± å®ç°ç±»
+ * @date 2021-3-28 20:37
  */
 public class MyDataSourceImpl implements MyDataSource {
     /**
-     * ÅäÖÃÎÄ¼şÂ·¾¶
+     * é…ç½®æ–‡ä»¶è·¯å¾„
      */
     private static String PROP_PATH = "jdbc.properties";
     /**
      * /**
-     * ²âÊÔÊı¾İ¿âÁ¬½ÓµÄµÈ´ıÊ±³¤
+     * æµ‹è¯•æ•°æ®åº“è¿æ¥çš„ç­‰å¾…æ—¶é•¿
      */
     private static int TIMEOUT;
     /**
-     * ³õÊ¼Á¬½ÓÊı
+     * åˆå§‹è¿æ¥æ•°
      */
     private static int INIT_SIZE;
     /**
-     * ×î´óÁ¬½ÓÊı
+     * æœ€å¤§è¿æ¥æ•°
      */
     private static int MAX_SIZE;
     /**
-     * µ±Ç°ÒÑ¾­´´½¨µÄÁ¬½ÓÊı
+     * å½“å‰å·²ç»åˆ›å»ºçš„è¿æ¥æ•°
      */
     private static int currentCount = 0;
 
@@ -43,19 +43,19 @@ public class MyDataSourceImpl implements MyDataSource {
     private static String password;
     private static MyDataSourceImpl instance;
     /**
-     * Êı¾İ¿âÁ¬½Ó³Ø
+     * æ•°æ®åº“è¿æ¥æ± 
      */
     private LinkedList<Connection> connPool = new LinkedList<>();
 
     {
         try {
             /**
-             * ¼ÓÔØÅäÖÃÎÄ¼ş
+             * åŠ è½½é…ç½®æ–‡ä»¶
              */
             Properties prop = new Properties();
             prop.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(PROP_PATH));
             /**
-             * Çı¶¯ÀàÃû³Æ
+             * é©±åŠ¨ç±»åç§°
              */
             String driver = prop.getProperty("driver");
             url = prop.getProperty("url");
@@ -65,11 +65,11 @@ public class MyDataSourceImpl implements MyDataSource {
             INIT_SIZE = Integer.parseInt(prop.getProperty("INIT_SIZE"));
             TIMEOUT = Integer.parseInt(prop.getProperty("TIMEOUT"));
             /**
-             * ×¢²áÇı¶¯
+             * æ³¨å†Œé©±åŠ¨
              */
             Class.forName(driver);
             /**
-             * ³õÊ¼»¯Êı¾İ¿âÁ¬½Ó³Ø
+             * åˆå§‹åŒ–æ•°æ®åº“è¿æ¥æ± 
              */
             this.initConnection();
         } catch (ClassNotFoundException | IOException e) {
@@ -79,7 +79,7 @@ public class MyDataSourceImpl implements MyDataSource {
     }
 
     /**
-     * ´´½¨Êı¾İ¿âÁ¬½Ó (·â×°²Ù×÷)
+     * åˆ›å»ºæ•°æ®åº“è¿æ¥ (å°è£…æ“ä½œ)
      *
      * @return Connection
      */
@@ -94,7 +94,7 @@ public class MyDataSourceImpl implements MyDataSource {
     }
 
     /**
-     * ³õÊ¼»¯Êı¾İ¿âÁ¬½Ó³Ø
+     * åˆå§‹åŒ–æ•°æ®åº“è¿æ¥æ± 
      */
     public void initConnection() {
         for (int i = 0; i < INIT_SIZE; i++) {
@@ -103,7 +103,7 @@ public class MyDataSourceImpl implements MyDataSource {
     }
 
     /**
-     * ´ÓÊı¾İ¿âÁ¬½Ó³ØÖĞ»ñÈ¡Á¬½Ó
+     * ä»æ•°æ®åº“è¿æ¥æ± ä¸­è·å–è¿æ¥
      *
      * @return
      * @throws SQLException
@@ -120,13 +120,13 @@ public class MyDataSourceImpl implements MyDataSource {
         } else if (currentCount < MAX_SIZE) {
             return creatConnection();
         } else {
-            throw new RuntimeException("Êı¾İ¿âÁ¬½ÓÒÑ¾­µ½´ï×î´óÖµ");
+            throw new RuntimeException("æ•°æ®åº“è¿æ¥å·²ç»åˆ°è¾¾æœ€å¤§å€¼");
         }
     }
 
 
     /**
-     * ÊÍ·ÅÁ¬½Ó£¬¹é»¹µ½Êı¾İ¿âÁ¬½Ó³ØÖĞ
+     * é‡Šæ”¾è¿æ¥ï¼Œå½’è¿˜åˆ°æ•°æ®åº“è¿æ¥æ± ä¸­
      * @param coon
      */
     @Override
@@ -135,7 +135,7 @@ public class MyDataSourceImpl implements MyDataSource {
     }
 
     /**
-     * »ñÈ¡µ±Ç°Á¬½ÓÊı (±ãÓÚ²Ù×÷)
+     * è·å–å½“å‰è¿æ¥æ•° (ä¾¿äºæ“ä½œ)
      * @return
      */
     @Override
@@ -144,11 +144,12 @@ public class MyDataSourceImpl implements MyDataSource {
     }
 
     /**
-     * »ñÈ¡¿ÕÏĞÁ¬½ÓÊı
+     * è·å–ç©ºé—²è¿æ¥æ•°
      * @return
      */
     @Override
     public synchronized int getfreeCount() {
         return this.connPool.size();
     }
+
 }

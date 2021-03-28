@@ -1,4 +1,4 @@
-package com.melo.notes.inter;
+package com.melo.notes.dao.inter;
 
 import com.melo.notes.exception.DaoException;
 
@@ -8,8 +8,8 @@ import java.util.LinkedList;
 /**
  * @author Jun
  * @program Note
- * @description 通用数据库操作接口
- * @date 2021-3-27 11:00
+ * @description 数据库通用操作接口
+ * @date 2021-3-28 20:35
  */
 public interface BaseDao {
     /**
@@ -24,7 +24,7 @@ public interface BaseDao {
      * @param obj
      * @param fieldNames
      * @param fieldValues
-     * @exception
+     * @throws DaoException
      */
     void fieldMapper(Object obj, LinkedList fieldNames, LinkedList fieldValues) throws DaoException;
 

@@ -1,7 +1,7 @@
-package com.melo.notes.impl;
+package com.melo.notes.dao.impl;
 
+import com.melo.notes.dao.inter.BaseDao;
 import com.melo.notes.exception.DaoException;
-import com.melo.notes.inter.BaseDao;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -17,11 +17,10 @@ import static com.melo.notes.util.ReflectUtils.getMethods;
 /**
  * @author Jun
  * @program Note
- * @description Í¨ÓÃÊı¾İ¿â²Ù×÷ÊµÏÖÀà
- * @date 2021-3-27 11:05
+ * @description æ•°æ®åº“é€šç”¨æ“ä½œå®ç°ç±»
+ * @date 2021-3-28 20:36
  */
 public class BaseDaoImpl implements BaseDao {
-
     //private static BaseDaoImpl INSTANCE;
 
     public static BaseDaoImpl getInstance() {
@@ -29,8 +28,8 @@ public class BaseDaoImpl implements BaseDao {
     }
 
     /**
-     * Ôö¼ÓÒ»¸ö¶ÔÏó
-     * @param obj ¶ÔÏóÃû
+     * å¢åŠ ä¸€ä¸ªå¯¹è±¡
+     * @param obj å¯¹è±¡å
      * @return
      */
     @Override
@@ -47,10 +46,10 @@ public class BaseDaoImpl implements BaseDao {
     }
 
     /**
-     * ½«¶ÔÏóÓ³Éä³ÉÊôĞÔÃûºÍÊôĞÔÖµ
-     * @param obj ¶ÔÏó
-     * @param fieldNames ÊôĞÔÃû
-     * @param fieldValues ÊôĞÔÖµ
+     * å°†å¯¹è±¡æ˜ å°„æˆå±æ€§åå’Œå±æ€§å€¼
+     * @param obj å¯¹è±¡
+     * @param fieldNames å±æ€§å
+     * @param fieldValues å±æ€§å€¼
      */
     @Override
     public void fieldMapper(Object obj, LinkedList fieldNames, LinkedList fieldValues) throws DaoException {
@@ -59,15 +58,15 @@ public class BaseDaoImpl implements BaseDao {
         }
 
         /**
-         * È¡³ö°üÀ¨¸¸ÀàÔÚÄÚµÄËùÓĞ·½·¨ºÍÊôĞÔ
+         * å–å‡ºåŒ…æ‹¬çˆ¶ç±»åœ¨å†…çš„æ‰€æœ‰æ–¹æ³•å’Œå±æ€§
          */
         LinkedList<Method> methods = getMethods(obj);
         LinkedList<Field> fields = getFields(obj);
-        //ÌŞ³ıµôid(insertÊ±id»áÄ¬ÈÏ×ÔÔö)
+        //å‰”é™¤æ‰id(insertæ—¶idä¼šé»˜è®¤è‡ªå¢)
         fields.pop();
         for (Field field : fields) {
             /**
-             * È¡³öÃ¿¸öÊôĞÔµÄÖµ
+             * å–å‡ºæ¯ä¸ªå±æ€§çš„å€¼
              */
             for (Method method : methods) {
                 if (method.getName().startsWith("get") && method.getName().substring(3).equalsIgnoreCase(field.getName())) {
@@ -76,17 +75,17 @@ public class BaseDaoImpl implements BaseDao {
                         value = method.invoke(obj);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        throw new DaoException("·´ÉäÖ´ĞĞget·½·¨Òì³££º" + method.getName(), e);
+                        throw new DaoException("åå°„æ‰§è¡Œgetæ–¹æ³•å¼‚å¸¸ï¼š" + method.getName(), e);
                     }
                     /**
-                     * Ö»Ìí¼Ó²»ÎªnullÖµµÄ×Ö¶Î
+                     * åªæ·»åŠ ä¸ä¸ºnullå€¼çš„å­—æ®µ
                      */
                     if (value != null) {
                         fieldValues.add(value);
                         /**
-                         * È¡³ö¸ÃÊôĞÔµÄÃû³Æ£¬Ó³Éä³ÉÊı¾İ¿â×Ö¶ÎÃû
+                         * å–å‡ºè¯¥å±æ€§çš„åç§°ï¼Œæ˜ å°„æˆæ•°æ®åº“å­—æ®µå
                          */
-                       // fieldNames.add(field2SqlField(field.getName()));
+                        // fieldNames.add(field2SqlField(field.getName()));
                     }
                 }
             }
@@ -94,9 +93,9 @@ public class BaseDaoImpl implements BaseDao {
     }
 
     /**
-     * ÅĞ¶Ï²Ù×÷ÊÇ·ñ³É¹¦
+     * åˆ¤æ–­æ“ä½œæ˜¯å¦æˆåŠŸ
      * @param ps
-     * @return boolean ÊÇ·ñ³É¹¦
+     * @return boolean æ˜¯å¦æˆåŠŸ
      */
     @Override
     public boolean isSuccess(PreparedStatement ps) {
@@ -109,7 +108,8 @@ public class BaseDaoImpl implements BaseDao {
         }if(count==1) {
             return true;
         }else {
-            throw new DaoException("²éÎŞ´ËÈË");
+            throw new DaoException("æŸ¥æ— æ­¤äºº");
         }
     }
+
 }

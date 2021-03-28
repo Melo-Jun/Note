@@ -1,10 +1,9 @@
-package com.melo.notes.dao;
+package com.melo.notes.dao.impl;
 
+import com.melo.notes.dao.inter.UserDao;
 import com.melo.notes.entity.User;
 import com.melo.notes.exception.DaoException;
-import com.melo.notes.impl.BaseDaoImpl;
-import com.melo.notes.inter.BaseDao;
-
+import com.melo.notes.dao.impl.BaseDaoImpl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,16 +13,17 @@ import static com.melo.notes.util.JdbcUtil.*;
 /**
  * @author Jun
  * @program Note
- * @description 用户类数据库操作
- * @date 2021-3-27 12:16
+ * @description 用户类数据库操作实现类
+ * @date 2021-3-28 20:45
  */
-public class UserDao extends BaseDaoImpl {
+public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     /**
      * 增加用户
      * @param user
      * @return boolean 是否增加成功
      */
+    @Override
     public boolean insert(User user){
         Connection conn = getConnection();
         PreparedStatement ps=null;

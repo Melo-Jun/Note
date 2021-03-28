@@ -1,8 +1,8 @@
 package com.melo.notes.util;
 import com.melo.notes.exception.DaoException;
-import com.melo.notes.impl.BaseDaoImpl;
-import com.melo.notes.impl.MyDataSourceImpl;
-import com.melo.notes.inter.MyDataSource;
+import com.melo.notes.dao.impl.BaseDaoImpl;
+import com.melo.notes.dao.impl.MyDataSourceImpl;
+import com.melo.notes.dao.inter.MyDataSource;
 
 import java.io.IOException;
 import java.sql.Connection;

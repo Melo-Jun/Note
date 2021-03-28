@@ -1,4 +1,4 @@
-package com.melo.notes.inter;
+package com.melo.notes.dao.inter;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -6,35 +6,33 @@ import java.sql.SQLException;
 /**
  * @author Jun
  * @program Note
- * @description Êı¾İ¿âÁ¬½Ó³Ø½Ó¿Ú
- * @date 2021-3-27 10£º27
+ * @description æ•°æ®åº“è¿æ¥æ± æ¥å£
+ * @date 2021-3-28 20:36
  */
 public interface MyDataSource {
     /**
-     * »ñÈ¡Êı¾İ¿âÁ¬½Ó
+     * è·å–æ•°æ®åº“è¿æ¥
      * @return
      * @throws SQLException
      */
     Connection getConnection() throws SQLException;
 
     /**
-     * ÊÍ·ÅÁ¬½Ó
+     * é‡Šæ”¾è¿æ¥
      * @param coon
      */
     void freeConnection(Connection coon);
 
     /**
-     * »ñÈ¡µ±Ç°Á¬½ÓÊı
+     * è·å–å½“å‰è¿æ¥æ•°
      * @return
      */
     int getCurrentConnection();
 
     /**
-     * »ñÈ¡¿ÕÏĞÁ¬½ÓÊı
+     * è·å–ç©ºé—²è¿æ¥æ•°
      * @return
      */
     int getfreeCount() ;
+
 }
-
-
-

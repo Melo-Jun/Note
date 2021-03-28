@@ -1,8 +1,9 @@
-package com.melo.notes.dao;
+package com.melo.notes.dao.impl;
 
 
+import com.melo.notes.dao.inter.LoginDao;
 import com.melo.notes.entity.User;
-import com.melo.notes.impl.BaseDaoImpl;
+import com.melo.notes.dao.impl.BaseDaoImpl;
 
 import java.sql.*;
 
@@ -13,16 +14,17 @@ import static com.melo.notes.util.Md5Utils.getDigest;
 /**
  * @author Jun
  * @program Note
- * @description 登录页面相关数据库操作
- * @date 2021-3-27 12:16
+ * @description 登录页面相关数据库操作实现类
+ * @date 2021-3-28 20:36
  */
-public class LoginDao extends BaseDaoImpl {
+public class LoginDaoImpl extends BaseDaoImpl implements LoginDao {
 
     /**
      * 注册新用户
      * @param user
      * @return boolean 是否成功注册
      */
+    @Override
     public boolean register(User user){
         Connection conn= getConnection();
         PreparedStatement ps=null;
@@ -51,6 +53,7 @@ public class LoginDao extends BaseDaoImpl {
      * @notice 需要将输入进来的密码Md5解码看对不对应数据库中的字段
      * @return
      */
+    @Override
     public boolean login(User user){
         Connection conn= getConnection();
         PreparedStatement ps=null;
