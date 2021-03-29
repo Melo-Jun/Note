@@ -13,11 +13,25 @@ import java.sql.ResultSet;
  */
 public interface NoteDao {
     /**
-     * 根据用户名列出笔记标题界面
+     * 根据用户名列出知识库界面
      * @param user 用户
+     * @return ResultSet 结果集
+     */
+    ResultSet showNoteFolder(User user);
+
+    /**
+     * 根据知识库列出分组界面
+     * @param folderName 知识库名称
+     * @return ResultSet 结果集
+     */
+    ResultSet showNoteGroup(String folderName);
+
+    /**
+     * 根据用户名列出笔记标题界面
+     * @param groupName 分组名称
      * @return
      */
-     ResultSet showNoteTitle(User user);
+     ResultSet showNoteTitle(String groupName);
 
     /**
      * 通过点击标题查看笔记详情

@@ -25,19 +25,67 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
     }
 
     /**
-     * 根据用户名列出笔记标题界面
+     * 根据用户名列出知识库界面
      * @param user 用户
      * @return ResultSet 结果集
      */
     @Override
-    public ResultSet showNoteTitle(User user){
+    public ResultSet showNoteFolder(User user) {
         Connection conn= getConnection();
         PreparedStatement ps=null;
         ResultSet rs=null;
         try {
-            String sql="select title from note where author=?";
+            String sql="select folder_name from located_folder where author=?";
             ps=conn.prepareStatement(sql);
             ps.setString(1, user.getUserName() );
+            rs=ps.executeQuery();
+            return rs;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            freeConnection(conn);
+        }
+        return null;
+    }
+
+    /**
+     * 根据知识库列出分组界面
+     * @param folderName 知识库名称
+     * @return ResultSet 结果集
+     */
+    @Override
+    public ResultSet showNoteGroup(String folderName) {
+        Connection conn= getConnection();
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        try {
+            String sql="select group_name from located_group where located_folder=?";
+            ps=conn.prepareStatement(sql);
+            ps.setString(1, folderName);
+            rs=ps.executeQuery();
+            return rs;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            freeConnection(conn);
+        }
+        return null;
+    }
+
+    /**
+     * 根据用户名列出笔记标题界面
+     * @param groupName 分组名称
+     * @return ResultSet 结果集
+     */
+    @Override
+    public ResultSet showNoteTitle(String groupName){
+        Connection conn= getConnection();
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        try {
+            String sql="select title from note where located_group=?";
+            ps=conn.prepareStatement(sql);
+            ps.setString(1, groupName);
             rs=ps.executeQuery();
             return rs;
         } catch (SQLException throwables) {
