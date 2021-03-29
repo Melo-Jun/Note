@@ -17,7 +17,7 @@ public interface NoteDao {
      * @param user 用户
      * @return
      */
-     ResultSet listNoteTitle(User user);
+     ResultSet showNoteTitle(User user);
 
     /**
      * 通过点击标题查看笔记详情

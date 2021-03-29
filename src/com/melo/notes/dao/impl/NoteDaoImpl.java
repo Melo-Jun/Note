@@ -20,13 +20,17 @@ import static com.melo.notes.util.JdbcUtil.*;
  */
 public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
 
+    public static Object instance(){
+        return new NoteDaoImpl();
+    }
+
     /**
      * 根据用户名列出笔记标题界面
      * @param user 用户
-     * @return
+     * @return ResultSet 结果集
      */
     @Override
-    public ResultSet listNoteTitle(User user){
+    public ResultSet showNoteTitle(User user){
         Connection conn= getConnection();
         PreparedStatement ps=null;
         ResultSet rs=null;
@@ -39,6 +43,7 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
+            freeConnection(conn);
         }
         return null;
     }

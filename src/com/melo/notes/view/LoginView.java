@@ -27,14 +27,13 @@ public class LoginView extends JFrame {
     }
 
     private void loginActionPerformed(ActionEvent e) {
-        //获取文本框内容
+        /**
+         * 获取文本框内容
+         */
         String userName = userNameText.getText();
         String password = String.valueOf(passwordField.getPassword());
-        System.out.println(userName);
-        System.out.println(password);
         //获取下拉权限值
         String access = (String) this.access.getSelectedItem();
-        //判断信息是否都有填完整
         if (userName==null) {
             JOptionPane.showMessageDialog(null, "用户名不能为空");
             //重新输入
@@ -45,6 +44,7 @@ public class LoginView extends JFrame {
             //重新输入
             return;
         }
+        //未完
         if(access==ADMIN){
 
         }
@@ -68,11 +68,18 @@ public class LoginView extends JFrame {
 
     }
 
+    /**
+     * 注册按钮事件
+     * @param e
+     */
     private void registerActionPerformed(ActionEvent e) {
         new RegisterView().setVisible(true);
     }
 
 
+    /**
+     * 初始化界面
+     */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         userName = new JLabel();

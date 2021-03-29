@@ -4,10 +4,13 @@
 
 package com.melo.notes.view;
 
+import com.melo.notes.dao.impl.NoteDaoImpl;
 import com.melo.notes.entity.User;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 
@@ -17,39 +20,50 @@ import javax.swing.GroupLayout;
  */
 public class UserView extends JFrame {
 
-    /**
-     * 新增笔记
-     */
-    private final String ADDNOTE="新增笔记";
-
     public UserView(User user) {
         initComponents(user);
         setSize(1300, 800);
         setLocation(330,120);
     }
 
-    private void optionActionPerformed(ActionEvent e,User user) {
-        String  selectedNoteOption = (String)(noteOption.getSelectedItem());
-        switch (selectedNoteOption){
-            case ADDNOTE:
-                new AddNoteView(user).setVisible(true);
-                break;
-            default:
-                new AddNoteView(user).setVisible(true);
-                break;
-        }
 
-        if(noteOption.getSelectedItem()==ADDNOTE){
-            new LoginView().setVisible(true);
-        }
+    /**
+     * 新增笔记
+     * @param e
+     * @param user 用户
+     */
+    private void addNoteActionPerformed(ActionEvent e,User user) {
+        new AddNoteView(user).setVisible(true);
     }
 
     /**
-     * 新增笔记按钮
+     * 查看笔记
      * @param e
      */
-    private void addNoteActionPerformed(ActionEvent e) {
+    private void searchNoteActionPerformed(ActionEvent e,User user) {
+        ResultSet rs = new NoteDaoImpl().showNoteTitle(user);
+        try {
+            JLabel label = new JLabel();
+            label.setText("haha");
+            this.add(label);
+            while (rs.next()) {
+                String title = (String)rs.getObject("title");
+                System.out.println(title);
+                JLabel label2 = new JLabel();
+                label2.setText(title);
+                this.add(label2);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
+    private void searchNoteActionPerformed(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void addNoteActionPerformed(ActionEvent e) {
+        // TODO add your code here
     }
 
     private void initComponents(User user) {
@@ -59,7 +73,6 @@ public class UserView extends JFrame {
         searchNote = new JMenuItem();
         addNote = new JMenuItem();
         deleteNote = new JMenuItem();
-        noteOption = new JComboBox<>();
 
         //======== this ========
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
@@ -80,6 +93,7 @@ public class UserView extends JFrame {
 
                 //---- searchNote ----
                 searchNote.setText("\u67e5\u770b\u7b14\u8bb0");
+                searchNote.addActionListener(e -> searchNoteActionPerformed(e));
                 note.add(searchNote);
 
                 //---- addNote ----
@@ -95,29 +109,15 @@ public class UserView extends JFrame {
         }
         setJMenuBar(menuBar);
 
-        //---- noteOption ----
-        noteOption.setModel(new DefaultComboBoxModel<>(new String[] {
-            "\u65b0\u589e\u7b14\u8bb0",
-            "\u67e5\u770b\u7b14\u8bb0"
-        }));
-        noteOption.setFont(new Font("\u5fae\u8f6f\u96c5\u9ed1", Font.PLAIN, 18));
-        noteOption.addActionListener(e -> optionActionPerformed(e,user));
-
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup()
-                .addGroup(contentPaneLayout.createSequentialGroup()
-                    .addGap(195, 195, 195)
-                    .addComponent(noteOption, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(654, Short.MAX_VALUE))
+                .addGap(0, 948, Short.MAX_VALUE)
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
-                .addGroup(contentPaneLayout.createSequentialGroup()
-                    .addGap(215, 215, 215)
-                    .addComponent(noteOption, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(341, Short.MAX_VALUE))
+                .addGap(0, 589, Short.MAX_VALUE)
         );
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
@@ -129,6 +129,5 @@ public class UserView extends JFrame {
     private JMenuItem searchNote;
     private JMenuItem addNote;
     private JMenuItem deleteNote;
-    private JComboBox<String> noteOption;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

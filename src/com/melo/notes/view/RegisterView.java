@@ -45,7 +45,7 @@ public class RegisterView extends JFrame {
             //÷ÿ–¬ ‰»Î
             return;
         }
-        if(firstPassword.equals(secondPassword)){
+        if(firstPassword.equals(secondPassword)&&firstPassword!=null){
             User user = new User(userName, getDigest(secondPassword));
             if(new LoginDaoImpl().register(user)==true){
                 new UserDaoImpl().insert(user);
