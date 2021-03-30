@@ -10,7 +10,7 @@ public class Group {
 
     private Integer id;
     private String groupName;
-    private String author;
+    private String authorName;
     private String locatedFolder;
 
     public Group() {
@@ -19,7 +19,7 @@ public class Group {
     public Group(Integer id, String groupName, String author, String locatedFolder) {
         this.id = id;
         this.groupName = groupName;
-        this.author = author;
+        this.authorName = author;
         this.locatedFolder = locatedFolder;
     }
 
@@ -39,12 +39,12 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getAuthorName() {
+        return authorName;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public String getLocatedFolder() {
@@ -60,7 +60,7 @@ public class Group {
         return "Group{" +
                 "id=" + id +
                 ", groupName='" + groupName + '\'' +
-                ", author='" + author + '\'' +
+                ", author='" + authorName + '\'' +
                 ", locatedFolder='" + locatedFolder + '\'' +
                 '}';
     }

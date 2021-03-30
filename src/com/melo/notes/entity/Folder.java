@@ -10,29 +10,26 @@ public class Folder {
 
     private Integer id;
     private String folderName;
-    private String author;
+    private String authorName;
     private String access;
 
     public Folder() {
     }
 
-    public Folder(Integer id, String folderName, String author, String access) {
+    public Folder(Integer id, String folderName, String authorName, String access) {
         this.id = id;
         this.folderName = folderName;
-        this.author = author;
+        this.authorName = authorName;
         this.access = access;
     }
 
-    public Integer getId() {
-        return id;
-    }
 
     public String getFolderName() {
         return folderName;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getAuthorName() {
+        return authorName;
     }
 
     public String getAccess() {
@@ -47,8 +44,8 @@ public class Folder {
         this.folderName = folderName;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public void setAccess(String access) {
@@ -60,7 +57,7 @@ public class Folder {
         return "Folder{" +
                 "id=" + id +
                 ", folderName='" + folderName + '\'' +
-                ", author='" + author + '\'' +
+                ", author='" + authorName + '\'' +
                 ", access='" + access + '\'' +
                 '}';
     }

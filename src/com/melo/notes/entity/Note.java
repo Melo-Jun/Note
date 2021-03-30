@@ -15,24 +15,24 @@ public class Note {
     private String authorName;
     private String text;
     private String access;
+    private Date creatTime;
+    private Date updateTime;
     private Integer likeCount;
     private String locatedGroup;
 
     public Note() {
     }
 
-    public Note(Integer id, String title, String authorName, String text, String access, Integer likeCount, String locatedGroup) {
+    public Note(Integer id, String title, String authorName, String text, String access, Date creatTime, Date updateTime, Integer likeCount, String locatedGroup) {
         this.id = id;
         this.title = title;
         this.authorName = authorName;
         this.text = text;
         this.access = access;
+        this.creatTime = creatTime;
+        this.updateTime = updateTime;
         this.likeCount = likeCount;
         this.locatedGroup = locatedGroup;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public String getTitle() {
@@ -67,7 +67,7 @@ public class Note {
         this.title = title;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthorName(String author) {
         this.authorName = author;
     }
 
