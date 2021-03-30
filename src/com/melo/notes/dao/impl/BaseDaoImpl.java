@@ -62,8 +62,6 @@ public class BaseDaoImpl implements BaseDao {
          */
         LinkedList<Method> methods = getMethods(obj);
         LinkedList<Field> fields = getFields(obj);
-        //剔除掉id(insert时id会默认自增)
-        fields.pop();
         for (Field field : fields) {
             /**
              * 取出每个属性的值

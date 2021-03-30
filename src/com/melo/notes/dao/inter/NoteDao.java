@@ -12,19 +12,6 @@ import java.sql.ResultSet;
  * @date 2021-3-28 20:38
  */
 public interface NoteDao {
-    /**
-     * 根据用户名列出知识库界面
-     * @param user 用户
-     * @return ResultSet 结果集
-     */
-    ResultSet showNoteFolder(User user);
-
-    /**
-     * 根据知识库列出分组界面
-     * @param folderName 知识库名称
-     * @return ResultSet 结果集
-     */
-    ResultSet showNoteGroup(String folderName);
 
     /**
      * 根据用户名列出笔记标题界面
