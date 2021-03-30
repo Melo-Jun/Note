@@ -1,14 +1,15 @@
 package com.melo.notes.entity;
 
+import com.melo.notes.entity.abs.BaseEntity;
+
 /**
  * @author Jun
  * @program Note
  * @description 笔记分组实体类
  * @date 2021-3-29 21:34
  */
-public class Group {
+public class Group extends BaseEntity {
 
-    private Integer id;
     private String groupName;
     private String authorName;
     private String locatedFolder;
@@ -16,20 +17,12 @@ public class Group {
     public Group() {
     }
 
-    public Group(Integer id, String groupName, String author, String locatedFolder) {
-        this.id = id;
+    public Group(String groupName, String authorName, String locatedFolder) {
         this.groupName = groupName;
-        this.authorName = author;
+        this.authorName = authorName;
         this.locatedFolder = locatedFolder;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getGroupName() {
         return groupName;
@@ -55,13 +48,4 @@ public class Group {
         this.locatedFolder = locatedFolder;
     }
 
-    @Override
-    public String toString() {
-        return "Group{" +
-                "id=" + id +
-                ", groupName='" + groupName + '\'' +
-                ", author='" + authorName + '\'' +
-                ", locatedFolder='" + locatedFolder + '\'' +
-                '}';
-    }
 }

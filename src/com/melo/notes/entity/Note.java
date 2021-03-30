@@ -1,5 +1,7 @@
 package com.melo.notes.entity;
 
+import com.melo.notes.entity.abs.BaseEntity;
+
 import java.util.Date;
 
 /**
@@ -8,29 +10,23 @@ import java.util.Date;
  * @description 笔记实体类
  * @date 2021-3-27 21:07
  */
-public class Note {
+public class Note extends BaseEntity {
 
-    private Integer id;
     private String title;
     private String authorName;
     private String text;
     private String access;
-    private Date creatTime;
-    private Date updateTime;
     private Integer likeCount;
     private String locatedGroup;
 
     public Note() {
     }
 
-    public Note(Integer id, String title, String authorName, String text, String access, Date creatTime, Date updateTime, Integer likeCount, String locatedGroup) {
-        this.id = id;
+    public Note(String title, String authorName, String text, String access, Integer likeCount, String locatedGroup) {
         this.title = title;
         this.authorName = authorName;
         this.text = text;
         this.access = access;
-        this.creatTime = creatTime;
-        this.updateTime = updateTime;
         this.likeCount = likeCount;
         this.locatedGroup = locatedGroup;
     }
@@ -59,10 +55,6 @@ public class Note {
         return locatedGroup;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -87,16 +79,4 @@ public class Note {
         this.locatedGroup = locatedGroup;
     }
 
-    @Override
-    public String toString() {
-        return "Note{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + authorName + '\'' +
-                ", text='" + text + '\'' +
-                ", access='" + access + '\'' +
-                ", likeCount=" + likeCount +
-                ", locatedGroup='" + locatedGroup + '\'' +
-                '}';
-    }
 }
