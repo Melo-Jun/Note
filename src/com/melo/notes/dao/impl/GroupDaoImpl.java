@@ -7,8 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.melo.notes.util.JdbcUtil.freeConnection;
-import static com.melo.notes.util.JdbcUtil.getConnection;
+import static com.melo.notes.util.JdbcUtils.freeConnection;
+import static com.melo.notes.util.JdbcUtils.getConnection;
 
 /**
  * @author Jun

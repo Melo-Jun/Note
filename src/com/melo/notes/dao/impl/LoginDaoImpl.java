@@ -3,11 +3,10 @@ package com.melo.notes.dao.impl;
 
 import com.melo.notes.dao.inter.LoginDao;
 import com.melo.notes.entity.User;
-import com.melo.notes.dao.impl.BaseDaoImpl;
 
 import java.sql.*;
 
-import static com.melo.notes.util.JdbcUtil.*;
+import static com.melo.notes.util.JdbcUtils.*;
 import static com.melo.notes.util.Md5Utils.getDigest;
 
 

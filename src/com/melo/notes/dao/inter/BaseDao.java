@@ -12,12 +12,27 @@ import java.util.LinkedList;
  * @date 2021-3-28 20:35
  */
 public interface BaseDao {
+
     /**
-     * 向表中增加一个对象
-     * @param obj 对象名
-     * @return 是否增加成功
+     * 封装数据库更新操作
+     * @param obj
+     * @param sql
+     * @return int 影响的行数
      */
-    boolean insert(Object obj);
+     int executeUpdate(Object obj, String sql);
+
+
+    /**
+     * 增加一条记录进入数据库
+     *
+     * @param obj 要插入的对象
+     * @return int 更新的数据库记录数
+     * @name insert
+     * @notice none
+     * @author <a href="mailto:kobe524348@gmail.com">黄钰朝</a>
+     * @date 2019/4/9
+     */
+    int insert(Object obj);
 
     /**
      * 将对象映射成属性名和属性值

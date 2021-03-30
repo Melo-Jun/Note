@@ -10,9 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
-import static com.melo.notes.util.JdbcUtil.getConnection;
+import static com.melo.notes.util.JdbcUtils.*;
 import static com.melo.notes.util.ReflectUtils.getFields;
 import static com.melo.notes.util.ReflectUtils.getMethods;
+import static com.melo.notes.util.StringUtils.toColumnName;
+
 
 /**
  * @author Jun
@@ -21,29 +23,61 @@ import static com.melo.notes.util.ReflectUtils.getMethods;
  * @date 2021-3-28 20:36
  */
 public class BaseDaoImpl implements BaseDao {
-    //private static BaseDaoImpl INSTANCE;
 
-    public static BaseDaoImpl getInstance() {
-        return new BaseDaoImpl();
-    }
 
     /**
-     * 增加一个对象
-     * @param obj 对象名
-     * @return
+     * 封装数据库更新操作
+     * @param obj
+     * @param sql
+     * @return int 影响的行数
      */
     @Override
-    public boolean insert(Object obj) {
-        Connection conn= getConnection();
+    public int executeUpdate(Object obj, String sql) {
+        //影响的行数
+        int count=0;
+        Connection conn=getConnection();
         PreparedStatement ps=null;
-        String sql="insert into user values (id,?,?)";
         try {
             ps=conn.prepareStatement(sql);
+            setParams(ps,obj);
+            count = ps.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }finally {
+            freeConnection(conn);
+            close(ps,null);
         }
-        return false;
+        return count;
     }
+
+
+    /**
+     * 增加一条记录进入数据库
+     * @param obj 对象名
+     * @return int 影响的数据库行数
+     */
+    @Override
+    public int insert(Object obj) {
+        LinkedList<Object> fieldNames = new LinkedList<>();
+        LinkedList<Object> fieldValues = new LinkedList<>();
+        fieldMapper(obj,fieldNames,fieldValues);
+        /**
+             * 根据属性名生成预编译sql插入语句
+             */
+            StringBuilder sql = new StringBuilder("insert into " + getTableName(obj) + " (");
+            for(Object name: fieldNames){
+                System.out.println(name.toString());
+            sql.append(name.toString()+",");
+        }
+        //将最后一个","改为")"，省去判断是否为最后一个")"
+        sql.setCharAt(sql.length() - 1, ')');
+        sql.append(" values (");
+        for (int i = 0; i < fieldNames.size(); i++) {
+            sql.append("?,");
+        }
+        sql.setCharAt(sql.length() - 1, ')');
+        return executeUpdate(obj,sql.toString());
+        }
 
     /**
      * 将对象映射成属性名和属性值
@@ -56,7 +90,6 @@ public class BaseDaoImpl implements BaseDao {
         if (obj == null) {
             return;
         }
-
         /**
          * 取出包括父类在内的所有方法和属性
          */
@@ -64,7 +97,7 @@ public class BaseDaoImpl implements BaseDao {
         LinkedList<Field> fields = getFields(obj);
         for (Field field : fields) {
             /**
-             * 取出每个属性的值
+             * 获取get方法并invoke执行取得属性值
              */
             for (Method method : methods) {
                 if (method.getName().startsWith("get") && method.getName().substring(3).equalsIgnoreCase(field.getName())) {
@@ -83,7 +116,7 @@ public class BaseDaoImpl implements BaseDao {
                         /**
                          * 取出该属性的名称，映射成数据库字段名
                          */
-                        // fieldNames.add(field2SqlField(field.getName()));
+                         fieldNames.add(toColumnName(field.getName()));
                     }
                 }
             }

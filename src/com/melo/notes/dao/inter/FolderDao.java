@@ -13,9 +13,16 @@ import java.sql.ResultSet;
 public interface FolderDao {
 
     /**
-     * 根据用户名列出知识库界面
+     * 根据用户名获取知识库名称
      * @param user 用户
      * @return ResultSet 结果集
      */
     ResultSet showNoteFolder(User user);
+
+    /**
+     * 根据用户名查找知识库
+     * @param user
+     * @return
+     */
+    ResultSet searchNoteFolder(User user);
 }

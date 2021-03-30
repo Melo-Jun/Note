@@ -1,12 +1,6 @@
 package com.melo.notes.dao.inter;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import static com.melo.notes.util.JdbcUtil.freeConnection;
-import static com.melo.notes.util.JdbcUtil.getConnection;
 
 /**
  * @author Jun

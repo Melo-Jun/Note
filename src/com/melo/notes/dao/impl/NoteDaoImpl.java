@@ -2,15 +2,13 @@ package com.melo.notes.dao.impl;
 
 import com.melo.notes.dao.inter.NoteDao;
 import com.melo.notes.entity.Note;
-import com.melo.notes.entity.User;
-import com.melo.notes.dao.impl.BaseDaoImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.melo.notes.util.JdbcUtil.*;
+import static com.melo.notes.util.JdbcUtils.*;
 
 /**
  * @author Jun
@@ -25,7 +23,7 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
     }
 
     /**
-     * 根据用户名列出笔记标题界面
+     * 根据笔记分组列出笔记标题
      * @param groupName 分组名称
      * @return ResultSet 结果集
      */
@@ -84,7 +82,7 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
         try {
             String sql = "insert into note values (id,?,?,?,?,create_time,update_time,?,?)";
             ps = conn.prepareStatement(sql);
-            setParam(ps,note);
+            setParams(ps,note);
             ps.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

@@ -3,12 +3,12 @@ package com.melo.notes.dao.impl;
 import com.melo.notes.dao.inter.UserDao;
 import com.melo.notes.entity.User;
 import com.melo.notes.exception.DaoException;
-import com.melo.notes.dao.impl.BaseDaoImpl;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static com.melo.notes.util.JdbcUtil.*;
+import static com.melo.notes.util.JdbcUtils.*;
 
 /**
  * @author Jun
@@ -17,6 +17,10 @@ import static com.melo.notes.util.JdbcUtil.*;
  * @date 2021-3-28 20:45
  */
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
+
+    public boolean add(User user) {
+        return super.insert(user) == 1;
+    }
 
     /**
      * 增加用户
@@ -30,7 +34,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         String sql="insert into user values (id,?,?,photo)";
         try{
             ps=conn.prepareStatement(sql);
-            setParam(ps,user);
+            setParams(ps,user);
             int count = ps.executeUpdate();
             if(count==1){
                 return true;
