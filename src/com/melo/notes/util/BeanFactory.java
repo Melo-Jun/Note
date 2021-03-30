@@ -29,6 +29,11 @@ import java.util.Properties;
             UserDao("UserDao"), NoteDao("NoteDao"),LoginDao("LoginDao");
 
             private String name;
+
+            /**
+             * 构造方法
+             * @param name
+             */
             DaoType(String name) {
                 this.name=name;
             }

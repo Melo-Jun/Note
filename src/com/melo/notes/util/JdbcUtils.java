@@ -15,10 +15,11 @@ import java.util.Properties;
 /**
  * @author Jun
  */
-public class JdbcUtil {
+public class JdbcUtils {
 
+    private static BaseDaoImpl baseDao=new BaseDaoImpl();
 
-    private final static String PROP_PATH = "jdbc.properties";
+    private final static String PROP_PATH = "db.properties";
     /**
      * 释放资源
      * @param ps
@@ -70,7 +71,7 @@ public class JdbcUtil {
      * 获取空闲连接数
      * @return
      */
-    public static int getfreeCount() {
+    public static int getFreeCount() {
         return dataSrc.getfreeCount();
     }
 
@@ -88,20 +89,19 @@ public class JdbcUtil {
      * @param ps
      * @param obj 传入的对象
      */
-    public static void setParam(PreparedStatement ps,Object obj){
+    public static void setParams(PreparedStatement ps, Object obj){
 
         LinkedList fieldNames = new LinkedList<>();
         LinkedList fieldValues = new LinkedList<>();
-        BaseDaoImpl.getInstance().fieldMapper(obj,fieldNames,fieldValues);
+        baseDao.fieldMapper(obj,fieldNames,fieldValues);
         Object[] params = fieldValues.toArray();
-        for(int i=1;i<=params.length;i++){
+        for(int i=0;i<params.length;i++){
                 try {
-                    ps.setObject(i, params[i-1]);
+                    ps.setObject(i+1, params[i]);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
-
     }
 
     /**
@@ -123,7 +123,7 @@ public class JdbcUtil {
     /**
      * 根据类名获取对应的表名
      * @param clazz
-     * @return
+     * @return java.lang.String
      */
     public static String getTableName(Class clazz){
         try {
@@ -134,6 +134,16 @@ public class JdbcUtil {
             e.printStackTrace();
             throw new DaoException("无法加载配置文件:"+PROP_PATH, e);
         }
+    }
+
+    /**
+     * 负责返回对象对应的表名
+     *
+     * @param obj 查询表名的对象
+     * @return java.lang.String
+     */
+    public static String getTableName(Object obj) {
+        return obj == null ? null : getTableName(obj.getClass().getSimpleName());
     }
 }
 
