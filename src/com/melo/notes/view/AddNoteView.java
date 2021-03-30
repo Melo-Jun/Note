@@ -4,12 +4,15 @@
 
 package com.melo.notes.view;
 
+import javax.swing.event.*;
 import com.melo.notes.dao.impl.NoteDaoImpl;
 import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
+import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.ResultSet;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 
@@ -17,21 +20,50 @@ import javax.swing.GroupLayout;
  * @author Jun
  */
 public class AddNoteView extends JFrame {
+
+    /**
+     * 创建相关操作类对象
+     */
+    NoteDaoImpl noteDao = (NoteDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.NoteDao);
+
     public AddNoteView(User user) {
         initComponents(user);
         setSize(1300, 800);
         setLocation(330,120);
-        groupSelect.addItem("瀛︿範");
     }
 
+    /**
+     * 提交按钮事件
+     * @param e
+     * @param user 执行新增笔记操作的用户
+     */
     private void summitActionPerformed(ActionEvent e,User user) {
         String title = titleField.getText();
         String text = textArea.getText();
         String access = (String) this.accessSelect.getSelectedItem();
-        Note note = new Note(null, title, user.getUserName(), text, access, 0, "0");
-        new NoteDaoImpl().addNote(note);
+        Note note = new Note( title, user.getUserName(), text, access ,0,TreeView.locatedGroup );
+        noteDao.addNote(note);
     }
 
+
+    /**
+     * 设置笔记分组
+     * @param e
+     */
+    private void selectGroupActionPerformed(ActionEvent e) {
+        new TreeView();
+    }
+
+
+
+
+
+
+
+    /**
+     * 初始化页面
+     * @param user
+     */
     private void initComponents(User user) {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         titleField = new JTextField();
@@ -43,10 +75,12 @@ public class AddNoteView extends JFrame {
         access = new JLabel();
         group = new JLabel();
         groupSelect = new JComboBox<>();
+        selectGroup = new JButton();
 
         //======== this ========
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
         setMinimumSize(new Dimension(950, 650));
+        setResizable(false);
         Container contentPane = getContentPane();
 
         //---- title ----
@@ -79,6 +113,10 @@ public class AddNoteView extends JFrame {
             "null"
         }));
 
+        //---- selectGroup ----
+        selectGroup.setText("\u8bbe\u7f6e\u5206\u7ec4");
+        selectGroup.addActionListener(e -> selectGroupActionPerformed(e));
+
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
@@ -86,23 +124,26 @@ public class AddNoteView extends JFrame {
                 .addGroup(contentPaneLayout.createSequentialGroup()
                     .addGroup(contentPaneLayout.createParallelGroup()
                         .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addGap(57, 57, 57)
-                            .addComponent(access, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(accessSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addGap(107, 107, 107)
-                            .addComponent(group, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(groupSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addGap(44, 44, 44)
-                            .addComponent(summit))
-                        .addGroup(contentPaneLayout.createSequentialGroup()
                             .addGap(15, 15, 15)
                             .addComponent(title)
                             .addGap(18, 18, 18)
                             .addGroup(contentPaneLayout.createParallelGroup()
-                                .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 694, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(titleField, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(titleField, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 694, GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addGap(60, 60, 60)
+                            .addComponent(access, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(accessSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                            .addGap(107, 107, 107)
+                            .addGroup(contentPaneLayout.createParallelGroup()
+                                .addComponent(selectGroup)
+                                .addGroup(contentPaneLayout.createSequentialGroup()
+                                    .addComponent(group, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(groupSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                    .addGap(38, 38, 38)
+                                    .addComponent(summit)))))
                     .addContainerGap(55, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
@@ -113,15 +154,17 @@ public class AddNoteView extends JFrame {
                         .addComponent(title, GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
                         .addComponent(titleField, GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 508, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 443, GroupLayout.PREFERRED_SIZE)
+                    .addGap(25, 25, 25)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(access, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(summit)
                         .addComponent(groupSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addComponent(group)
-                        .addComponent(accessSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                    .addGap(359, 359, 359))
+                        .addComponent(summit)
+                        .addComponent(accessSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(access, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGap(18, 18, 18)
+                    .addComponent(selectGroup)
+                    .addContainerGap(419, Short.MAX_VALUE))
         );
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
@@ -136,5 +179,6 @@ public class AddNoteView extends JFrame {
     private JLabel access;
     private JLabel group;
     private JComboBox<String> groupSelect;
+    private JButton selectGroup;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

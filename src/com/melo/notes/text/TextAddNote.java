@@ -6,13 +6,13 @@ import com.melo.notes.view.AddNoteView;
 /**
  * @author Jun
  * @program Note
- * @description 娴嬭瘯鏂板绗旇
+ * @description 测试新增笔记
  * @date 2021-3-27 16:49
  */
 public class TextAddNote {
 
     public static void main(String[] args) {
-        User user = new User("楦ｄ汉", "1111");
+        User user = new User("鸣人", "1111");
         new AddNoteView(user).setVisible(true);
     }
 }
