@@ -179,7 +179,6 @@ public class FloderView extends JFrame {
             }
             if(e.getSource()==update){
                 String updateName = JOptionPane.showInputDialog("«Î ‰»Î–ﬁ∏ƒ√˚≥∆");
-
             }
         }
 
