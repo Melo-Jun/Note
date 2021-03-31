@@ -74,21 +74,10 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
     /**
      * 新增笔记
      * @param note 笔记实体类
+     * @return
      */
     @Override
-    public void addNote(Note note){
-        Connection conn = getConnection();
-        PreparedStatement ps = null;
-        try {
-            String sql = "insert into note values (id,?,?,?,?,create_time,update_time,?,?)";
-            ps = conn.prepareStatement(sql);
-            setParams(ps,note);
-            ps.execute();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
-            freeConnection(conn);
-            close(ps, null);
-        }
+    public boolean addNote(Note note){
+        return super.insert(note)==1;
     }
 }

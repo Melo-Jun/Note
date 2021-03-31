@@ -10,10 +10,12 @@ import java.sql.ResultSet;
  */
 public interface GroupDao {
     /**
-     * 根据知识库列出分组界面
-     * @param folderName 知识库名称
+     * 根据名称列出分组界面
+     * @param folderName 知识库名称/作者名称
      * @return ResultSet 结果集
      */
      ResultSet showNoteGroup(String folderName);
+
+
 
 }

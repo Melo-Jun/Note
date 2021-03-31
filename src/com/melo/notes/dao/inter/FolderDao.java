@@ -19,10 +19,11 @@ public interface FolderDao {
      */
     ResultSet showNoteFolder(User user);
 
+
     /**
-     * 根据用户名查找知识库
-     * @param user
-     * @return
+     * 根据知识库名删除知识库
+     * @param folderName 知识库名称
+     * @return int 影响的行数
      */
-    ResultSet searchNoteFolder(User user);
+     int deleteFolder(String folderName);
 }

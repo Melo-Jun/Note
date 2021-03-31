@@ -1,7 +1,6 @@
 package com.melo.notes.dao.inter;
 
 import com.melo.notes.entity.Note;
-import com.melo.notes.entity.User;
 
 import java.sql.ResultSet;
 
@@ -29,6 +28,7 @@ public interface NoteDao {
     /**
      * 新增笔记
      * @param note 笔记实体类
+     * @return
      */
-     void addNote(Note note);
+     boolean addNote(Note note);
 }
