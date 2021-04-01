@@ -4,14 +4,11 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.dao.impl.FolderDaoImpl;
-import com.melo.notes.dao.impl.GroupDaoImpl;
 import com.melo.notes.entity.User;
+import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.ResultSet;
@@ -23,20 +20,26 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeSelectionModel;
 
 import static com.melo.notes.util.JdbcUtils.close;
 
 /**
  * @author 1
  */
-public class FloderView extends JFrame {
-
+public class FolderView extends JFrame {
+    /**
+     * 笔记作者
+     */
     private static  User author=null;
-    //选中的名称
+    /**
+     * 选中的名称
+     */
     public static String selectedName ="";
-    //选中的对象(数据库)
-    public static String selectedObject="";
+    /**
+     * 选中的类
+     */
+    public static String selectedClassName ="";
+
     private Listener l = new Listener();
     private JButton delete = new JButton("删除");
     private JButton submit = new JButton("确定");
@@ -46,14 +49,13 @@ public class FloderView extends JFrame {
      * 创建相关操作对象
      * @return
      */
-    FolderDaoImpl folderDao = (FolderDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.FolderDao);
-    GroupDaoImpl groupDao = (GroupDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.GroupDao);
+    FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
 
     public String getLocatedGroup() {
         return selectedName;
     }
 
-    public FloderView(User user) {
+    public FolderView(User user) {
 
             author=user;
             JFrame jf = new JFrame("测试窗口");
@@ -91,14 +93,20 @@ public class FloderView extends JFrame {
         /**
          * 根据知识库名生成相应笔记分组
          */
-        ResultSet FolderRs = folderDao.showNoteFolder(user);
+        ResultSet FolderRs = folderGroupService.showNoteFolder(user);
         ResultSet GroupRs=null;
             try {
+                /**
+                 * 先生成知识库
+                 */
                 while (FolderRs.next()) {
                     Object folderName = FolderRs.getObject("folder_name");
                     DefaultMutableTreeNode folder = new DefaultMutableTreeNode(folderName);
                     rootNode.add(folder);
-                    GroupRs = groupDao.showNoteGroup(folderName.toString());
+                    /**
+                     * 再生成相应笔记分组
+                     */
+                    GroupRs = folderGroupService.showNoteGroup(folderName.toString());
                     while(GroupRs.next()){
                         Object groupName = GroupRs.getObject("group_name");
                         DefaultMutableTreeNode group = new DefaultMutableTreeNode(groupName);
@@ -123,18 +131,17 @@ public class FloderView extends JFrame {
 
 
         /**
-         * 设置节点选中监听器(将选中的节点名称保存起来)
+         * 设置节点选中监听器(将选中的节点名称和对象类保存起来)
          *
           */
         tree.addTreeSelectionListener(new TreeSelectionListener() {
                 @Override
                 public void valueChanged(TreeSelectionEvent e) {
                     selectedName = e.getPath().getLastPathComponent().toString();
-                    System.out.println(e.getPath().getPathCount());
-                    System.out.println(selectedName);
+                    selectedClassName = folderGroupService.judgeClass(e.getPath().getPathCount());
+                    System.out.println(selectedClassName);
                 }
             });
-
 
             // 节点增删改监听器
             tree.getModel().addTreeModelListener(new TreeModelListener() {
@@ -156,7 +163,6 @@ public class FloderView extends JFrame {
                 }
             });
 
-
             // 创建滚动面板，包裹树（因为树节点展开后可能需要很大的空间来显示，所以需要用一个滚动面板来包裹）
             JScrollPane scrollPane = new JScrollPane(tree);
             scrollPane.setBounds(50,50,500,450);
@@ -170,13 +176,25 @@ public class FloderView extends JFrame {
             jf.setVisible(true);
         }
 
+    /**
+     * 为各操作添加监听器
+      */
     public class Listener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
+            /**
+             * 删除操作
+             */
             if(e.getSource()==delete){
-                folderDao.deleteFolder(selectedName);
-                new FloderView(author);
+                if(folderGroupService.delete(selectedName, selectedClassName)!=0) {
+                    new FolderView(author);
+                }else {
+                    JOptionPane.showMessageDialog(null,"请确认已正确选择节点");
+                }
             }
+            /**
+             * 修改操作
+             */
             if(e.getSource()==update){
                 String updateName = JOptionPane.showInputDialog("请输入修改名称");
             }

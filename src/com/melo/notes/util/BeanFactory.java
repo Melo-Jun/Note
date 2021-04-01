@@ -21,7 +21,6 @@ import java.util.Properties;
         private BeanFactory() {
 
         }
-
         public enum DaoType {
             /**
              * Dao实现类
@@ -30,7 +29,6 @@ import java.util.Properties;
             FolderDao("FolderDao"),GroupDao("GroupDao");
 
             private String name;
-
             /**
              * 构造方法
              * @param name
@@ -39,6 +37,21 @@ import java.util.Properties;
                 this.name=name;
             }
         }
+
+    public enum ServiceType {
+        /**
+         * Service实现类
+         */
+        FolderGroupService("FolderGroupService"),LoginViewService("LoginViewService");
+        private String name;
+        /**
+         * 构造方法
+         * @param name
+         */
+        ServiceType(String name) {
+            this.name=name;
+        }
+    }
 
         public static Object getBean(Enum beanType) {
             String className;
