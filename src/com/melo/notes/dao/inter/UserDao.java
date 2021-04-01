@@ -14,5 +14,12 @@ public interface UserDao {
      * @param user
      * @return boolean 是否增加成功
      */
-     boolean insert(User user);
+     boolean add(User user);
+
+    /**
+     * 设置Id
+     * @param user
+     * @return boolean 是否增加成功
+     */
+     boolean setId(User user);
 }

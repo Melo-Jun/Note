@@ -20,7 +20,7 @@ import static com.melo.notes.util.JdbcUtils.*;
 public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
 
     /**
-     * 根据用户名获取知识库名称
+     * 根据用户Id获取知识库名称
      * @param user 用户
      * @return ResultSet 结果集
      */
@@ -30,9 +30,9 @@ public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
         PreparedStatement ps=null;
         ResultSet rs=null;
         try {
-            String sql="select folder_name from located_folder where author_name=?";
+            String sql="select * from located_folder where author_id=?";
             ps=conn.prepareStatement(sql);
-            ps.setString(1, user.getUserName() );
+            ps.setString(1, user.getId() );
             rs=ps.executeQuery();
             return rs;
         } catch (SQLException throwables) {

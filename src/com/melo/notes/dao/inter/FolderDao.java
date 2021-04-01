@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 public interface FolderDao {
 
     /**
-     * 根据用户名获取知识库名称
+     * 根据用户Id获取知识库名称
      * @param user 用户
      * @return ResultSet 结果集
      */

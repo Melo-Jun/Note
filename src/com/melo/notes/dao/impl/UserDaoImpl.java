@@ -6,6 +6,7 @@ import com.melo.notes.exception.DaoException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static com.melo.notes.util.JdbcUtils.*;
@@ -18,33 +19,43 @@ import static com.melo.notes.util.JdbcUtils.*;
  */
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
-    public boolean add(User user) {
-        return super.insert(user) == 1;
-    }
-
     /**
      * 增加用户
      * @param user
      * @return boolean 是否增加成功
      */
     @Override
-    public boolean insert(User user){
-        Connection conn = getConnection();
+    public boolean add(User user) {
+        return super.insert(user) == 1;
+    }
+
+    /**
+     * 设置Id
+     * @param user
+     * @return boolean 是否增加成功
+     */
+    @Override
+    public boolean setId(User user) {
+        Connection conn= getConnection();
         PreparedStatement ps=null;
-        String sql="insert into user values (id,?,?,photo)";
-        try{
+        ResultSet rs=null;
+        try {
+            String sql="select id from user where user_name=?";
             ps=conn.prepareStatement(sql);
-            setParams(ps,user);
-            int count = ps.executeUpdate();
-            if(count==1){
-                return true;
-            }
-        } catch (SQLException | DaoException throwables) {
+            ps.setString(1, user.getUserName());
+            rs=ps.executeQuery();
+            rs.next();
+            String id = rs.getString("id");
+            user.setId(id);
+            return true;
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
             freeConnection(conn);
-            close(ps,null);
+            close(ps,rs);
         }
         return false;
     }
+
+
 }

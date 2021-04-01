@@ -22,4 +22,11 @@ public interface GroupDao {
      * @return int 影响的行数
      */
     int deleteGroup(String groupName);
+
+    /**
+     * 根据名称获取id
+     * @param name 名称
+     * @return String id
+     */
+    String getId(String name);
 }

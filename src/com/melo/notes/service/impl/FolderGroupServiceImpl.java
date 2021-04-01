@@ -47,7 +47,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     }
 
     /**
-     * 根据用户名获取知识库名称
+     * 根据用户Id获取知识库名称
      * @param user 用户
      * @return ResultSet 结果集
      */
@@ -58,12 +58,12 @@ public class FolderGroupServiceImpl implements FolderGroupService {
 
     /**
      * 根据知识库列出分组界面
-     * @param folderName 知识库名称
+     * @param folderId 知识库Id
      * @return ResultSet 结果集
      */
     @Override
-    public ResultSet showNoteGroup(String folderName) {
-        return groupDao.showNoteGroup(folderName);
+    public ResultSet showNoteGroup(String folderId) {
+        return groupDao.showNoteGroup(folderId);
     }
 
     /**
@@ -89,5 +89,20 @@ public class FolderGroupServiceImpl implements FolderGroupService {
         }
         return 0;
     }
+
+    /**
+     * 选择分组时判断是否为分组
+     * @param selectedClassName 选中的对应类
+     * @return
+     */
+    @Override
+    public boolean isGroup(String selectedClassName) {
+        if(selectedClassName.equals(GROUP)){
+            return true;
+        }
+        return false;
+    }
+
+
 }
 

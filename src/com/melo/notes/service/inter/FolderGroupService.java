@@ -28,10 +28,10 @@ public interface FolderGroupService {
 
     /**
      * 根据知识库列出分组界面
-     * @param folderName 知识库名称
+     * @param folderId 知识库Id
      * @return ResultSet 结果集
      */
-     ResultSet showNoteGroup(String folderName);
+     ResultSet showNoteGroup(String folderId);
 
     /**
      * 根据传入类名删除对应类对象
@@ -41,4 +41,11 @@ public interface FolderGroupService {
      * @return int 影响的行数
      */
      int delete(String selectedName,String selectedClassName);
+
+    /**
+     * 选择分组时判断是否为分组
+     * @param selectedClassName 选中的对应类
+     * @return
+     */
+     boolean isGroup(String selectedClassName);
 }
