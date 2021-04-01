@@ -48,4 +48,11 @@ public interface FolderGroupService {
      * @return
      */
      boolean isGroup(String selectedClassName);
+
+    /**
+     * 根据名称获取id
+     * @param name 名称
+     * @return String id
+     */
+    String getId(String name);
 }

@@ -103,6 +103,16 @@ public class FolderGroupServiceImpl implements FolderGroupService {
         return false;
     }
 
+    /**
+     * 根据名称获取id
+     * @param name 名称
+     * @return String id
+     */
+    @Override
+    public String getId(String name) {
+        return groupDao.getId(name);
+    }
+
 
 }
 

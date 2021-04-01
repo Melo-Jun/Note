@@ -27,10 +27,13 @@ import static com.melo.notes.util.JdbcUtils.close;
  * @author 1
  */
 public class FolderView extends JFrame {
+
+
     /**
-     * 笔记作者
+     * 用户
      */
-    private static  User author=null;
+    User user=LoginView.USER;
+
     /**
      * 选中的名称
      */
@@ -57,7 +60,6 @@ public class FolderView extends JFrame {
 
     public FolderView(User user) {
 
-            author=user;
             JFrame jf = new JFrame("测试窗口");
             jf.setSize(1300, 800);
             jf.setLocation(330, 120);
@@ -101,14 +103,18 @@ public class FolderView extends JFrame {
                  */
                 while (FolderRs.next()) {
                     Object folderName = FolderRs.getObject("folder_name");
+                    Object id = FolderRs.getObject("id");
+                    System.out.println(id);
                     DefaultMutableTreeNode folder = new DefaultMutableTreeNode(folderName);
                     rootNode.add(folder);
                     /**
                      * 再生成相应笔记分组
                      */
-                    GroupRs = folderGroupService.showNoteGroup(folderName.toString());
+                    GroupRs = folderGroupService.showNoteGroup(id.toString());
+                    System.out.println(GroupRs);
                     while(GroupRs.next()){
                         Object groupName = GroupRs.getObject("group_name");
+                        System.out.println(groupName.toString());
                         DefaultMutableTreeNode group = new DefaultMutableTreeNode(groupName);
                         folder.add(group);
                     }
@@ -187,7 +193,7 @@ public class FolderView extends JFrame {
              */
             if(e.getSource()==delete){
                 if(folderGroupService.delete(selectedName, selectedClassName)!=0) {
-                    new FolderView(author);
+                    new FolderView(LoginView.USER);
                 }else {
                     JOptionPane.showMessageDialog(null,"请确认已正确选择节点");
                 }

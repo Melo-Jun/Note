@@ -32,9 +32,10 @@ public class TreeView extends JFrame {
      */
     User user=LoginView.USER;
     /**
-     * 选中的名称
+     * 选中的名称以及相应id
      */
     public static String selectedName ="";
+    public static String selectedId ="";
     /**
      * 选中的类
      */
