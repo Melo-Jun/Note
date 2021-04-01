@@ -27,12 +27,16 @@ public interface BaseDao {
      *
      * @param obj 要插入的对象
      * @return int 更新的数据库记录数
-     * @name insert
-     * @notice none
-     * @author <a href="mailto:kobe524348@gmail.com">黄钰朝</a>
-     * @date 2019/4/9
      */
     int insert(Object obj);
+
+    /**
+     * 删除记录
+     *
+     * @param obj 与删除有关的对象
+     * @return int 更新的数据库记录数
+     */
+    int delete(Object obj);
 
     /**
      * 将对象映射成属性名和属性值

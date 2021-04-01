@@ -1,14 +1,15 @@
 package com.melo.notes.entity;
 
+import com.melo.notes.entity.abs.BaseEntity;
+
 /**
  * @author Jun
  * @program Note
  * @description 用户实体类
  * @date 2021-3-27 9:38
  */
-public class User {
+public class User extends BaseEntity {
 
-    private Integer id;
     private String userName;
     private String password;
 
@@ -16,15 +17,9 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String userName, String password) {
-        this.id = id;
+    public User( String userName, String password) {
         this.userName = userName;
         this.password = password;
-    }
-
-    public User(String userName, String password) {
-        this.userName=userName;
-        this.password=password;
     }
 
 
@@ -45,12 +40,4 @@ public class User {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 }

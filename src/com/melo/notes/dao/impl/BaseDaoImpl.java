@@ -2,6 +2,7 @@ package com.melo.notes.dao.impl;
 
 import com.melo.notes.dao.inter.BaseDao;
 import com.melo.notes.exception.DaoException;
+import com.melo.notes.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -39,6 +40,7 @@ public class BaseDaoImpl implements BaseDao {
         PreparedStatement ps=null;
         try {
             ps=conn.prepareStatement(sql);
+            //注入Sql填充参数
             setParams(ps,obj);
             count = ps.executeUpdate();
         } catch (SQLException throwables) {
@@ -78,6 +80,20 @@ public class BaseDaoImpl implements BaseDao {
         sql.setCharAt(sql.length() - 1, ')');
         return executeUpdate(obj,sql.toString());
         }
+
+    /**
+     * 删除记录
+     *
+     * @param obj 与删除有关的对象
+     * @return int 更新的数据库记录数
+     */
+    @Override
+    public int delete(Object obj) {
+        String name = getFields(obj).getFirst().getName();
+        StringBuilder columnName = toColumnName(name);
+        StringBuilder sql = new StringBuilder("delete from " + getTableName(obj) + " where "+columnName+" =?");
+        return executeUpdate(obj,sql.toString());
+    }
 
     /**
      * 将对象映射成属性名和属性值

@@ -1,6 +1,7 @@
 package com.melo.notes.dao.impl;
 
 import com.melo.notes.dao.inter.FolderDao;
+import com.melo.notes.entity.Folder;
 import com.melo.notes.entity.User;
 
 import java.sql.Connection;
@@ -50,22 +51,8 @@ public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
      */
     @Override
     public int deleteFolder(String folderName) {
-        int count=0;
-        Connection conn= getConnection();
-        PreparedStatement ps=null;
-        ResultSet rs=null;
-        try {
-            String sql="delete from located_folder where folder_name=?";
-            ps=conn.prepareStatement(sql);
-            ps.setString(1, folderName );
-            count = ps.executeUpdate();
-            return count;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
-            freeConnection(conn);
-            close(ps,rs);
-        }
-        return count;
+        Folder folder = new Folder();
+        folder.setFolderName(folderName);
+        return delete(folder);
     }
 }

@@ -16,6 +16,10 @@ public interface GroupDao {
      */
      ResultSet showNoteGroup(String folderName);
 
-
-
+    /**
+     * 删除分组
+     * @param groupName 笔记分组名称
+     * @return int 影响的行数
+     */
+    int deleteGroup(String groupName);
 }
