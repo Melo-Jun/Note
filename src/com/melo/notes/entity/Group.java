@@ -11,15 +11,15 @@ import com.melo.notes.entity.abs.BaseEntity;
 public class Group extends BaseEntity {
 
     private String groupName;
-    private String authorName;
+    private String authorId;
     private String locatedFolder;
 
     public Group() {
     }
 
-    public Group(String groupName, String authorName, String locatedFolder) {
+    public Group(String groupName, String authorId, String locatedFolder) {
         this.groupName = groupName;
-        this.authorName = authorName;
+        this.authorId = authorId;
         this.locatedFolder = locatedFolder;
     }
 
@@ -32,12 +32,12 @@ public class Group extends BaseEntity {
         this.groupName = groupName;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 
     public String getLocatedFolder() {

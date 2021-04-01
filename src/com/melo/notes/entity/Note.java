@@ -2,8 +2,6 @@ package com.melo.notes.entity;
 
 import com.melo.notes.entity.abs.BaseEntity;
 
-import java.util.Date;
-
 /**
  * @author Jun
  * @program Note
@@ -13,7 +11,7 @@ import java.util.Date;
 public class Note extends BaseEntity {
 
     private String title;
-    private String authorName;
+    private String authorId;
     private String text;
     private String access;
     private Integer likeCount;
@@ -22,9 +20,9 @@ public class Note extends BaseEntity {
     public Note() {
     }
 
-    public Note(String title, String authorName, String text, String access, Integer likeCount, String locatedGroup) {
+    public Note(String title, String authorId, String text, String access, Integer likeCount, String locatedGroup) {
         this.title = title;
-        this.authorName = authorName;
+        this.authorId = authorId;
         this.text = text;
         this.access = access;
         this.likeCount = likeCount;
@@ -35,8 +33,8 @@ public class Note extends BaseEntity {
         return title;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getAuthorId() {
+        return authorId;
     }
 
     public String getText() {
@@ -59,8 +57,8 @@ public class Note extends BaseEntity {
         this.title = title;
     }
 
-    public void setAuthorName(String author) {
-        this.authorName = author;
+    public void setAuthorId(String author) {
+        this.authorId = author;
     }
 
     public void setText(String text) {

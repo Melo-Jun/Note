@@ -11,7 +11,7 @@ import com.melo.notes.entity.abs.BaseEntity;
 public class Folder extends BaseEntity {
 
     private String folderName;
-    private String authorName;
+    private String authorId;
     private String access;
 
     public Folder() {
@@ -21,8 +21,8 @@ public class Folder extends BaseEntity {
         return folderName;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getAuthorId() {
+        return authorId;
     }
 
     public String getAccess() {
@@ -33,8 +33,8 @@ public class Folder extends BaseEntity {
         this.folderName = folderName;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 
     public void setAccess(String access) {
