@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 import static com.melo.notes.util.JdbcUtils.*;
 
@@ -23,27 +24,23 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
     }
 
     /**
-     * 根据笔记分组列出笔记标题
-     * @param groupName 分组名称
-     * @return ResultSet 结果集
+     * 根据用户名列出笔记标题界面
+     * @param src 根据的对象
+     * @param des 查询的对象
+     * @return
      */
     @Override
-    public ResultSet showNoteTitle(String groupName){
-        Connection conn= getConnection();
-        PreparedStatement ps=null;
-        ResultSet rs=null;
-        try {
-            String sql="select title from note where located_group=?";
-            ps=conn.prepareStatement(sql);
-            ps.setString(1, groupName);
-            rs=ps.executeQuery();
-            return rs;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
-            freeConnection(conn);
-        }
-        return null;
+    public LinkedList<Object> showNoteTitle(Object src,Object des){
+        LinkedList<Object> title = new LinkedList<>();
+        ResultSet rs=search(src,src);
+       try {
+           while (rs.next()) {
+                title.add(rs.getObject("title"));
+           }
+       }catch (SQLException throwables) {
+           throwables.printStackTrace();
+       }
+        return title;
     }
 
     /**

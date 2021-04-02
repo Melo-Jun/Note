@@ -3,6 +3,7 @@ package com.melo.notes.dao.inter;
 import com.melo.notes.entity.Note;
 
 import java.sql.ResultSet;
+import java.util.LinkedList;
 
 /**
  * @author Jun
@@ -14,10 +15,11 @@ public interface NoteDao {
 
     /**
      * 根据用户名列出笔记标题界面
-     * @param groupName 分组名称
+     * @param src 根据的对象
+     * @param des 查询的对象
      * @return
      */
-     ResultSet showNoteTitle(String groupName);
+     LinkedList<Object> showNoteTitle(Object src,Object des);
 
     /**
      * 通过点击标题查看笔记详情

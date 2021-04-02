@@ -3,6 +3,7 @@ package com.melo.notes.dao.inter;
 import com.melo.notes.exception.DaoException;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.LinkedList;
 
 /**
@@ -22,6 +23,9 @@ public interface BaseDao {
      int executeUpdate(Object obj, String sql);
 
 
+     ResultSet executeQuery(Object obj,String sql,Object value);
+
+
     /**
      * 增加一条记录进入数据库
      *
@@ -37,6 +41,14 @@ public interface BaseDao {
      * @return int 更新的数据库记录数
      */
     int delete(Object obj);
+
+    /**
+     * 查找记录
+     * @param src 根据的对象
+     * @param des 查找的对象
+     * @return
+     */
+    ResultSet search(Object src,Object des);
 
     /**
      * 将对象映射成属性名和属性值

@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
@@ -52,6 +53,26 @@ public class BaseDaoImpl implements BaseDao {
         return count;
     }
 
+    @Override
+    public ResultSet executeQuery(Object obj, String sql,Object value){
+        Connection conn=getConnection();
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        try {
+            ps=conn.prepareStatement(sql);
+            //注入Sql填充参数
+            ps.setObject(1,value);
+            rs=ps.executeQuery();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            freeConnection(conn);
+            //close(ps,null);
+        }
+        return rs;
+    }
+
+
 
     /**
      * 增加一条记录进入数据库
@@ -82,7 +103,7 @@ public class BaseDaoImpl implements BaseDao {
         }
 
     /**
-     * 删除记录
+     * 删除记录(通过名称)
      *
      * @param obj 与删除有关的对象
      * @return int 更新的数据库记录数
@@ -93,6 +114,31 @@ public class BaseDaoImpl implements BaseDao {
         StringBuilder columnName = toColumnName(name);
         StringBuilder sql = new StringBuilder("delete from " + getTableName(obj) + " where "+columnName+" =?");
         return executeUpdate(obj,sql.toString());
+    }
+
+    /**
+     * 查找记录
+     *
+     * @param src 根据的对象
+     * @param des 要查的对象
+     * @return
+     */
+    @Override
+    public ResultSet search(Object src, Object des) {
+        /**
+         * 根据搜索依据的字段名构造对象，取出对应数据库字段名和值
+         */
+        LinkedList<Object> fieldNames = new LinkedList<>();
+        LinkedList<Object> fieldValues = new LinkedList<>();
+        fieldMapper(src,fieldNames,fieldValues);
+        /**
+         * des用来获取表名，src用来填充sql
+         */
+        StringBuilder sql=new StringBuilder("select * from "+getTableName(des)+" where "+ fieldNames.getFirst()+" =?");
+        /**
+         * 将src的value值传过去填充
+         */
+        return executeQuery(src,sql.toString(),fieldValues.getFirst());
     }
 
     /**
