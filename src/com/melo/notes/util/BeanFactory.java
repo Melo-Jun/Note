@@ -42,7 +42,8 @@ import java.util.Properties;
         /**
          * Service实现类
          */
-        FolderGroupService("FolderGroupService"),LoginViewService("LoginViewService");
+        FolderGroupService("FolderGroupService"), LoginService("LoginService"),
+        RegisterService("RegisterService");
         private String name;
         /**
          * 构造方法
