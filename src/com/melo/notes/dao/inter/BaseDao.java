@@ -25,16 +25,6 @@ public interface BaseDao {
 
 
     /**
-     * 封装数据库查询操作
-     * @param obj
-     * @param sql
-     * @param value ps中所要设置的参数值
-     * @return ResultSet 结果集
-     */
-     ResultSet executeQuery(Object obj,String sql,Object value);
-
-
-    /**
      * 增加一条记录进入数据库
      *
      * @param obj 要插入的对象
@@ -46,7 +36,7 @@ public interface BaseDao {
      * 删除记录
      *
      * @param obj 与删除有关的对象
-     * @return int 更新的数据库记录数
+     * @return int 影响的数据库记录数
      */
     int delete(Object obj);
 

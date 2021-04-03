@@ -4,22 +4,30 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.dao.impl.LoginDaoImpl;
-import com.melo.notes.dao.impl.UserDaoImpl;
-import com.melo.notes.entity.User;
+import com.melo.notes.service.impl.RegisterServiceImpl;
+import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 
-import static com.melo.notes.util.Md5Utils.getDigest;
-
 /**
  * @author Jun
  * @description 注册界面
  */
 public class RegisterView extends JFrame {
+
+    /**
+     * 注册成功状态码
+     */
+    private final String SUCCESS="注册成功";
+
+    /**
+     * 创建相关操作类对象
+     */
+    RegisterServiceImpl registerService = (RegisterServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.RegisterService);
+
     public RegisterView() {
         initComponents();
         setSize(1300, 800);
@@ -27,34 +35,17 @@ public class RegisterView extends JFrame {
     }
 
     private void registerActionPerformed(ActionEvent e) {
+        /**
+         * 获取文本框内容
+         */
         String userName = userNameText.getText();
-        String firstPassword = String.valueOf(passwordField1.getPassword());
-        String secondPassword = String.valueOf(passwordField2.getPassword());
-        if(userName==null){
-            JOptionPane.showMessageDialog(null, "用户名不能为空");
-            //重新输入
-            return;
-        }
-        if(firstPassword==null){
-            JOptionPane.showMessageDialog(null, "密码不能为空");
-            //重新输入
-            return;
-        }
-        if(secondPassword==null){
-            JOptionPane.showMessageDialog(null, "请输入两次密码");
-            //重新输入
-            return;
-        }
-        if(firstPassword.equals(secondPassword)&&firstPassword!=null){
-            User user = new User(userName, getDigest(secondPassword));
-            if(new LoginDaoImpl().register(user)==true){
-                new UserDaoImpl().insert(user);
-                JOptionPane.showMessageDialog(null, "注册成功");
-                this.dispose();
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "两次输入不一致，请重新输入");
-            return;
+        String firstPass = String.valueOf(passwordField1.getPassword());
+        String secondPass = String.valueOf(passwordField2.getPassword());
+
+        String message = registerService.isValid(userName, firstPass, secondPass);
+        JOptionPane.showMessageDialog(null,message);
+        if(message.equals(SUCCESS)){
+            this.dispose();
         }
 
     }
@@ -72,9 +63,10 @@ public class RegisterView extends JFrame {
         //======== this ========
         setMinimumSize(new Dimension(950, 650));
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
-        setTitle("\u6ce8\u518c");
+        setTitle("???");
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationByPlatform(true);
+        setResizable(false);
         Container contentPane = getContentPane();
 
         //---- userName ----
@@ -84,20 +76,20 @@ public class RegisterView extends JFrame {
         userName.setMinimumSize(new Dimension(1919, 1035));
         userName.setMaximumSize(new Dimension(1919, 1035));
         userName.setBackground(new Color(102, 255, 255));
-        userName.setFont(new Font("\u5fae\u8f6f\u96c5\u9ed1", Font.PLAIN, 18));
+        userName.setFont(new Font("??????", Font.PLAIN, 18));
 
         //---- password1 ----
         password1.setText("\u5bc6\u7801");
         password1.setHorizontalAlignment(SwingConstants.CENTER);
-        password1.setFont(new Font("\u5fae\u8f6f\u96c5\u9ed1", Font.PLAIN, 18));
+        password1.setFont(new Font("??????", Font.PLAIN, 18));
 
         //---- password2 ----
         password2.setText("\u518d\u6b21\u8f93\u5165");
         password2.setHorizontalAlignment(SwingConstants.CENTER);
-        password2.setFont(new Font("\u5fae\u8f6f\u96c5\u9ed1", Font.PLAIN, 18));
+        password2.setFont(new Font("??????", Font.PLAIN, 18));
 
         //---- register ----
-        register.setText("\u786e\u8ba4");
+        register.setText("\u6ce8\u518c");
         register.addActionListener(e -> registerActionPerformed(e));
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);

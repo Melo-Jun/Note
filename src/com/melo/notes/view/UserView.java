@@ -16,32 +16,34 @@ import javax.swing.GroupLayout;
 
 /**
  * @author Jun
- * @description 鐢ㄦ埛鐣岄潰
+ * @description 用户界面
  */
 public class UserView extends JFrame {
 
     public UserView(User user) {
         initComponents(user);
         setSize(1300, 800);
-        setLocation(330,120);
+        setLocation(330, 120);
     }
 
 
     /**
-     * 鏂板绗旇
+     * 新增笔记
+     *
      * @param e
-     * @param user 鐢ㄦ埛
      */
-    private void addNoteActionPerformed(ActionEvent e,User user) {
-        new AddNoteView(user).setVisible(true);
+    private void addNoteActionPerformed(ActionEvent e) {
+        new AddNoteView(LoginView.USER).setVisible(true);
     }
 
-    /**
-     * 鏌ョ湅绗旇
-     * @param e
-     */
-    private void searchNoteActionPerformed(ActionEvent e,User user) {
-        ResultSet rs = new NoteDaoImpl().showNoteTitle(user);
+
+    private void setNoteActionPerformed(ActionEvent e) {
+        new FolderView(LoginView.USER);
+    }
+
+    private void showNoteActionPerformed(ActionEvent e) {
+        new ListNoteTitle();
+       /* ResultSet rs = new NoteDaoImpl().showNoteTitle(user.getUserName());
         try {
             JLabel label = new JLabel();
             label.setText("haha");
@@ -55,29 +57,24 @@ public class UserView extends JFrame {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }
+        }*/
+
     }
 
-    private void searchNoteActionPerformed(ActionEvent e) {
-        // TODO add your code here
-    }
-
-    private void addNoteActionPerformed(ActionEvent e) {
-        // TODO add your code here
-    }
 
     private void initComponents(User user) {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         menuBar = new JMenuBar();
         note = new JMenu();
-        searchNote = new JMenuItem();
+        showNote = new JMenuItem();
         addNote = new JMenuItem();
-        deleteNote = new JMenuItem();
+        setNote = new JMenuItem();
 
         //======== this ========
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
         setMinimumSize(new Dimension(950, 650));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
         Container contentPane = getContentPane();
 
         //======== menuBar ========
@@ -91,19 +88,20 @@ public class UserView extends JFrame {
                 note.setText("\u7ba1\u7406\u7b14\u8bb0");
                 note.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
 
-                //---- searchNote ----
-                searchNote.setText("\u67e5\u770b\u7b14\u8bb0");
-                searchNote.addActionListener(e -> searchNoteActionPerformed(e));
-                note.add(searchNote);
+                //---- showNote ----
+                showNote.setText("\u67e5\u770b\u7b14\u8bb0");
+                showNote.addActionListener(e -> showNoteActionPerformed(e));
+                note.add(showNote);
 
                 //---- addNote ----
                 addNote.setText("\u589e\u52a0\u7b14\u8bb0");
                 addNote.addActionListener(e -> addNoteActionPerformed(e));
                 note.add(addNote);
 
-                //---- deleteNote ----
-                deleteNote.setText("\u5220\u9664\u7b14\u8bb0");
-                note.add(deleteNote);
+                //---- setNote ----
+                setNote.setText("\u8bbe\u7f6e\u5206\u7ec4");
+                setNote.addActionListener(e -> setNoteActionPerformed(e));
+                note.add(setNote);
             }
             menuBar.add(note);
         }
@@ -126,8 +124,8 @@ public class UserView extends JFrame {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JMenuBar menuBar;
     private JMenu note;
-    private JMenuItem searchNote;
+    private JMenuItem showNote;
     private JMenuItem addNote;
-    private JMenuItem deleteNote;
+    private JMenuItem setNote;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

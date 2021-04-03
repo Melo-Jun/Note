@@ -5,32 +5,32 @@ import com.melo.notes.entity.User;
 /**
  * @author Jun
  * @program Note
- * @description 鐧诲綍椤甸潰鐩稿叧閫昏緫鎺ュ彛
+ * @description 登录页面相关逻辑接口
  * @date 2021-4-1 18:26
  */
 public interface LoginService {
 
     /**
-     * 璁剧疆id
+     * 设置id
      * @param user
      */
     void setId(User user);
 
     /**
-     * 瀵嗙爜楠岃瘉
+     * 密码验证
      * @param user
-     * @notice 闇�瑕佸皢杈撳叆杩涙潵鐨勫瘑鐮丮d5瑙ｇ爜鐪嬪涓嶅搴旀暟鎹簱涓殑瀛楁
+     * @notice 需要将输入进来的密码Md5解码看对不对应数据库中的字段
      * @return
      */
      boolean login(User user);
 
     /**
-     * 鍒ゆ柇杈撳叆鏄惁鏈夋晥
+     * 判断输入是否有效
      *
      * @param userName
      * @param password
      * @param access
-     * @return String 鍛堢幇缁欓〉闈㈢殑淇℃伅
+     * @return String 呈现给页面的信息
      */
      String isValid(String userName,String password,String access);
 }

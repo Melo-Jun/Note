@@ -43,7 +43,7 @@ import java.util.Properties;
          * Service实现类
          */
         FolderGroupService("FolderGroupService"), LoginService("LoginService"),
-        RegisterService("RegisterService");
+        RegisterService("RegisterService"),ListNoteTitleService("ListNoteTitleService");
         private String name;
         /**
          * 构造方法

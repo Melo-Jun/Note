@@ -1,14 +1,9 @@
 package com.melo.notes.service.impl;
 
-import com.melo.notes.dao.impl.LoginDaoImpl;
 import com.melo.notes.dao.impl.UserDaoImpl;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.inter.LoginService;
 import com.melo.notes.util.BeanFactory;
-import com.melo.notes.view.UserView;
-
-import javax.sql.rowset.spi.SyncResolver;
-import javax.swing.*;
 
 /**
  * @author Jun
@@ -24,7 +19,6 @@ public class LoginServiceImpl implements LoginService {
      * 相关操作类对象
      */
     UserDaoImpl userDao = (UserDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.UserDao);
-    LoginDaoImpl loginDao = (LoginDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.LoginDao);
 
     /**
      * 设置Id

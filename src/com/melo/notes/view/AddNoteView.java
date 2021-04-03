@@ -4,15 +4,14 @@
 
 package com.melo.notes.view;
 
-import javax.swing.event.*;
 import com.melo.notes.dao.impl.NoteDaoImpl;
 import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
+import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.ResultSet;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 
@@ -25,6 +24,7 @@ public class AddNoteView extends JFrame {
      * 创建相关操作类对象
      */
     NoteDaoImpl noteDao = (NoteDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.NoteDao);
+    FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
 
     public AddNoteView(User user) {
         initComponents(user);
@@ -38,13 +38,16 @@ public class AddNoteView extends JFrame {
      * @param user 执行新增笔记操作的用户
      */
     private void summitActionPerformed(ActionEvent e,User user) {
+        TreeView.selectedId= folderGroupService.getId(TreeView.selectedName);
         String title = titleField.getText();
         String text = textArea.getText();
         String access = (String) this.accessSelect.getSelectedItem();
-        Note note = new Note( title, user.getUserName(), text, access ,0,TreeView.locatedGroup );
-        noteDao.addNote(note);
+        Note note = new Note( title, user.getId(), text, access ,0,TreeView.selectedId );
+        if(noteDao.addNote(note)){
+            JOptionPane.showMessageDialog(null,"增加笔记成功");
+            this.dispose();
+        }
     }
-
 
     /**
      * 设置笔记分组

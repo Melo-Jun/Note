@@ -2,6 +2,7 @@ package com.melo.notes.dao.impl;
 
 import com.melo.notes.dao.inter.NoteDao;
 import com.melo.notes.entity.Note;
+import com.melo.notes.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,23 +25,15 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
     }
 
     /**
-     * 根据用户名列出笔记标题界面
-     * @param src 根据的对象
-     * @param des 查询的对象
+     * 根据xxx列出笔记标题
+     * @param obj 根据的对象
      * @return
      */
     @Override
-    public LinkedList<Object> showNoteTitle(Object src,Object des){
-        LinkedList<Object> title = new LinkedList<>();
-        ResultSet rs=search(src,src);
-       try {
-           while (rs.next()) {
-                title.add(rs.getObject("title"));
-           }
-       }catch (SQLException throwables) {
-           throwables.printStackTrace();
-       }
-        return title;
+    public LinkedList<Object> showNoteTitle(Object obj) {
+        String sql = "select title from note ";
+        User user = new User();
+        return queryList(sql,null);
     }
 
     /**

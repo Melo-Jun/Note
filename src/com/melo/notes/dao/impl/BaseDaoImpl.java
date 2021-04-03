@@ -54,32 +54,6 @@ public class BaseDaoImpl implements BaseDao {
         return count;
     }
 
-    /**
-     * 封装数据库查询操作
-     * @param obj
-     * @param sql
-     * @param value ps中所要设置的参数值
-     * @return ResultSet 结果集
-     */
-    @Override
-    public ResultSet executeQuery(Object obj, String sql,Object value){
-        Connection conn=getConnection();
-        PreparedStatement ps=null;
-        ResultSet rs=null;
-        try {
-            ps=conn.prepareStatement(sql);
-            //注入Sql填充参数
-            ps.setObject(1,value);
-            rs=ps.executeQuery();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
-            freeConnection(conn);
-            //close(ps,null);
-        }
-        return rs;
-    }
-
 
 
     /**
@@ -111,10 +85,10 @@ public class BaseDaoImpl implements BaseDao {
         }
 
     /**
-     * 删除记录(通过名称)
+     * 删除记录
      *
      * @param obj 与删除有关的对象
-     * @return int 更新的数据库记录数
+     * @return int 影响的数据库记录数
      */
     @Override
     public int delete(Object obj) {
@@ -156,7 +130,6 @@ public class BaseDaoImpl implements BaseDao {
             close(ps,rs);
         }
         return resultMap;
-
 
 
 

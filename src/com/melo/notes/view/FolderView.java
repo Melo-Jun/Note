@@ -45,6 +45,7 @@ public class FolderView extends JFrame {
      */
     public static String selectedClassName ="";
 
+    JFrame jf = new JFrame("设置笔记分组");
     private Listener l = new Listener();
     private JButton delete = new JButton("删除");
     private JButton submit = new JButton("确定");
@@ -62,7 +63,7 @@ public class FolderView extends JFrame {
 
     public FolderView(User user) {
 
-            JFrame jf = new JFrame("测试窗口");
+
             jf.setSize(1300, 800);
             jf.setLocation(330, 120);
             jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -193,6 +194,7 @@ public class FolderView extends JFrame {
              */
             if(e.getSource()==delete){
                 if(folderGroupService.delete(selectedName, selectedClassName)!=0) {
+                    jf.dispose();
                     new FolderView(LoginView.USER);
                 }else {
                     JOptionPane.showMessageDialog(null,"请确认已正确选择节点");

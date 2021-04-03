@@ -1,11 +1,8 @@
 package com.melo.notes.service.impl;
 
-import com.melo.notes.dao.impl.LoginDaoImpl;
 import com.melo.notes.dao.impl.UserDaoImpl;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.inter.RegisterService;
-
-import javax.swing.*;
 
 import static com.melo.notes.util.Md5Utils.getDigest;
 
