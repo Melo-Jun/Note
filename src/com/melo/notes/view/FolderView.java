@@ -4,6 +4,7 @@
 
 package com.melo.notes.view;
 
+import com.melo.notes.dao.impl.FolderDaoImpl;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.util.BeanFactory;
@@ -13,6 +14,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 import javax.swing.event.TreeModelEvent;
@@ -21,13 +26,10 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import static com.melo.notes.util.JdbcUtils.close;
-
 /**
- * @author 1
+ * @author Jun
  */
 public class FolderView extends JFrame {
-
 
     /**
      * 用户
@@ -86,7 +88,6 @@ public class FolderView extends JFrame {
             panel.add(delete);
             panel.add(update);
 
-
         /**
          * 创建根节点
          */
@@ -95,35 +96,34 @@ public class FolderView extends JFrame {
         /**
          * 根据知识库名生成相应笔记分组
          */
-        ResultSet FolderRs = folderGroupService.showNoteFolder(user);
-        ResultSet GroupRs=null;
-            try {
+        User tempUser = new User();
+        tempUser.setId(LoginView.USER.getId());
+        HashMap<Object, Object> Folder = folderGroupService.showFolderName(tempUser);
                 /**
                  * 先生成知识库
                  */
-                while (FolderRs.next()) {
-                    Object folderName = FolderRs.getObject("folder_name");
-                    Object id = FolderRs.getObject("id");
-                    System.out.println(id);
+                Object folderId="";
+                Object folderName="";
+                /**
+                 * 遍历获取folderId和folderName
+                 */
+                Set<Map.Entry<Object, Object>> entries =  Folder.entrySet();
+                for(Map.Entry temp:entries) {
+                    folderId = temp.getKey();
+                    folderName = temp.getValue();
+                    /**
+                     * 根据folderName生成知识库
+                     */
                     DefaultMutableTreeNode folder = new DefaultMutableTreeNode(folderName);
                     rootNode.add(folder);
                     /**
-                     * 再生成相应笔记分组
+                     * 再根据folderId生成相应笔记分组
                      */
-                    GroupRs = folderGroupService.showNoteGroup(id.toString());
-                    System.out.println(GroupRs);
-                    while(GroupRs.next()){
-                        Object groupName = GroupRs.getObject("group_name");
-                        System.out.println(groupName.toString());
+                    LinkedList<Object> groupNames = folderGroupService.showNoteGroup(folderId.toString());
+                    for(Object groupName:groupNames) {
                         DefaultMutableTreeNode group = new DefaultMutableTreeNode(groupName);
                         folder.add(group);
                     }
-                }
-            }catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                } finally {
-                    close(null, FolderRs);
-                    close(null,GroupRs);
                 }
 
             // 使用根节点创建树组件
