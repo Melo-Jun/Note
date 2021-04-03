@@ -4,8 +4,9 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.dao.impl.LoginDaoImpl;
 import com.melo.notes.entity.User;
+import com.melo.notes.service.impl.LoginServiceImpl;
+import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -18,7 +19,23 @@ import javax.swing.GroupLayout;
  */
 public class LoginView extends JFrame {
 
-    private static String ADMIN="管理员";
+    /**
+     * 相关操作类
+     */
+    LoginServiceImpl loginViewService = (LoginServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.LoginService);
+
+    /**
+     * 管理员身份码
+     */
+    private final String ADMIN="管理员";
+    /**
+     * 登录成功状态码
+     */
+    private final String SUCCESS="登录成功";
+    /**
+     * 存储登录进来的用户
+     */
+    public static User USER=null;
 
     public LoginView() {
         initComponents();
@@ -34,38 +51,17 @@ public class LoginView extends JFrame {
         String password = String.valueOf(passwordField.getPassword());
         //获取下拉权限值
         String access = (String) this.access.getSelectedItem();
-        if (userName==null) {
-            JOptionPane.showMessageDialog(null, "用户名不能为空");
-            //重新输入
-            return;
-        }
-        if (password==null) {
-            JOptionPane.showMessageDialog(null, "密码不能为空");
-            //重新输入
-            return;
-        }
-        //未完
-        if(access==ADMIN){
-
-        }
-        else{
-            /**
-             * 验证用户名和密码
-             */
-            User user = new User(userName, password);
-            if (new LoginDaoImpl().login(user)) {
-                JOptionPane.showMessageDialog(null, "登录成功");
+        String message = loginViewService.isValid(userName, password, access);
+        JOptionPane.showMessageDialog(null,message);
+        if(message.equals(SUCCESS)){
+                USER= new User(userName, password);
                 /**
-                 * 销毁当前窗口，跳转到用户界面
+                 * 销毁当前窗口并存储user设置id，跳转到用户界面
                  */
+                loginViewService.setId(USER);
                 this.dispose();
-                new UserView(user).setVisible(true);
+                new UserView(USER).setVisible(true);
             }
-            else {
-                JOptionPane.showMessageDialog(null, "登录失败");
-            }
-        }
-
     }
 
     /**
@@ -97,6 +93,7 @@ public class LoginView extends JFrame {
         setLocationByPlatform(true);
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
         setMinimumSize(new Dimension(950, 650));
+        setResizable(false);
         Container contentPane = getContentPane();
 
         //---- userName ----
@@ -154,7 +151,7 @@ public class LoginView extends JFrame {
                                     .addComponent(userName)
                                     .addGap(46, 46, 46)
                                     .addComponent(userNameText, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)))))
-                    .addGap(129, 185, Short.MAX_VALUE))
+                    .addGap(129, 176, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
