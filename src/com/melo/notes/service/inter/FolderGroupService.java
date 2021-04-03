@@ -2,7 +2,8 @@ package com.melo.notes.service.inter;
 
 import com.melo.notes.entity.User;
 
-import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * @author Jun
@@ -24,14 +25,14 @@ public interface FolderGroupService {
      * @param user 用户
      * @return ResultSet 结果集
      */
-     ResultSet showNoteFolder(User user);
+     HashMap<Object, Object> showFolderName(User user);
 
     /**
      * 根据知识库列出分组界面
      * @param folderId 知识库Id
      * @return ResultSet 结果集
      */
-     ResultSet showNoteGroup(String folderId);
+     LinkedList<Object> showNoteGroup(String folderId);
 
     /**
      * 根据传入类名删除对应类对象

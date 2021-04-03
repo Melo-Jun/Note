@@ -3,6 +3,7 @@ package com.melo.notes.dao.inter;
 import com.melo.notes.entity.User;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
 
 /**
  * @author Jun
@@ -17,7 +18,7 @@ public interface FolderDao {
      * @param user 用户
      * @return ResultSet 结果集
      */
-    ResultSet showNoteFolder(User user);
+    HashMap<Object, Object> showFolderName(User user);
 
 
     /**

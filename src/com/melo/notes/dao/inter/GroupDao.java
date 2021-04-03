@@ -1,6 +1,7 @@
 package com.melo.notes.dao.inter;
 
 import java.sql.ResultSet;
+import java.util.LinkedList;
 
 /**
  * @author Jun
@@ -10,11 +11,11 @@ import java.sql.ResultSet;
  */
 public interface GroupDao {
     /**
-     * 根据名称列出分组界面
-     * @param folderName 知识库名称/作者名称
-     * @return ResultSet 结果集
+     * 根据知识库id列出分组界面
+     * @param folderId 知识库id
+     * @return LinkedList<Object> 结果集链表
      */
-     ResultSet showNoteGroup(String folderName);
+    LinkedList<Object> showNoteGroup(String folderId);
 
     /**
      * 删除分组

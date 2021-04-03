@@ -6,7 +6,8 @@ import com.melo.notes.entity.User;
 import com.melo.notes.service.inter.FolderGroupService;
 import com.melo.notes.util.BeanFactory;
 
-import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * @author Jun
@@ -52,8 +53,8 @@ public class FolderGroupServiceImpl implements FolderGroupService {
      * @return ResultSet 结果集
      */
     @Override
-    public ResultSet showNoteFolder(User user) {
-        return folderDao.showNoteFolder(user);
+    public HashMap<Object, Object> showFolderName(User user) {
+        return folderDao.showFolderName(user);
     }
 
     /**
@@ -62,7 +63,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
      * @return ResultSet 结果集
      */
     @Override
-    public ResultSet showNoteGroup(String folderId) {
+    public LinkedList<Object> showNoteGroup(String folderId) {
         return groupDao.showNoteGroup(folderId);
     }
 

@@ -3,14 +3,15 @@ package com.melo.notes.dao.impl;
 import com.melo.notes.dao.inter.BaseDao;
 import com.melo.notes.exception.DaoException;
 import com.melo.notes.util.StringUtils;
+import com.sun.javafx.collections.MappingChange;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 
 import static com.melo.notes.util.JdbcUtils.*;
 import static com.melo.notes.util.ReflectUtils.getFields;
@@ -53,6 +54,13 @@ public class BaseDaoImpl implements BaseDao {
         return count;
     }
 
+    /**
+     * 封装数据库查询操作
+     * @param obj
+     * @param sql
+     * @param value ps中所要设置的参数值
+     * @return ResultSet 结果集
+     */
     @Override
     public ResultSet executeQuery(Object obj, String sql,Object value){
         Connection conn=getConnection();
@@ -110,35 +118,95 @@ public class BaseDaoImpl implements BaseDao {
      */
     @Override
     public int delete(Object obj) {
-        String name = getFields(obj).getFirst().getName();
-        StringBuilder columnName = toColumnName(name);
-        StringBuilder sql = new StringBuilder("delete from " + getTableName(obj) + " where "+columnName+" =?");
+        /**
+         * 根据删除依据的字段名构造对象，取出对应数据库字段名和值
+         */
+        LinkedList<Object> fieldNames = new LinkedList<>();
+        LinkedList<Object> fieldValues = new LinkedList<>();
+        fieldMapper(obj,fieldNames,fieldValues);
+        StringBuilder sql = new StringBuilder("delete from " + getTableName(obj) + " where "+fieldNames.getFirst()+" =?");
         return executeUpdate(obj,sql.toString());
     }
 
     /**
      * 查找记录
      *
-     * @param src 根据的对象
-     * @param des 要查的对象
-     * @return
+     * @param sql 特定查询语句
+     * @param obj 根据的对象(用来填充参数)
+     * @return HashMap 结果集封装Map
      */
     @Override
-    public ResultSet search(Object src, Object des) {
+    public HashMap<Object, Object> queryMap(String sql, Object obj) {
+        HashMap<Object,Object> resultMap = new HashMap<>();
+        Connection conn=getConnection();
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        try {
+            ps=conn.prepareStatement(sql);
+            //根据obj注入Sql填充参数
+            setParams(ps,obj);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                resultMap.put(rs.getObject(1),rs.getObject(2));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            freeConnection(conn);
+            close(ps,rs);
+        }
+        return resultMap;
+
+
+
+
         /**
          * 根据搜索依据的字段名构造对象，取出对应数据库字段名和值
          */
-        LinkedList<Object> fieldNames = new LinkedList<>();
+        /*LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
         fieldMapper(src,fieldNames,fieldValues);
         /**
          * des用来获取表名，src用来填充sql
          */
-        StringBuilder sql=new StringBuilder("select * from "+getTableName(des)+" where "+ fieldNames.getFirst()+" =?");
+       /* StringBuilder sql=new StringBuilder("select * from "+getTableName(des)+" where "+ fieldNames.getFirst()+" =?");
         /**
          * 将src的value值传过去填充
          */
-        return executeQuery(src,sql.toString(),fieldValues.getFirst());
+        /*System.out.println(fieldNames.getFirst());
+        System.out.println(fieldValues);
+        System.out.println(fieldValues.getFirst());
+        return executeQuery(src,sql.toString(),fieldValues.getFirst());*/
+    }
+
+    /**
+     * 查找记录(只查找单一属性)
+     *
+     * @param sql 查询语句
+     * @param obj 用以填充的属性值
+     * @return
+     */
+    @Override
+    public LinkedList<Object> queryList(String sql, Object obj) {
+        LinkedList<Object> resultList = new LinkedList<>();
+        Connection conn=getConnection();
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        try {
+            ps=conn.prepareStatement(sql);
+            //根据obj注入Sql填充参数
+            setParams(ps,obj);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                resultList.add(rs.getObject(1));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            freeConnection(conn);
+            close(ps,rs);
+        }
+        return resultList;
     }
 
     /**

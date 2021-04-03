@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import static com.melo.notes.util.JdbcUtils.*;
 
@@ -20,27 +21,19 @@ import static com.melo.notes.util.JdbcUtils.*;
 public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
 
     /**
+     * 本表查询所用到所有字段
+     */
+    private final String ALLCOLUMNNAME="id,folder_name,author_id,access";
+
+    /**
      * 根据用户Id获取知识库名称
      * @param user 用户
      * @return ResultSet 结果集
      */
     @Override
-    public ResultSet showNoteFolder(User user) {
-        Connection conn= getConnection();
-        PreparedStatement ps=null;
-        ResultSet rs=null;
-        try {
-            String sql="select * from located_folder where author_id=?";
-            ps=conn.prepareStatement(sql);
-            ps.setString(1, user.getId() );
-            rs=ps.executeQuery();
-            return rs;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
-            freeConnection(conn);
-        }
-        return null;
+    public HashMap<Object, Object> showFolderName(User user) {
+        String sql="select id,folder_name from located_folder where author_id=?";
+        return queryMap(sql,user);
     }
 
     /**

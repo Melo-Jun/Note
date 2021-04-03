@@ -4,6 +4,7 @@ import com.melo.notes.exception.DaoException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -23,6 +24,13 @@ public interface BaseDao {
      int executeUpdate(Object obj, String sql);
 
 
+    /**
+     * 封装数据库查询操作
+     * @param obj
+     * @param sql
+     * @param value ps中所要设置的参数值
+     * @return ResultSet 结果集
+     */
      ResultSet executeQuery(Object obj,String sql,Object value);
 
 
@@ -43,12 +51,21 @@ public interface BaseDao {
     int delete(Object obj);
 
     /**
-     * 查找记录
-     * @param src 根据的对象
-     * @param des 查找的对象
+     * 查找记录(需要键值对类型)
+     *
+     * @param sql 特定查询语句
+     * @param obj 根据的对象(用来填充参数)
+     * @return HashMap 结果集封装Map
+     */
+     HashMap<Object, Object> queryMap(String sql, Object obj);
+
+    /**
+     * 查找记录(只查找单一属性)
+     * @param sql
+     * @param obj
      * @return
      */
-    ResultSet search(Object src,Object des);
+     LinkedList<Object> queryList(String sql,Object obj);
 
     /**
      * 将对象映射成属性名和属性值
