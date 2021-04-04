@@ -55,7 +55,6 @@ public class BaseDaoImpl implements BaseDao {
     }
 
 
-
     /**
      * 增加一条记录进入数据库
      * @param obj 对象名
