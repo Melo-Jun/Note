@@ -35,14 +35,13 @@ public class AddNoteView extends JFrame {
     /**
      * 提交按钮事件
      * @param e
-     * @param user 执行新增笔记操作的用户
      */
-    private void summitActionPerformed(ActionEvent e,User user) {
+    private void summitActionPerformed(ActionEvent e) {
         TreeView.selectedId= folderGroupService.getId(TreeView.selectedName);
         String title = titleField.getText();
         String text = textArea.getText();
         String access = (String) this.accessSelect.getSelectedItem();
-        Note note = new Note( title, user.getId(), text, access ,0,TreeView.selectedId );
+        Note note = new Note( title, LoginView.USER.getId(), text, access ,0,TreeView.selectedId );
         if(noteDao.addNote(note)){
             JOptionPane.showMessageDialog(null,"增加笔记成功");
             this.dispose();
@@ -97,7 +96,7 @@ public class AddNoteView extends JFrame {
 
         //---- summit ----
         summit.setText("\u63d0\u4ea4");
-        summit.addActionListener(e -> summitActionPerformed(e,user));
+        summit.addActionListener(e -> summitActionPerformed(e));
 
         //---- accessSelect ----
         accessSelect.setModel(new DefaultComboBoxModel<>(new String[] {

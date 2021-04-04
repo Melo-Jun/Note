@@ -4,13 +4,10 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.dao.impl.NoteDaoImpl;
 import com.melo.notes.entity.User;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 
@@ -21,14 +18,13 @@ import javax.swing.GroupLayout;
 public class UserView extends JFrame {
 
     public UserView(User user) {
-        initComponents(user);
+        initComponents();
         setSize(1300, 800);
         setLocation(330, 120);
     }
 
-
     /**
-     * 新增笔记
+     * 各按钮事件
      *
      * @param e
      */
@@ -36,33 +32,16 @@ public class UserView extends JFrame {
         new AddNoteView(LoginView.USER).setVisible(true);
     }
 
-
     private void setNoteActionPerformed(ActionEvent e) {
         new FolderView(LoginView.USER);
     }
 
     private void showNoteActionPerformed(ActionEvent e) {
         new ListNoteTitle();
-       /* ResultSet rs = new NoteDaoImpl().showNoteTitle(user.getUserName());
-        try {
-            JLabel label = new JLabel();
-            label.setText("haha");
-            this.add(label);
-            while (rs.next()) {
-                String title = (String)rs.getObject("title");
-                System.out.println(title);
-                JLabel label2 = new JLabel();
-                label2.setText(title);
-                this.add(label2);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }*/
-
     }
 
 
-    private void initComponents(User user) {
+    private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         menuBar = new JMenuBar();
         note = new JMenu();

@@ -4,7 +4,6 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.dao.impl.FolderDaoImpl;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.util.BeanFactory;
@@ -12,8 +11,6 @@ import com.melo.notes.util.BeanFactory;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -66,7 +63,7 @@ public class FolderView extends JFrame {
 
             jf.setSize(1300, 800);
             jf.setLocation(330, 120);
-            jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            jf.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
             JPanel panel = new JPanel(null);
             panel.setLocation(950, 400);

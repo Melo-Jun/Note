@@ -18,7 +18,6 @@ import javax.swing.GroupLayout;
  * @description 登录界面
  */
 public class LoginView extends JFrame {
-
     /**
      * 相关操作类
      */
@@ -45,11 +44,10 @@ public class LoginView extends JFrame {
 
     private void loginActionPerformed(ActionEvent e) {
         /**
-         * 获取文本框内容
+         * 获取文本框内容和下拉权限值
          */
         String userName = userNameText.getText();
         String password = String.valueOf(passwordField.getPassword());
-        //获取下拉权限值
         String access = (String) this.access.getSelectedItem();
         String message = loginViewService.isValid(userName, password, access);
         JOptionPane.showMessageDialog(null,message);
@@ -63,7 +61,6 @@ public class LoginView extends JFrame {
                 new UserView(USER).setVisible(true);
             }
     }
-
     /**
      * 注册按钮事件
      * @param e

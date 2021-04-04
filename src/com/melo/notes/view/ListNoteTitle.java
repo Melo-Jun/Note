@@ -4,21 +4,18 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.dao.impl.NoteDaoImpl;
-import com.melo.notes.service.impl.FolderGroupServiceImpl;
+import com.melo.notes.bean.AuthorBean;
+import com.melo.notes.bean.NoteBean;
+import com.melo.notes.entity.Note;
 import com.melo.notes.service.impl.ListNoteTitleServiceImpl;
-import com.melo.notes.service.inter.ListNoteTitleService;
 import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
 import javax.swing.*;
 import javax.swing.GroupLayout;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 /**
  * @author 1
@@ -40,14 +37,13 @@ public class ListNoteTitle extends JFrame {
     JButton searchByTitle=new JButton("根据标题搜索");
     JButton searchByAuthor=new JButton("根据作者id搜索");
     JPanel panel = new JPanel();
-    JList<String> list=new JList<String>();
+    JList<String> list=new JList();
 
     public ListNoteTitle() {
 
         jf.setBounds(330, 120, 650, 600);
         jf.setLocationRelativeTo(null);
         jf.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-
 
         // 创建一个 JList 实例
         panel.add(list);
@@ -73,8 +69,24 @@ public class ListNoteTitle extends JFrame {
                     title = list.getSelectedValue();
                     //To do
                 }
+                /**
+                 * 显示详情
+                 */
                 if(e.getSource()==show){
-                    list.setListData(new String[]{"想", "雪梨", "苹果", "荔枝","jj","bb","eweaw","dasdsa","da"});
+
+                }
+                /**
+                 * 根据标题搜索
+                 */
+                if(e.getSource()==searchByTitle){
+                    String title = JOptionPane.showInputDialog("请输入标题");
+                    NoteBean noteBean = new NoteBean(title);
+                    list.setListData(listNoteTitleService.listNoteTitle(noteBean));
+                }
+                if(e.getSource()==searchByAuthor){
+                    String authorId = JOptionPane.showInputDialog("请输入作者id");
+                    AuthorBean authorBean = new AuthorBean(authorId);
+                    list.setListData(listNoteTitleService.listNoteTitle(authorBean));
                 }
             }
         };
@@ -85,8 +97,8 @@ public class ListNoteTitle extends JFrame {
         searchByTitle.addMouseListener(mouseListener);
         searchByAuthor.addMouseListener(mouseListener);
 
-        // 设置选项数据
-        String[] titles = listNoteTitleService.listNoteTitle();
+        // 设置选项数据(默认显示所有笔记)
+        String[] titles = listNoteTitleService.listNoteTitle(null);
         list.setListData(titles);
 
         //设置滚动面板

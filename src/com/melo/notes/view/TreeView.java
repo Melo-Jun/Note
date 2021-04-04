@@ -13,6 +13,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 import javax.swing.event.TreeModelEvent;
@@ -61,14 +65,14 @@ public class TreeView extends JFrame {
 
     public TreeView() {
 
-        jf.setSize(1300, 800);
-        jf.setLocation(330, 120);
-        jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        jf.setSize(650, 650);
+        jf.setLocation(1100, 250);
+        jf.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
         panel.setLocation(950, 400);
 
 
-        submit.setBounds(700,400,70,20);
+        submit.setBounds(200,500,70,20);
 
         /**
          * 增加监听器
@@ -88,37 +92,34 @@ public class TreeView extends JFrame {
         /**
          * 根据知识库名生成相应笔记分组
          */
-        ResultSet FolderRs = folderGroupService.showNoteFolder(user);
-        System.out.println(FolderRs);
-        System.out.println(user.getId());
-        ResultSet GroupRs=null;
-        try {
+        User tempUser = new User();
+        tempUser.setId(LoginView.USER.getId());
+        HashMap<Object, Object> Folder = folderGroupService.showFolderName(tempUser);
+        /**
+         * 先生成知识库
+         */
+        Object folderId="";
+        Object folderName="";
+        /**
+         * 遍历获取folderId和folderName
+         */
+        Set<Map.Entry<Object, Object>> entries =  Folder.entrySet();
+        for(Map.Entry temp:entries) {
+            folderId = temp.getKey();
+            folderName = temp.getValue();
             /**
-             * 先生成知识库
+             * 根据folderName生成知识库
              */
-            while (FolderRs.next()) {
-                Object folderName = FolderRs.getObject("folder_name");
-                Object id = FolderRs.getObject("id");
-                System.out.println(id);
-                DefaultMutableTreeNode folder = new DefaultMutableTreeNode(folderName);
-                rootNode.add(folder);
-                /**
-                 * 再生成相应笔记分组
-                 */
-                GroupRs = folderGroupService.showNoteGroup(id.toString());
-                System.out.println(GroupRs);
-                while(GroupRs.next()){
-                    Object groupName = GroupRs.getObject("group_name");
-                    System.out.println(groupName.toString());
-                    DefaultMutableTreeNode group = new DefaultMutableTreeNode(groupName);
-                    folder.add(group);
-                }
+            DefaultMutableTreeNode folder = new DefaultMutableTreeNode(folderName);
+            rootNode.add(folder);
+            /**
+             * 再根据folderId生成相应笔记分组
+             */
+            LinkedList<Object> groupNames = folderGroupService.showNoteGroup(folderId.toString());
+            for(Object groupName:groupNames) {
+                DefaultMutableTreeNode group = new DefaultMutableTreeNode(groupName);
+                folder.add(group);
             }
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
-            close(null, FolderRs);
-            close(null,GroupRs);
         }
 
         // 使用根节点创建树组件
@@ -175,6 +176,7 @@ public class TreeView extends JFrame {
         // 设置窗口内容面板并显示
         jf.setContentPane(panel);
         jf.setVisible(true);
+        jf.setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
     /**
