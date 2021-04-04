@@ -22,7 +22,6 @@ public class UserView extends JFrame {
         initComponents();
         welcome.setText("ª∂”≠ªÿ¿¥, "+LoginView.USER.getUserName());
         welcome.setBounds(650,100,150,20);
-        textArea1.setText("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         setSize(1300, 800);
         setLocation(330, 120);
     }
@@ -53,14 +52,13 @@ public class UserView extends JFrame {
         addNote = new JMenuItem();
         setNote = new JMenuItem();
         welcome = new JLabel();
-        scrollPane1 = new JScrollPane();
-        textArea1 = new JTextArea();
 
         //======== this ========
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
         setMinimumSize(new Dimension(950, 650));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        setTitle("\u7528\u6237\u754c\u9762");
         Container contentPane = getContentPane();
         contentPane.setLayout(null);
 
@@ -102,16 +100,6 @@ public class UserView extends JFrame {
         contentPane.add(welcome);
         welcome.setBounds(332, 110, 283, 116);
 
-        //======== scrollPane1 ========
-        {
-
-            //---- textArea1 ----
-            textArea1.setLineWrap(true);
-            scrollPane1.setViewportView(textArea1);
-        }
-        contentPane.add(scrollPane1);
-        scrollPane1.setBounds(50, 130, 165, 95);
-
         {
             // compute preferred size
             Dimension preferredSize = new Dimension();
@@ -137,7 +125,5 @@ public class UserView extends JFrame {
     private JMenuItem addNote;
     private JMenuItem setNote;
     private JLabel welcome;
-    private JScrollPane scrollPane1;
-    private JTextArea textArea1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

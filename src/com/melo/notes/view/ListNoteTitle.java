@@ -37,7 +37,7 @@ public class ListNoteTitle extends JFrame {
     private final String PRIVATE="私有";
     private final String PUBLIC="公开";
 
-    JFrame jf = new JFrame("测试窗口");
+    JFrame jf = new JFrame("查看笔记");
     JButton show=new JButton("查看详情");
     JButton searchByTitle=new JButton("根据标题搜索");
     JButton searchByAuthor=new JButton("根据作者id搜索");
