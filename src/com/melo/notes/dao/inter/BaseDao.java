@@ -23,7 +23,6 @@ public interface BaseDao {
      */
      int executeUpdate(Object obj, String sql);
 
-
     /**
      * 增加一条记录进入数据库
      *
@@ -44,24 +43,33 @@ public interface BaseDao {
      * 查找记录(需要键值对类型)
      *
      * @param sql 特定查询语句
-     * @param obj 根据的对象(用来填充参数)
+     * @param obj 特定查询语句
      * @return HashMap 结果集封装Map
      */
      HashMap<Object, Object> queryMap(String sql, Object obj);
 
     /**
-     * 查找记录(只查找单一属性)
-     * @param sql
-     * @param obj
-     * @return
+     * 查找记录(只查找单一值)
+     *
+     * @param sql 查询语句
+     * @param obj 用以填充的属性值
+     * @return LinkedList 结果集封装LinkedList
      */
      LinkedList<Object> queryList(String sql,Object obj);
 
     /**
-     * 将对象映射成属性名和属性值
+     * 查询所有
+     * @param sql
      * @param obj
-     * @param fieldNames
-     * @param fieldValues
+     * @return
+     */
+    LinkedList<Object> queryAll(String sql,Object obj);
+
+    /**
+     * 将对象映射成属性名和属性值
+     * @param obj 对象
+     * @param fieldNames 属性名
+     * @param fieldValues 属性值
      * @throws DaoException
      */
     void fieldMapper(Object obj, LinkedList fieldNames, LinkedList fieldValues) throws DaoException;

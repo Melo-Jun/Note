@@ -2,19 +2,9 @@ package com.melo.notes.dao.impl;
 
 import com.melo.notes.dao.inter.NoteDao;
 import com.melo.notes.entity.Note;
-import com.melo.notes.entity.User;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.LinkedList;
-
-import static com.melo.notes.util.JdbcUtils.*;
-import static com.melo.notes.util.ReflectUtils.getFields;
-import static com.melo.notes.util.ReflectUtils.getMethods;
+;
 
 /**
  * @author Jun
@@ -40,19 +30,19 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
      */
     @Override
     public LinkedList<Object> showNoteTitle(Object obj) {
-        StringBuilder sql = new StringBuilder( "select title from "+TABLE_NAME);
+        StringBuilder sql = new StringBuilder( "select title from "+TABLE_NAME+" where access=? ");
         /**
          * 将对象映射成属性和值(属性会映射为数据库字段名)
          */
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
         fieldMapper(obj,fieldNames,fieldValues);
-        fieldMapper(obj,fieldNames,fieldValues);
         /**
          * 将字段名填入sql语句
+         * 不等于1说明还有其他根据条件,则动态增加条件
          */
-        if(obj!=null){
-            sql.append(" where "+fieldNames.getFirst()+" ="+"?");
+        if(fieldValues.size()!=1){
+            sql.append(" AND "+fieldNames.getLast()+" ="+"?");
         }
         /**
          * 完成sql注入和执行
@@ -61,12 +51,36 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
     }
 
     /**
-     * 通过点击标题查看按钮查看笔记详情
-     * @param title 笔记标题
+     *分页查询文本
+     * @param obj
+     * @return
      */
     @Override
-    public void listNoteText(String title) {
-        String sql="select "+ALL_FIELD_NAME+" from "+TABLE_NAME;
+    public String showNoteText(Object obj) {
+        String sql="select text from "+TABLE_NAME+" where title=? ";
+        return queryList(sql,obj).getFirst().toString();
+    }
+
+
+    /**
+     * 通过点击标题查看按钮查看笔记详情
+     * @param obj 根据的对象
+     * @return
+     */
+    @Override
+    public LinkedList<Object> listNoteAll(Object obj) {
+        StringBuilder sql = new StringBuilder( "select "+ALL_FIELD_NAME+" from "+TABLE_NAME+" where title=? ");
+        /**
+         * 将对象映射成属性和值(属性会映射为数据库字段名)
+         */
+        LinkedList<Object> fieldNames = new LinkedList<>();
+        LinkedList<Object> fieldValues = new LinkedList<>();
+        fieldMapper(obj,fieldNames,fieldValues);
+        /**
+         * 完成sql注入和执行
+         */
+        System.out.println(sql.toString());
+        return queryAll(sql.toString(),obj);
     }
 
     /**

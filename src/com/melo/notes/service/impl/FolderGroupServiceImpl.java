@@ -105,13 +105,13 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     }
 
     /**
-     * 根据名称获取id
-     * @param name 名称
+     * 根据xxx获取id
+     * @param obj xxx
      * @return String id
      */
     @Override
-    public String getId(String name) {
-        return groupDao.getId(name);
+    public String getId(Object obj ) {
+        return groupDao.getId(obj);
     }
 
 

@@ -6,6 +6,8 @@ package com.melo.notes.view;
 
 import com.melo.notes.bean.AuthorBean;
 import com.melo.notes.bean.NoteBean;
+import com.melo.notes.bean.NoteTextBean;
+import com.melo.notes.dao.impl.NoteDaoImpl;
 import com.melo.notes.entity.Note;
 import com.melo.notes.service.impl.ListNoteTitleServiceImpl;
 import com.melo.notes.util.BeanFactory;
@@ -14,11 +16,12 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.time.temporal.JulianFields;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 
 /**
- * @author 1
+ * @author Jun
  */
 public class ListNoteTitle extends JFrame {
     /**
@@ -31,22 +34,30 @@ public class ListNoteTitle extends JFrame {
      * 选中的标题
      */
     private String title="";
+    private final String PRIVATE="私有";
+    private final String PUBLIC="公开";
 
     JFrame jf = new JFrame("测试窗口");
     JButton show=new JButton("查看详情");
     JButton searchByTitle=new JButton("根据标题搜索");
     JButton searchByAuthor=new JButton("根据作者id搜索");
+    JButton back=new JButton("返回");
     JPanel panel = new JPanel();
     JList<String> list=new JList();
+    JTextArea text=new JTextArea();
+    String[] titles = listNoteTitleService.listNoteTitle(new AuthorBean(null,PUBLIC));
 
     public ListNoteTitle() {
 
-        jf.setBounds(330, 120, 650, 600);
+        jf.setBounds(330, 120, 650, 900);
         jf.setLocationRelativeTo(null);
         jf.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
+        text.setBounds(100,500,200,200);
+
         // 创建一个 JList 实例
         panel.add(list);
+        panel.add(text);
         //设置字体和间距
         Font titleFont = new Font("微软雅黑", Font.PLAIN, 20);
         list.setFont(titleFont);
@@ -59,20 +70,21 @@ public class ListNoteTitle extends JFrame {
 
         //设置每行高度宽度
         list.setFixedCellHeight(50);
-        list.setFixedCellWidth(300);
+        list.setFixedCellWidth(500);
 
-        MouseListener mouseListener = new MouseAdapter() {
+        MouseListener mouseListener = new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    Integer index = list.locationToIndex(e.getPoint());
-                    title = list.getSelectedValue();
-                    //To do
-                }
                 /**
                  * 显示详情
                  */
                 if(e.getSource()==show){
+                    Note note = new Note();
+                    note.setTitle(title);
+                    String[] strings = listNoteTitleService.listNoteAll(note);
+                    list.setListData(strings);
+                    new NoteTextView(new NoteDaoImpl().showNoteText(new NoteTextBean(title))).setVisible(true);
+                    //System.out.println(new NoteDaoImpl().showNoteText(new NoteTextBean("想")));
 
                 }
                 /**
@@ -80,14 +92,40 @@ public class ListNoteTitle extends JFrame {
                  */
                 if(e.getSource()==searchByTitle){
                     String title = JOptionPane.showInputDialog("请输入标题");
-                    NoteBean noteBean = new NoteBean(title);
+                    NoteBean noteBean = new NoteBean(PUBLIC,title);
                     list.setListData(listNoteTitleService.listNoteTitle(noteBean));
                 }
                 if(e.getSource()==searchByAuthor){
                     String authorId = JOptionPane.showInputDialog("请输入作者id");
-                    AuthorBean authorBean = new AuthorBean(authorId);
+                    AuthorBean authorBean = new AuthorBean(PUBLIC,authorId);
                     list.setListData(listNoteTitleService.listNoteTitle(authorBean));
                 }
+                if(e.getSource()==back){
+                    list.setListData(titles);
+                }
+                Integer index = list.locationToIndex(e.getPoint());
+                if(list.getSelectedValue()!=null) {
+                    Integer i = list.getSelectedValue().lastIndexOf(":");
+                    System.out.println(i);
+                }
+                title = list.getSelectedValue();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
             }
         };
 
@@ -96,9 +134,10 @@ public class ListNoteTitle extends JFrame {
         show.addMouseListener(mouseListener);
         searchByTitle.addMouseListener(mouseListener);
         searchByAuthor.addMouseListener(mouseListener);
+        back.addMouseListener(mouseListener);
 
         // 设置选项数据(默认显示所有笔记)
-        String[] titles = listNoteTitleService.listNoteTitle(null);
+        //String[] titles = listNoteTitleService.listNoteTitle(new AuthorBean(null,PUBLIC));
         list.setListData(titles);
 
         //设置滚动面板
@@ -113,6 +152,8 @@ public class ListNoteTitle extends JFrame {
         panel.add(show);
         panel.add(searchByTitle);
         panel.add(searchByAuthor);
+        panel.add(back);
+        panel.add(text);
         panel.add(scrollPane);
 
 

@@ -4,6 +4,7 @@
 
 package com.melo.notes.view;
 
+import javax.swing.event.*;
 import com.melo.notes.entity.User;
 
 import java.awt.*;
@@ -19,6 +20,9 @@ public class UserView extends JFrame {
 
     public UserView(User user) {
         initComponents();
+        welcome.setText("ª∂”≠ªÿ¿¥, "+LoginView.USER.getUserName());
+        welcome.setBounds(650,100,150,20);
+        textArea1.setText("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         setSize(1300, 800);
         setLocation(330, 120);
     }
@@ -48,6 +52,9 @@ public class UserView extends JFrame {
         showNote = new JMenuItem();
         addNote = new JMenuItem();
         setNote = new JMenuItem();
+        welcome = new JLabel();
+        scrollPane1 = new JScrollPane();
+        textArea1 = new JTextArea();
 
         //======== this ========
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
@@ -55,6 +62,7 @@ public class UserView extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         Container contentPane = getContentPane();
+        contentPane.setLayout(null);
 
         //======== menuBar ========
         {
@@ -86,16 +94,38 @@ public class UserView extends JFrame {
         }
         setJMenuBar(menuBar);
 
-        GroupLayout contentPaneLayout = new GroupLayout(contentPane);
-        contentPane.setLayout(contentPaneLayout);
-        contentPaneLayout.setHorizontalGroup(
-            contentPaneLayout.createParallelGroup()
-                .addGap(0, 948, Short.MAX_VALUE)
-        );
-        contentPaneLayout.setVerticalGroup(
-            contentPaneLayout.createParallelGroup()
-                .addGap(0, 589, Short.MAX_VALUE)
-        );
+        //---- welcome ----
+        welcome.setHorizontalAlignment(SwingConstants.CENTER);
+        welcome.setText("\u6b22\u8fce\u56de\u6765");
+        welcome.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
+        welcome.setForeground(new Color(51, 153, 255));
+        contentPane.add(welcome);
+        welcome.setBounds(332, 110, 283, 116);
+
+        //======== scrollPane1 ========
+        {
+
+            //---- textArea1 ----
+            textArea1.setLineWrap(true);
+            scrollPane1.setViewportView(textArea1);
+        }
+        contentPane.add(scrollPane1);
+        scrollPane1.setBounds(50, 130, 165, 95);
+
+        {
+            // compute preferred size
+            Dimension preferredSize = new Dimension();
+            for(int i = 0; i < contentPane.getComponentCount(); i++) {
+                Rectangle bounds = contentPane.getComponent(i).getBounds();
+                preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+            }
+            Insets insets = contentPane.getInsets();
+            preferredSize.width += insets.right;
+            preferredSize.height += insets.bottom;
+            contentPane.setMinimumSize(preferredSize);
+            contentPane.setPreferredSize(preferredSize);
+        }
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
@@ -106,5 +136,8 @@ public class UserView extends JFrame {
     private JMenuItem showNote;
     private JMenuItem addNote;
     private JMenuItem setNote;
+    private JLabel welcome;
+    private JScrollPane scrollPane1;
+    private JTextArea textArea1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

@@ -51,9 +51,9 @@ public interface FolderGroupService {
      boolean isGroup(String selectedClassName);
 
     /**
-     * 根据名称获取id
-     * @param name 名称
+     * 根据xxx获取id
+     * @param obj xxx
      * @return String id
      */
-    String getId(String name);
+    String getId(Object obj);
 }

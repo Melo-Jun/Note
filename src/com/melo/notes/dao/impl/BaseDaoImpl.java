@@ -102,7 +102,7 @@ public class BaseDaoImpl implements BaseDao {
     }
 
     /**
-     * 查找记录
+     * 查找记录封装成Map键值对
      *
      * @param sql 特定查询语句
      * @param obj 根据的对象(用来填充参数)
@@ -152,11 +152,11 @@ public class BaseDaoImpl implements BaseDao {
     }
 
     /**
-     * 查找记录(只查找单一属性)
+     * 查找记录(只查找单一值)
      *
      * @param sql 查询语句
      * @param obj 用以填充的属性值
-     * @return
+     * @return LinkedList 结果集封装LinkedList
      */
     @Override
     public LinkedList<Object> queryList(String sql, Object obj) {
@@ -168,6 +168,7 @@ public class BaseDaoImpl implements BaseDao {
             ps=conn.prepareStatement(sql);
             //根据obj注入Sql填充参数
             setParams(ps,obj);
+            System.out.println(sql);
             rs=ps.executeQuery();
             while(rs.next()){
                 resultList.add(rs.getObject(1));
@@ -180,6 +181,38 @@ public class BaseDaoImpl implements BaseDao {
         }
         return resultList;
     }
+
+    @Override
+    public LinkedList<Object> queryAll(String sql, Object obj) {
+        LinkedList<Object> values = new LinkedList<>();
+        Connection conn=getConnection();
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        ResultSetMetaData rsmd=null;
+        try {
+            ps=conn.prepareStatement(sql);
+            //根据obj注入Sql填充参数
+            setParams(ps,obj);
+            rs=ps.executeQuery();
+            rsmd=rs.getMetaData();
+            while(rs.next()){
+                for(int i=1;i<=rsmd.getColumnCount();i++){
+                    // text另外分页展示
+                    if(!rsmd.getColumnName(i).equals("text")) {
+                        values.add(rsmd.getColumnName(i)+" :   "+ rs.getObject(i));
+                    }
+                }
+            }
+            System.out.println(values);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            freeConnection(conn);
+            close(ps,rs);
+        }
+        return values;
+    }
+
 
     /**
      * 将对象映射成属性名和属性值

@@ -19,6 +19,9 @@ import static com.melo.notes.util.JdbcUtils.*;
  * @date 2021-3-20 9:06
  */
 public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
+
+    private final String TABLE_NAME="located_group";
+
     /**
      * 根据知识库id列出分组界面
      * @param folderId 知识库id
@@ -26,7 +29,7 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
      */
     @Override
     public LinkedList<Object> showNoteGroup(String folderId) {
-        String sql="select group_name from located_group where located_folder=?";
+        String sql="select group_name from "+TABLE_NAME+" where located_folder=?";
         Folder folder = new Folder();
         folder.setId(folderId);
         return queryList(sql,folder);
@@ -45,29 +48,14 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
     }
 
     /**
-     * 根据名称获取id
-     * @param name 名称
+     * 根据xxx获取id
+     * @param obj xxx
      * @return String id
      */
     @Override
-    public String getId(String name) {
-        Connection conn= getConnection();
-        PreparedStatement ps=null;
-        ResultSet rs=null;
-        try {
-            String sql="select id from located_group where group_name=?";
-            ps=conn.prepareStatement(sql);
-            ps.setString(1, name);
-            rs=ps.executeQuery();
-            rs.next();
-            return rs.getString("id");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
-            freeConnection(conn);
-            close(ps,rs);
-        }
-        return null;
+    public String getId(Object obj) {
+            String sql="select id from "+TABLE_NAME +"  where group_name=?";
+            return queryList(sql,obj).getFirst().toString();
     }
 
 }

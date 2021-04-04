@@ -5,6 +5,7 @@
 package com.melo.notes.view;
 
 import com.melo.notes.dao.impl.NoteDaoImpl;
+import com.melo.notes.entity.Group;
 import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
@@ -37,7 +38,9 @@ public class AddNoteView extends JFrame {
      * @param e
      */
     private void summitActionPerformed(ActionEvent e) {
-        TreeView.selectedId= folderGroupService.getId(TreeView.selectedName);
+        Group group = new Group();
+        group.setGroupName(TreeView.selectedName);
+        TreeView.selectedId= folderGroupService.getId(group);
         String title = titleField.getText();
         String text = textArea.getText();
         String access = (String) this.accessSelect.getSelectedItem();

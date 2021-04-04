@@ -36,5 +36,21 @@ public class ListNoteTitleServiceImpl implements ListNoteTitleService {
         return strings;
     }
 
+    /**
+     * @param obj
+     * @return
+     */
+    @Override
+    public String[] listNoteAll(Object obj) {
+        LinkedList<Object> objects = noteDao.listNoteAll(obj);
+        String[] strings = new String[100];
+        int i=0;
+        for(Object temp:objects){
+            strings[i]=(String) temp;
+            i++;
+        }
+        return strings;
+    }
+
 
 }

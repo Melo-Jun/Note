@@ -8,10 +8,21 @@ package com.melo.notes.bean;
  */
 public class AuthorBean {
 
+    private String access;
     private String authorId;
 
-    public AuthorBean(String authorId) {
+
+    public AuthorBean(String access, String authorId) {
+        this.access = access;
         this.authorId = authorId;
+    }
+
+    public String getAccess() {
+        return access;
+    }
+
+    public void setAccess(String access) {
+        this.access = access;
     }
 
     public String getAuthorId() {
