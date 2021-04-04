@@ -26,6 +26,8 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
 
     private final String TABLE_NAME="note";
 
+    private final String ALL_FIELD_NAME="id,title,author_id,text,access,gmt_create,gmt_modified,like_count,located_group";
+
     public static Object instance(){
         return new NoteDaoImpl();
     }
@@ -59,28 +61,12 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
     }
 
     /**
-     * 通过点击标题查看笔记详情
+     * 通过点击标题查看按钮查看笔记详情
      * @param title 笔记标题
      */
     @Override
     public void listNoteText(String title) {
-        Connection conn = getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            String sql = "select text from note where title=?";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, title);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                System.out.println(rs.getObject("text"));
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
-            freeConnection(conn);
-            close(ps, rs);
-        }
+        String sql="select "+ALL_FIELD_NAME+" from "+TABLE_NAME;
     }
 
     /**

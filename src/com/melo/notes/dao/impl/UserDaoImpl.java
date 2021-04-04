@@ -66,6 +66,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public boolean add(User user) {
+        /**
+         * 发现用户名为空也会被增加进去才修改
+         */
+        if(user==null||user.getUserName().isEmpty()){
+            return false;
+        }
         return super.insert(user) == 1;
     }
 

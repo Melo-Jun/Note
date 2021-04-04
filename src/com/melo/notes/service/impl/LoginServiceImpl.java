@@ -21,6 +21,11 @@ public class LoginServiceImpl implements LoginService {
     UserDaoImpl userDao = (UserDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.UserDao);
 
     /**
+     * 非法空格符
+     */
+    private final String SPACE=" ";
+
+    /**
      * 设置Id
      *
      * @param user
@@ -52,11 +57,11 @@ public class LoginServiceImpl implements LoginService {
      */
     @Override
     public String isValid(String userName, String password, String access) {
-        if (userName.isEmpty()) {
-            return "用户名不能为空";
+        if (userName.isEmpty()||userName.contains(SPACE)) {
+            return "用户名不合格";
         }
-        if (password.isEmpty()) {
-            return "密码不能为空";
+        if (password.isEmpty()||password.contains(SPACE)) {
+            return "密码不合格";
         }
         if (access == ADMIN) {
 
@@ -68,7 +73,7 @@ public class LoginServiceImpl implements LoginService {
                 return "用户或密码有误";
             }
         }
-        return "";
+        return "登录失败";
     }
 
 }

@@ -20,7 +20,7 @@ public interface NoteDao {
      LinkedList<Object> showNoteTitle(Object obj);
 
     /**
-     * 通过点击标题查看笔记详情
+     * 通过点击标题查看按钮查看笔记详情
      * @param title 笔记标题
      */
      void listNoteText(String title);
