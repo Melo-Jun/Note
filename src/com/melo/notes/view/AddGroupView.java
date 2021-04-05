@@ -18,6 +18,7 @@ import javax.swing.GroupLayout;
  * @author Jun
  */
 public class AddGroupView extends JFrame {
+
     /**
      * 创建相关操作对象
      */
@@ -33,8 +34,6 @@ public class AddGroupView extends JFrame {
         for(Object temp:values){
             selectedLocatedFolder.addItem(temp);
         }
-
-
     }
 
     private void submitActionPerformed(ActionEvent e) {
@@ -43,7 +42,6 @@ public class AddGroupView extends JFrame {
         if(folderGroupService.addGroup(groupName,locatedFolder.toString())!=0&&!groupName.isEmpty()){
             JOptionPane.showMessageDialog(null,"增加成功");
             this.dispose();
-            new FolderView(LoginView.USER);
         }else {
             JOptionPane.showMessageDialog(null,"增加失败");
         }
@@ -56,6 +54,7 @@ public class AddGroupView extends JFrame {
         submit = new JButton();
         name = new JLabel();
         nameText = new JTextField();
+        label1 = new JLabel();
 
         //======== this ========
         Container contentPane = getContentPane();
@@ -69,6 +68,10 @@ public class AddGroupView extends JFrame {
 
         //---- name ----
         name.setText("\u540d\u79f0");
+
+        //---- label1 ----
+        label1.setText("\u64cd\u4f5c\u5b8c\u6bd5\u540e\u8bb0\u5f97\u5237\u65b0");
+        label1.setForeground(SystemColor.activeCaption);
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
@@ -89,11 +92,17 @@ public class AddGroupView extends JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(selectedLocatedFolder, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
                     .addContainerGap(61, Short.MAX_VALUE))
+                .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                    .addGap(0, 127, Short.MAX_VALUE)
+                    .addComponent(label1, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)
+                    .addGap(85, 85, 85))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                    .addContainerGap(33, Short.MAX_VALUE)
+                    .addContainerGap(12, Short.MAX_VALUE)
+                    .addComponent(label1)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(contentPaneLayout.createParallelGroup()
                         .addGroup(contentPaneLayout.createSequentialGroup()
                             .addGap(8, 8, 8)
@@ -118,5 +127,6 @@ public class AddGroupView extends JFrame {
     private JButton submit;
     private JLabel name;
     private JTextField nameText;
+    private JLabel label1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

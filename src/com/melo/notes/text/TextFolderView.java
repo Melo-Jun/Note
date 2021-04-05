@@ -1,5 +1,3 @@
-package com.melo.notes.text;
-
 import com.melo.notes.dao.impl.FolderDaoImpl;
 import com.melo.notes.entity.User;
 import com.melo.notes.view.FolderView;
@@ -15,7 +13,7 @@ public class TextFolderView {
     public void test01(){
         LoginView.USER = new User();
         LoginView.USER.setId("1");
-        new FolderView(LoginView.USER).setVisible(true);
+        new FolderView(LoginView.USER);
         //new FolderDaoImpl().showFolderName(LoginView.USER);
     }
 

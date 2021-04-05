@@ -36,7 +36,6 @@ public class AddFolderView extends JFrame {
         if(folderGroupService.addFolder(name,access)!=0&&!name.isEmpty()){
             JOptionPane.showMessageDialog(null,"增加成功");
             this.dispose();
-            new FolderView(LoginView.USER);
         }else {
             JOptionPane.showMessageDialog(null,"增加失败");
         }
@@ -51,6 +50,7 @@ public class AddFolderView extends JFrame {
         name = new JLabel();
         access = new JLabel();
         submit = new JButton();
+        label1 = new JLabel();
 
         //======== this ========
         Container contentPane = getContentPane();
@@ -71,29 +71,40 @@ public class AddFolderView extends JFrame {
         submit.setText("\u786e\u5b9a");
         submit.addActionListener(e -> submitActionPerformed(e));
 
+        //---- label1 ----
+        label1.setText("\u64cd\u4f5c\u5b8c\u6bd5\u540e\u8bb0\u5f97\u5237\u65b0");
+        label1.setForeground(SystemColor.activeCaption);
+
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup()
-                .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                    .addGap(40, 40, 40)
-                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                .addGroup(contentPaneLayout.createSequentialGroup()
+                    .addGroup(contentPaneLayout.createParallelGroup()
                         .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addComponent(name)
-                            .addGap(18, 18, 18)
-                            .addComponent(nameText, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE))
+                            .addGap(40, 40, 40)
+                            .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                .addGroup(contentPaneLayout.createSequentialGroup()
+                                    .addComponent(name)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(nameText, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE))
+                                .addGroup(contentPaneLayout.createSequentialGroup()
+                                    .addComponent(access)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(selectedAccess, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+                                    .addGap(72, 72, 72)
+                                    .addComponent(submit))))
                         .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addComponent(access)
-                            .addGap(18, 18, 18)
-                            .addComponent(selectedAccess, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
-                            .addGap(72, 72, 72)
-                            .addComponent(submit)))
+                            .addGap(100, 100, 100)
+                            .addComponent(label1, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)))
                     .addGap(0, 86, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                    .addGap(43, 43, 43)
+                    .addGap(13, 13, 13)
+                    .addComponent(label1)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(name)
                         .addComponent(nameText, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
@@ -115,5 +126,6 @@ public class AddFolderView extends JFrame {
     private JLabel name;
     private JLabel access;
     private JButton submit;
+    private JLabel label1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

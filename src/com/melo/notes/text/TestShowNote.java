@@ -1,11 +1,6 @@
-package com.melo.notes.text;
-
-import com.melo.notes.dao.impl.NoteDaoImpl;
-import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
+import com.melo.notes.view.LoginView;
 import com.melo.notes.view.ShowNoteTitleView;
-
-import java.util.LinkedList;
 
 /**
  * @author Jun
@@ -15,10 +10,8 @@ import java.util.LinkedList;
  */
 public class TestShowNote {
     public static void main(String[] args) {
-        Note note = new Note();
-        note.setLocatedGroup("1");
-        //new ShowNoteTitleView(user);
-        LinkedList<Object> objects = new NoteDaoImpl().showNoteTitle(note,note);
-        System.out.println(objects);
+        LoginView.USER=new User();
+        LoginView.USER.setId("1");
+        new ShowNoteTitleView(LoginView.USER);
     }
 }

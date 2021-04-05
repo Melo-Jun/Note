@@ -1,5 +1,3 @@
-package com.melo.notes.text;
-
 import com.melo.notes.view.LoginView;
 
 /**

@@ -1,15 +1,11 @@
-/*
- * Created by JFormDesigner on Wed Mar 31 19:23:44 CST 2021
- */
+
 
 package com.melo.notes.view;
 
-import com.melo.notes.dao.impl.FolderDaoImpl;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
@@ -17,7 +13,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.*;
-import javax.swing.GroupLayout;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -39,11 +34,6 @@ public class FolderView extends JFrame {
      */
     public static String selectedName ="";
     /**
-     * 选中的id
-     */
-    public static String folderId=" ";
-    public static String groupId=" ";
-    /**
      * 选中的类型
      */
     public static String selectedType ="";
@@ -51,12 +41,14 @@ public class FolderView extends JFrame {
     JFrame jf = new JFrame("设置笔记分组");
     private Listener l = new Listener();
     private JButton delete = new JButton("删除");
-    private JButton submit = new JButton("确定");
-    private JButton update = new JButton("修改");
+    private JButton flush = new JButton("刷新");
+    private JButton addFolder = new JButton("新增知识库");
+    private JButton addGroup = new JButton("新增笔记分组");
+    private JButton update = new JButton("修改名称");
+    private JButton setGroup = new JButton("设置笔记分组");
 
     /**
      * 创建相关操作对象
-     * @return
      */
     FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
 
@@ -67,30 +59,39 @@ public class FolderView extends JFrame {
     public FolderView(User user) {
 
 
-            jf.setSize(1300, 800);
+            jf.setSize(800, 600);
             jf.setLocation(330, 120);
             jf.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
             JPanel panel = new JPanel(null);
             panel.setLocation(950, 400);
 
-
-            submit.setBounds(700,400,70,20);
-            delete.setBounds(700,350,70,20);
-            update.setBounds(700,300,70,20);
+            flush.setBounds(600,200,120,50);
+            update.setBounds(600,250,120,50);
+            delete.setBounds(600,300,120,50);
+            addFolder.setBounds(600,350,120,50);
+            addGroup.setBounds(600,400,120,50);
+            setGroup.setBounds(600,450,120,50);
 
         /**
          * 增加监听器
          */
         delete.addMouseListener(l);
         update.addMouseListener(l);
-        submit.addMouseListener(l);
+        addFolder.addMouseListener(l);
+        addGroup.addMouseListener(l);
+        setGroup.addMouseListener(l);
+        flush.addMouseListener(l);
 
         /**
          * 加入面板中
          */
+            panel.add(flush);
             panel.add(delete);
             panel.add(update);
+            panel.add(setGroup);
+            panel.add(addFolder);
+            panel.add(addGroup);
 
         /**
          * 创建根节点
@@ -179,7 +180,6 @@ public class FolderView extends JFrame {
 
             // 添加滚动面板到内容面板
             panel.add(scrollPane);
-            panel.add(submit);
 
             // 设置窗口内容面板并显示
             jf.setContentPane(panel);
@@ -193,10 +193,18 @@ public class FolderView extends JFrame {
         @Override
         public void mouseClicked(MouseEvent e) {
             /**
+             * 刷新操作
+             */
+            if(e.getSource()==flush){
+                jf.dispose();
+                new FolderView(LoginView.USER);
+            }
+            /**
              * 删除操作
              */
             if(e.getSource()==delete){
                 if(folderGroupService.delete(selectedName, selectedType)!=0) {
+                    JOptionPane.showConfirmDialog(null,"确定删除吗");
                     jf.dispose();
                     new FolderView(LoginView.USER);
                 }else {
@@ -215,6 +223,30 @@ public class FolderView extends JFrame {
                 }else {
                     JOptionPane.showMessageDialog(null,"修改失败");
                 }
+            }
+            /**
+             * 设置笔记分组
+             */
+            if(e.getSource()==setGroup){
+                new setGroupView().setVisible(true);
+            }
+            /**
+             * 增加知识库操作
+             */
+            if(e.getSource()== addFolder){
+               new AddFolderView().setVisible(true);
+            }
+            /**
+             * 增加笔记分组操作
+             */
+            if(e.getSource()==addGroup){
+                 new AddGroupView().setVisible(true);
+                 }
+            /**
+             * 设置笔记分组操作
+             */
+            if(e.getSource()==setGroup){
+
             }
         }
 
@@ -239,27 +271,4 @@ public class FolderView extends JFrame {
         }
     };
 
-    private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-
-        //======== this ========
-        Container contentPane = getContentPane();
-
-        GroupLayout contentPaneLayout = new GroupLayout(contentPane);
-        contentPane.setLayout(contentPaneLayout);
-        contentPaneLayout.setHorizontalGroup(
-            contentPaneLayout.createParallelGroup()
-                .addGap(0, 400, Short.MAX_VALUE)
-        );
-        contentPaneLayout.setVerticalGroup(
-            contentPaneLayout.createParallelGroup()
-                .addGap(0, 300, Short.MAX_VALUE)
-        );
-        pack();
-        setLocationRelativeTo(getOwner());
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents
-    }
-
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

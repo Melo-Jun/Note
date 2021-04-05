@@ -11,8 +11,6 @@ import com.melo.notes.util.BeanFactory;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -24,8 +22,6 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-
-import static com.melo.notes.util.JdbcUtils.close;
 
 /**
  * @author Jun
@@ -140,7 +136,7 @@ public class TreeView extends JFrame {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
                 selectedName = e.getPath().getLastPathComponent().toString();
-                selectedClassName = folderGroupService.judgeClass(e.getPath().getPathCount());
+                selectedClassName = folderGroupService.judgeType(e.getPath().getPathCount());
                 System.out.println(selectedClassName);
             }
         });

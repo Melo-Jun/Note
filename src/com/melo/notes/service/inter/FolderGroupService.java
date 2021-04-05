@@ -60,7 +60,7 @@ public interface FolderGroupService {
      int addGroup(String name,String locatedFolder);
 
     /**
-     * 根据传入类名删除对应类对象
+     * 根据前台传入参数更新相应对象名称
      *
      * @param selectedName  oldName
      * @param updateName  newName

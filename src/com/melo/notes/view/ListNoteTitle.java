@@ -45,6 +45,9 @@ public class ListNoteTitle extends JFrame {
     JPanel panel = new JPanel();
     JList<String> list=new JList();
     JTextArea text=new JTextArea();
+    /**
+     * 获取所有作者公开的笔记标题
+     */
     String[] titles = listNoteTitleService.listNoteTitle(new AuthorBean(null,PUBLIC));
 
     public ListNoteTitle() {
@@ -79,13 +82,10 @@ public class ListNoteTitle extends JFrame {
                  * 显示详情
                  */
                 if(e.getSource()==show){
-                    Note note = new Note();
-                    note.setTitle(title);
-                    String[] strings = listNoteTitleService.listNoteAll(note);
+                    NoteTextBean noteTextBean = new NoteTextBean(title);
+                    String[] strings = listNoteTitleService.listNoteAll(noteTextBean);
                     list.setListData(strings);
-                    new NoteTextView(new NoteDaoImpl().showNoteText(new NoteTextBean(title))).setVisible(true);
-                    //System.out.println(new NoteDaoImpl().showNoteText(new NoteTextBean("想")));
-
+                    new NoteTextView(listNoteTitleService.showNoteText(noteTextBean)).setVisible(true);
                 }
                 /**
                  * 根据标题搜索

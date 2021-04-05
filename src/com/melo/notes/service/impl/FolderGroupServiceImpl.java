@@ -7,6 +7,7 @@ import com.melo.notes.entity.Group;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.inter.FolderGroupService;
 import com.melo.notes.util.BeanFactory;
+import com.melo.notes.view.FolderView;
 import com.melo.notes.view.LoginView;
 
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     private final int FOLDERTREEPATHCOUNT=2;
     private final int GROUPTREEPATHCOUNT=3;
     /**
-     * 相应对象英文名称
+     * 相应对象名称
      */
     private final String FOLDER="知识库";
     private final String GROUP="笔记分组";
@@ -135,7 +136,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     }
 
     /**
-     * 根据传入类名删除对应类对象
+     * 根据前台传入参数更新相应对象名称
      *
      * @param selectedName  oldName
      * @param updateName  newName
@@ -161,10 +162,25 @@ public class FolderGroupServiceImpl implements FolderGroupService {
         if(selectedType.equals(GROUP)){
             Group group = new Group();
             group.setGroupName(selectedName);
-            String groupId=getId(group);
+            String groupId = getId(group);
             group.setId(groupId);
-            group.setGroupName(updateName);
-            return groupDao.updateGroupName(group);
+                group.setGroupName(updateName);
+                return groupDao.updateGroupName(group);
+            }
+        return 0;
+    }
+
+    public int setGroup(String selectedGroup,String locatedFolder){
+        if(isGroup(FolderView.selectedType)) {
+            Folder folder = new Folder();
+            folder.setFolderName(locatedFolder);
+            Group group = new Group();
+            group.setGroupName(selectedGroup);
+            String groupId = getId(group);
+            group.setId(groupId);
+            group.setLocatedFolder(getId(folder));
+            group.setGroupName(null);
+            return groupDao.update(group);
         }
         return 0;
     }
