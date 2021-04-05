@@ -22,7 +22,8 @@ public class ListNoteTitleServiceImpl implements ListNoteTitleService {
     /**
      * 将LinkedList转化为String数组返回给List作为填充数据
      * 填充标题
-     * @return String[]
+     * @param obj
+     * @return String[]标题大全
      */
     @Override
     public String[] listNoteTitle(Object obj) {
@@ -37,8 +38,9 @@ public class ListNoteTitleServiceImpl implements ListNoteTitleService {
     }
 
     /**
-     * @param obj
-     * @return
+     *展示笔记详情内容(Text另外单独分页)
+     * @param obj 根据的对象
+     * @return String[] 笔记详情
      */
     @Override
     public String[] listNoteAll(Object obj) {
@@ -52,5 +54,15 @@ public class ListNoteTitleServiceImpl implements ListNoteTitleService {
         return strings;
     }
 
+    /**
+     * 展示笔记文本内容
+     *
+     * @param obj
+     * @return
+     */
+    @Override
+    public String showNoteText(Object obj) {
+        return noteDao.showNoteText(obj);
+    }
 
 }

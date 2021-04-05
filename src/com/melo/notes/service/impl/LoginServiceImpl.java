@@ -49,7 +49,6 @@ public class LoginServiceImpl implements LoginService {
 
     /**
      * 判断输入是否有效
-     *
      * @param userName
      * @param password
      * @param access

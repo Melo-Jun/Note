@@ -2,6 +2,8 @@ package com.melo.notes.service.impl;
 
 import com.melo.notes.dao.impl.FolderDaoImpl;
 import com.melo.notes.dao.impl.GroupDaoImpl;
+import com.melo.notes.entity.Folder;
+import com.melo.notes.entity.Group;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.inter.FolderGroupService;
 import com.melo.notes.util.BeanFactory;
@@ -39,7 +41,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
      * @notice 没有选中则返回null
      */
     @Override
-    public String judgeClass(int TreePathCount) {
+    public String judgeType(int TreePathCount) {
         switch (TreePathCount){
             case FOLDERTREEPATHCOUNT: return FOLDER;
             case GROUPTREEPATHCOUNT: return GROUP;
@@ -71,22 +73,64 @@ public class FolderGroupServiceImpl implements FolderGroupService {
      * 根据传入类名删除对应类对象
      *
      * @param selectedName      对象名称
-     * @param selectedClassName 对应类
+     * @param selectedType 对应类型
      * @return int 影响的行数
      */
     @Override
-    public int delete(String selectedName, String selectedClassName) {
+    public int delete(String selectedName, String selectedType) {
         /**
          * 没有正常选择要删除的节点
          */
-        if(selectedClassName.isEmpty()||selectedName.isEmpty()){
+        if(selectedType.isEmpty()||selectedName.isEmpty()){
             return 0;
         }
-        if(selectedClassName.equals(FOLDER)){
-            return folderDao.deleteFolder(selectedName);
+        if(selectedType.equals(FOLDER)){
+            Folder folder = new Folder();
+            folder.setFolderName(selectedName);
+            String folderId =getId(folder);
+            return folderDao.deleteFolder(folderId);
         }
-        if(selectedClassName.equals(GROUP)){
-            return groupDao.deleteGroup(selectedName);
+        if(selectedType.equals(GROUP)){
+            Group group = new Group();
+            group.setGroupName(selectedName);
+            String groupId=getId(group);
+            return groupDao.deleteGroup(groupId);
+        }
+        return 0;
+    }
+
+
+    /**
+     * 根据传入类名删除对应类对象
+     *
+     * @param selectedName  oldName
+     * @param updateName  newName
+     * @param selectedType 对应类型
+     * @return int 影响的行数
+     */
+    @Override
+    public int update(String selectedName,String updateName, String selectedType) {
+        /**
+         * 没有正常选择要修改的节点
+         */
+        if(selectedType.isEmpty()||selectedName.isEmpty()){
+            return 0;
+        }
+        if(selectedType.equals(FOLDER)){
+            Folder folder = new Folder();
+            folder.setFolderName(selectedName);
+            String folderId =getId(folder);
+            folder.setId(folderId);
+            folder.setFolderName(updateName);
+            return folderDao.updateFolderName(folder);
+        }
+        if(selectedType.equals(GROUP)){
+            Group group = new Group();
+            group.setGroupName(selectedName);
+            String groupId=getId(group);
+            group.setId(groupId);
+            group.setGroupName(updateName);
+            return groupDao.updateGroupName(group);
         }
         return 0;
     }
@@ -104,6 +148,8 @@ public class FolderGroupServiceImpl implements FolderGroupService {
         return false;
     }
 
+
+
     /**
      * 根据xxx获取id
      * @param obj xxx
@@ -113,7 +159,6 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     public String getId(Object obj ) {
         return groupDao.getId(obj);
     }
-
 
 }
 

@@ -39,6 +39,11 @@ public interface BaseDao {
      */
     int delete(Object obj);
 
+
+
+    //int update(Object obj);
+
+
     /**
      * 查找记录(需要键值对类型)
      *
@@ -65,6 +70,7 @@ public interface BaseDao {
      */
     LinkedList<Object> queryAll(String sql,Object obj);
 
+
     /**
      * 将对象映射成属性名和属性值
      * @param obj 对象
@@ -73,6 +79,14 @@ public interface BaseDao {
      * @throws DaoException
      */
     void fieldMapper(Object obj, LinkedList fieldNames, LinkedList fieldValues) throws DaoException;
+
+    /**
+     * 根据xxx获取id
+     * @param obj xxx
+     * @return String id
+     */
+    String getId(Object obj);
+
 
     /**
      * 检验数据库相应操作是否成功

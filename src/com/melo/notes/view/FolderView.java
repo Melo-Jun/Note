@@ -4,6 +4,7 @@
 
 package com.melo.notes.view;
 
+import com.melo.notes.dao.impl.FolderDaoImpl;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.util.BeanFactory;
@@ -38,9 +39,14 @@ public class FolderView extends JFrame {
      */
     public static String selectedName ="";
     /**
-     * 选中的类
+     * 选中的id
      */
-    public static String selectedClassName ="";
+    public static String folderId=" ";
+    public static String groupId=" ";
+    /**
+     * 选中的类型
+     */
+    public static String selectedType ="";
 
     JFrame jf = new JFrame("设置笔记分组");
     private Listener l = new Listener();
@@ -135,15 +141,15 @@ public class FolderView extends JFrame {
 
 
         /**
-         * 设置节点选中监听器(将选中的节点名称和对象类保存起来)
+         * 设置节点选中监听器(将选中的节点名称和对象类型保存起来)
          *
-          */
+         */
         tree.addTreeSelectionListener(new TreeSelectionListener() {
                 @Override
                 public void valueChanged(TreeSelectionEvent e) {
                     selectedName = e.getPath().getLastPathComponent().toString();
-                    selectedClassName = folderGroupService.judgeClass(e.getPath().getPathCount());
-                    System.out.println(selectedClassName);
+                    selectedType = folderGroupService.judgeType(e.getPath().getPathCount());
+                    System.out.println(selectedName+selectedType);
                 }
             });
 
@@ -190,7 +196,7 @@ public class FolderView extends JFrame {
              * 删除操作
              */
             if(e.getSource()==delete){
-                if(folderGroupService.delete(selectedName, selectedClassName)!=0) {
+                if(folderGroupService.delete(selectedName, selectedType)!=0) {
                     jf.dispose();
                     new FolderView(LoginView.USER);
                 }else {
@@ -202,6 +208,13 @@ public class FolderView extends JFrame {
              */
             if(e.getSource()==update){
                 String updateName = JOptionPane.showInputDialog("请输入修改名称");
+                if(folderGroupService.update(selectedName,updateName,selectedType)!=0){
+                    JOptionPane.showMessageDialog(null,"修改成功");
+                    jf.dispose();
+                    new FolderView(LoginView.USER);
+                }else {
+                    JOptionPane.showMessageDialog(null,"修改失败");
+                }
             }
         }
 

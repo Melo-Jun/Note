@@ -37,25 +37,26 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
 
     /**
      * 删除分组
-     * @param groupName 笔记分组名称
+     * @param groupId 笔记分组id
      * @return int 影响的行数
      */
     @Override
-    public int deleteGroup(String groupName) {
+    public int deleteGroup(String groupId) {
         Group group = new Group();
-        group.setGroupName(groupName);
+        group.setId(groupId);
         return delete(group);
     }
 
     /**
-     * 根据xxx获取id
-     * @param obj xxx
-     * @return String id
+     * 更改知识库名称
+     *
+     * @param group 在service完成封装后的对象
+     * @return
      */
     @Override
-    public String getId(Object obj) {
-            String sql="select id from "+TABLE_NAME +"  where group_name=?";
-            return queryList(sql,obj).getFirst().toString();
+    public int updateGroupName(Group group) {
+        return update(group);
     }
+
 
 }

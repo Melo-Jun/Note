@@ -45,6 +45,8 @@ public class BaseDaoImpl implements BaseDao {
             //注入Sql填充参数
             setParams(ps,obj);
             count = ps.executeUpdate();
+            System.out.println(sql);
+            System.out.println(count);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
@@ -91,13 +93,20 @@ public class BaseDaoImpl implements BaseDao {
      */
     @Override
     public int delete(Object obj) {
+        String sql = "delete from " + getTableName(obj) + " where id =?";
+        return executeUpdate(obj,sql);
+    }
+
+    //@Override
+    public int update(Object obj) {
         /**
-         * 根据删除依据的字段名构造对象，取出对应数据库字段名和值
+         * 根据更新依据的字段名构造对象，取出对应数据库字段名和值
          */
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
         fieldMapper(obj,fieldNames,fieldValues);
-        StringBuilder sql = new StringBuilder("delete from " + getTableName(obj) + " where "+fieldNames.getFirst()+" =?");
+        StringBuilder sql = new StringBuilder("update "+getTableName(obj)+" set "+fieldNames.getFirst()+" =?" +" where id=?");
+        System.out.println(sql.toString());
         return executeUpdate(obj,sql.toString());
     }
 
@@ -129,7 +138,6 @@ public class BaseDaoImpl implements BaseDao {
             close(ps,rs);
         }
         return resultMap;
-
 
 
         /**
@@ -182,6 +190,12 @@ public class BaseDaoImpl implements BaseDao {
         return resultList;
     }
 
+    /**
+     * 查找所有属性
+     * @param sql 查询语句
+     * @param obj 用以填充的语句
+     * @return LinkedList<Object> values 所有值
+     */
     @Override
     public LinkedList<Object> queryAll(String sql, Object obj) {
         LinkedList<Object> values = new LinkedList<>();
@@ -257,6 +271,24 @@ public class BaseDaoImpl implements BaseDao {
             }
         }
     }
+
+    /**
+     * 根据xxx获取id
+     * @param obj xxx
+     * @return String id
+     */
+    @Override
+    public String getId(Object obj) {
+        /**
+         * 根据前台所选中的信息构造对象，取出对应数据库字段名和值
+         */
+        LinkedList<Object> fieldNames = new LinkedList<>();
+        LinkedList<Object> fieldValues = new LinkedList<>();
+        fieldMapper(obj,fieldNames,fieldValues);
+        StringBuilder sql = new StringBuilder("select id from " + getTableName(obj) + " where "+fieldNames.getFirst()+" =?");
+        return queryList(sql.toString(),obj).getFirst().toString();
+    }
+
 
     /**
      * 判断操作是否成功

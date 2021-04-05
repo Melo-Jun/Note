@@ -1,5 +1,7 @@
 package com.melo.notes.dao.inter;
 
+import com.melo.notes.entity.Group;
+
 import java.sql.ResultSet;
 import java.util.LinkedList;
 
@@ -19,15 +21,16 @@ public interface GroupDao {
 
     /**
      * 删除分组
-     * @param groupName 笔记分组名称
+     * @param groupId 笔记分组id
      * @return int 影响的行数
      */
-    int deleteGroup(String groupName);
+    int deleteGroup(String groupId);
 
     /**
-     * 根据xxx获取id
-     * @param obj xxx
-     * @return String id
+     * 更改知识库名称
+     * @param group 在service完成封装后的对象
+     * @return
      */
-    String getId(Object obj);
+    int updateGroupName(Group group);
+
 }

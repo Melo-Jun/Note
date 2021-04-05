@@ -18,7 +18,7 @@ public interface FolderGroupService {
      * @param TreePathCount
      * @return String 对象名称
      */
-    String judgeClass(int TreePathCount);
+    String judgeType(int TreePathCount);
 
     /**
      * 根据用户名获取知识库名称
@@ -37,11 +37,21 @@ public interface FolderGroupService {
     /**
      * 根据传入类名删除对应类对象
      *
-     * @param selectedName 对象名称
-     * @param selectedClassName 对应类
+     * @param selectedName      对象名称
+     * @param selectedType 对应类型
      * @return int 影响的行数
      */
-     int delete(String selectedName,String selectedClassName);
+     int delete(String selectedName,String selectedType);
+
+    /**
+     * 根据传入类名删除对应类对象
+     *
+     * @param selectedName  oldName
+     * @param updateName  newName
+     * @param selectedType 对应类型
+     * @return int 影响的行数
+     */
+     int update(String selectedName,String updateName, String selectedType);
 
     /**
      * 选择分组时判断是否为分组

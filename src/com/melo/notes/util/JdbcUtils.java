@@ -95,6 +95,7 @@ public class JdbcUtils {
         LinkedList fieldValues = new LinkedList<>();
         baseDao.fieldMapper(obj,fieldNames,fieldValues);
         Object[] params = fieldValues.toArray();
+        System.out.println(fieldValues);
         for(int i=0;i<params.length;i++){
                 try {
                     ps.setObject(i+1, params[i]);
