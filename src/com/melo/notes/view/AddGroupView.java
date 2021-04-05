@@ -4,6 +4,7 @@
 
 package com.melo.notes.view;
 
+import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
@@ -29,7 +30,9 @@ public class AddGroupView extends JFrame {
         /**
          * 初始化下拉框
          */
-        HashMap<Object, Object> folderName = folderGroupService.showFolderName(LoginView.USER);
+        User user = new User();
+        user.setId(LoginView.USER.getId());
+        HashMap<Object, Object> folderName = folderGroupService.showFolderName(user);
         Collection<Object> values = folderName.values();
         for(Object temp:values){
             selectedLocatedFolder.addItem(temp);
