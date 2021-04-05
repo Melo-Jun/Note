@@ -38,6 +38,10 @@ public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
         return queryMap(sql,user);
     }
 
+    public int addFolder(Folder folder){
+        return insert(folder);
+    }
+
     /**
      * 根据知识库id删除知识库
      *

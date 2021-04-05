@@ -97,10 +97,16 @@ public class BaseDaoImpl implements BaseDao {
         return executeUpdate(obj,sql);
     }
 
-    //@Override
+    /**
+     * 更新记录
+     * @param obj 与更新有关的对象
+     * @return int 影响的数据库记录数
+     */
+    @Override
     public int update(Object obj) {
         /**
          * 根据更新依据的字段名构造对象，取出对应数据库字段名和值
+         * 此处id是在父类里边,故fieldNames.getFirst不是id
          */
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();

@@ -15,6 +15,7 @@ public abstract class BaseEntity {
     private Date gmtCreate;
     private Date gmtModified;
 
+
     public String getId() {
         return id;
     }

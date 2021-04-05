@@ -40,8 +40,12 @@ public interface BaseDao {
     int delete(Object obj);
 
 
-
-    //int update(Object obj);
+    /**
+     * 更新记录
+     * @param obj 与更新有关的对象
+     * @return int 影响的数据库记录数
+     */
+    int update(Object obj);
 
 
     /**

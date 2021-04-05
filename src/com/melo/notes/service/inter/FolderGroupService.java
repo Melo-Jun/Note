@@ -44,6 +44,22 @@ public interface FolderGroupService {
      int delete(String selectedName,String selectedType);
 
     /**
+     * 新增知识库
+     * @param name
+     * @param access
+     * @return
+     */
+     int addFolder(String name, String access);
+
+    /**
+     * 新增笔记分组
+     * @param name
+     * @param locatedFolder
+     * @return
+     */
+     int addGroup(String name,String locatedFolder);
+
+    /**
      * 根据传入类名删除对应类对象
      *
      * @param selectedName  oldName

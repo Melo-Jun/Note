@@ -7,6 +7,7 @@ import com.melo.notes.entity.Group;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.inter.FolderGroupService;
 import com.melo.notes.util.BeanFactory;
+import com.melo.notes.view.LoginView;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,31 +15,31 @@ import java.util.LinkedList;
 /**
  * @author Jun
  * @program Note
- * @description è®¾ç½®ç¬”è®°çŸ¥è¯†åº“åˆ†ç»„ä¸šåŠ¡é€»è¾‘å®ç°ç±»
+ * @description ÉèÖÃ±Ê¼ÇÖªÊ¶¿â·Ö×éÒµÎñÂß¼­ÊµÏÖÀà
  * @date 2021-4-1 16:30
  */
 public class FolderGroupServiceImpl implements FolderGroupService {
     /**
-     * ç›¸å…³æ“ä½œç±»å¯¹è±¡
+     * Ïà¹Ø²Ù×÷Àà¶ÔÏó
      */
     FolderDaoImpl folderDao = (FolderDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.FolderDao);
     GroupDaoImpl groupDao = (GroupDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.GroupDao);
     /**
-     * å„å¯¹è±¡æ‰€åœ¨å±‚çº§
+     * ¸÷¶ÔÏóËùÔÚ²ã¼¶
      */
     private final int FOLDERTREEPATHCOUNT=2;
     private final int GROUPTREEPATHCOUNT=3;
     /**
-     * ç›¸åº”å¯¹è±¡åç§°
+     * ÏàÓ¦¶ÔÏóÓ¢ÎÄÃû³Æ
      */
-    private final String FOLDER="Folder";
-    private final String GROUP="Group";
+    private final String FOLDER="ÖªÊ¶¿â";
+    private final String GROUP="±Ê¼Ç·Ö×é";
 
     /**
-     * æ ¹æ®èŠ‚ç‚¹æ•°åˆ¤æ–­æ˜¯ä»€ä¹ˆç±»
+     * ¸ù¾İ½ÚµãÊıÅĞ¶ÏÊÇÊ²Ã´Àà
      * @param TreePathCount
-     * @return String å¯¹è±¡åç§°
-     * @notice æ²¡æœ‰é€‰ä¸­åˆ™è¿”å›null
+     * @return String ¶ÔÏóÃû³Æ
+     * @notice Ã»ÓĞÑ¡ÖĞÔò·µ»Ønull
      */
     @Override
     public String judgeType(int TreePathCount) {
@@ -50,9 +51,9 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     }
 
     /**
-     * æ ¹æ®ç”¨æˆ·Idè·å–çŸ¥è¯†åº“åç§°
-     * @param user ç”¨æˆ·
-     * @return ResultSet ç»“æœé›†
+     * ¸ù¾İÓÃ»§Id»ñÈ¡ÖªÊ¶¿âÃû³Æ
+     * @param user ÓÃ»§
+     * @return ResultSet ½á¹û¼¯
      */
     @Override
     public HashMap<Object, Object> showFolderName(User user) {
@@ -60,9 +61,9 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     }
 
     /**
-     * æ ¹æ®çŸ¥è¯†åº“åˆ—å‡ºåˆ†ç»„ç•Œé¢
-     * @param folderId çŸ¥è¯†åº“Id
-     * @return ResultSet ç»“æœé›†
+     * ¸ù¾İÖªÊ¶¿âÁĞ³ö·Ö×é½çÃæ
+     * @param folderId ÖªÊ¶¿âId
+     * @return ResultSet ½á¹û¼¯
      */
     @Override
     public LinkedList<Object> showNoteGroup(String folderId) {
@@ -70,16 +71,16 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     }
 
     /**
-     * æ ¹æ®ä¼ å…¥ç±»ååˆ é™¤å¯¹åº”ç±»å¯¹è±¡
+     * ¸ù¾İ´«ÈëÀàÃûÉ¾³ı¶ÔÓ¦Àà¶ÔÏó
      *
-     * @param selectedName      å¯¹è±¡åç§°
-     * @param selectedType å¯¹åº”ç±»å‹
-     * @return int å½±å“çš„è¡Œæ•°
+     * @param selectedName      ¶ÔÏóÃû³Æ
+     * @param selectedType ¶ÔÓ¦ÀàĞÍ
+     * @return int Ó°ÏìµÄĞĞÊı
      */
     @Override
     public int delete(String selectedName, String selectedType) {
         /**
-         * æ²¡æœ‰æ­£å¸¸é€‰æ‹©è¦åˆ é™¤çš„èŠ‚ç‚¹
+         * Ã»ÓĞÕı³£Ñ¡ÔñÒªÉ¾³ıµÄ½Úµã
          */
         if(selectedType.isEmpty()||selectedName.isEmpty()){
             return 0;
@@ -101,17 +102,50 @@ public class FolderGroupServiceImpl implements FolderGroupService {
 
 
     /**
-     * æ ¹æ®ä¼ å…¥ç±»ååˆ é™¤å¯¹åº”ç±»å¯¹è±¡
+     * ĞÂÔöÖªÊ¶¿â
+     * @param name
+     * @param access
+     * @return
+     */
+    @Override
+    public int addFolder(String name, String access){
+            Folder folder = new Folder();
+            folder.setFolderName(name);
+            folder.setAccess(access);
+            folder.setAuthorId(LoginView.USER.getId());
+            return folderDao.addFolder(folder);
+    }
+
+    /**
+     * ĞÂÔö±Ê¼Ç·Ö×é
+     * @param name
+     * @param locatedFolder
+     * @return
+     */
+    @Override
+    public int addGroup(String name, String locatedFolder){
+        Group group = new Group();
+        group.setGroupName(name);
+        group.setAuthorId(LoginView.USER.getId());
+        Folder folder = new Folder();
+        //¸ù¾İÖªÊ¶¿âÃû³Æ·´Ïò»ñÈ¡ÖªÊ¶¿âid
+        folder.setFolderName(locatedFolder);
+        group.setLocatedFolder(getId(folder));
+        return groupDao.insert(group);
+    }
+
+    /**
+     * ¸ù¾İ´«ÈëÀàÃûÉ¾³ı¶ÔÓ¦Àà¶ÔÏó
      *
      * @param selectedName  oldName
      * @param updateName  newName
-     * @param selectedType å¯¹åº”ç±»å‹
-     * @return int å½±å“çš„è¡Œæ•°
+     * @param selectedType ¶ÔÓ¦ÀàĞÍ
+     * @return int Ó°ÏìµÄĞĞÊı
      */
     @Override
     public int update(String selectedName,String updateName, String selectedType) {
         /**
-         * æ²¡æœ‰æ­£å¸¸é€‰æ‹©è¦ä¿®æ”¹çš„èŠ‚ç‚¹
+         * Ã»ÓĞÕı³£Ñ¡ÔñÒªĞŞ¸ÄµÄ½Úµã
          */
         if(selectedType.isEmpty()||selectedName.isEmpty()){
             return 0;
@@ -136,8 +170,8 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     }
 
     /**
-     * é€‰æ‹©åˆ†ç»„æ—¶åˆ¤æ–­æ˜¯å¦ä¸ºåˆ†ç»„
-     * @param selectedClassName é€‰ä¸­çš„å¯¹åº”ç±»
+     * Ñ¡Ôñ·Ö×éÊ±ÅĞ¶ÏÊÇ·ñÎª·Ö×é
+     * @param selectedClassName Ñ¡ÖĞµÄ¶ÔÓ¦Àà
      * @return
      */
     @Override
@@ -151,7 +185,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
 
 
     /**
-     * æ ¹æ®xxxè·å–id
+     * ¸ù¾İxxx»ñÈ¡id
      * @param obj xxx
      * @return String id
      */
