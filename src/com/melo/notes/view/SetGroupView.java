@@ -15,7 +15,7 @@ import javax.swing.*;
 import javax.swing.GroupLayout;
 
 /**
- * @author Jun
+ * @author 1
  */
 public class SetGroupView extends JFrame {
 
@@ -37,12 +37,13 @@ public class SetGroupView extends JFrame {
 
     private void submitActionPerformed(ActionEvent e) {
         String locatedFolder = (String) selectedLocatedFolder.getSelectedItem();
-        if (folderGroupService.setGroup(FolderView.selectedName, locatedFolder) != 0&&!FolderView.selectedName.isEmpty()) {
+        if (folderGroupService.setGroup(FolderView.selectedName, locatedFolder) != 0) {
             JOptionPane.showMessageDialog(null, "设置成功");
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "请确认你选择的是笔记分组类型");
+            this.dispose();
         }
-        this.dispose();
     }
 
 
