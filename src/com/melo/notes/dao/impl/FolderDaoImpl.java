@@ -9,7 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import static com.melo.notes.util.JdbcUtils.*;
 
@@ -35,11 +37,19 @@ public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
     @Override
     public HashMap<Object, Object> showFolderName(User user) {
         String sql="select id,folder_name from "+TABLE_NAME+" where author_id=?";
+        System.out.println(user.getId());
         return queryMap(sql,user);
     }
 
-    public int addFolder(Folder folder){
-        return insert(folder);
+    /**
+     * 增加知识库
+     * @param folder 知识库对象
+     * @return boolean 是否增加成功
+     */
+    @Override
+    public boolean addFolder(Folder folder){
+        folder.setId(getMaxId(folder));
+        return insert(folder)==1;
     }
 
     /**

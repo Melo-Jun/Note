@@ -5,10 +5,7 @@ import com.melo.notes.dao.impl.MyDataSourceImpl;
 import com.melo.notes.dao.inter.MyDataSource;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.Properties;
 
@@ -29,6 +26,29 @@ public class JdbcUtils {
         if (ps != null) {
             try {
                 ps.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }
+    }
+
+    /**
+     * 释放资源
+     * @param stmt
+     * @param rs
+     */
+    public static void close(Statement stmt, ResultSet rs) {
+        if (stmt != null) {
+            try {
+                stmt.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
@@ -89,20 +109,20 @@ public class JdbcUtils {
      * @param ps
      * @param obj 传入的对象
      */
-    public static void setParams(PreparedStatement ps, Object obj){
+    public static void setParams(PreparedStatement ps, Object obj) {
 
         LinkedList fieldNames = new LinkedList<>();
         LinkedList fieldValues = new LinkedList<>();
-        baseDao.fieldMapper(obj,fieldNames,fieldValues);
+        baseDao.fieldMapper(obj, fieldNames, fieldValues);
         Object[] params = fieldValues.toArray();
         System.out.println(fieldValues);
-        for(int i=0;i<params.length;i++){
-                try {
-                    ps.setObject(i+1, params[i]);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        for (int i = 0; i < params.length; i++) {
+            try {
+                ps.setObject(i + 1, params[i]);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+        }
     }
 
     /**

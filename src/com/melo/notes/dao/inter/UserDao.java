@@ -34,9 +34,9 @@ public interface UserDao {
      boolean add(User user);
 
     /**
-     * 设置Id
+     * 为登录进来的用户设置Id以便后续查询
      * @param user
-     * @return boolean 是否增加成功
+     * @return void
      */
-     boolean setId(User user);
+     void setId(User user);
 }

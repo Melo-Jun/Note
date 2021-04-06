@@ -32,7 +32,9 @@ public class LoginServiceImpl implements LoginService {
      */
     @Override
     public void setId(User user) {
-        userDao.setId(user);
+        User temp = new User();
+        temp.setUserName(user.getUserName());
+        userDao.setId(temp);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 import com.melo.notes.entity.User;
 import com.melo.notes.view.AddNoteView;
+import com.melo.notes.view.LoginView;
 
 /**
  * @author Jun
@@ -12,7 +13,8 @@ import com.melo.notes.view.AddNoteView;
 public class TextAddNote {
 
     public static void main(String[] args) {
-        User user = new User("√˘»À", "1111");
-        new AddNoteView(user).setVisible(true);
+        LoginView.USER=new User();
+        LoginView.USER.setId("1");
+        new AddNoteView(LoginView.USER).setVisible(true);
     }
 }

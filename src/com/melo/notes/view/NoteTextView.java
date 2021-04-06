@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.GroupLayout;
 
 /**
- * @author 1
+ * @author Jun
  */
 public class NoteTextView extends JFrame {
     public NoteTextView(String text) {
@@ -49,7 +49,7 @@ public class NoteTextView extends JFrame {
             contentPaneLayout.createParallelGroup()
                 .addGroup(contentPaneLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(scrollPane1, GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                    .addComponent(scrollPane1, GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                     .addContainerGap())
         );
         pack();

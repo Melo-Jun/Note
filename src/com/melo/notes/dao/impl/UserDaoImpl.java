@@ -3,6 +3,7 @@ package com.melo.notes.dao.impl;
 import com.melo.notes.dao.inter.UserDao;
 import com.melo.notes.entity.User;
 import com.melo.notes.exception.DaoException;
+import com.melo.notes.view.LoginView;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,6 +22,8 @@ import static com.melo.notes.util.Md5Utils.getDigest;
  */
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
+    private String TABLE_NAME="user";
+
     /**
      * 验证是否已存在该用户
      *
@@ -29,7 +32,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public boolean isExist(User user) {
-        String sql="select user_name from user where user_name=? ";
+        String sql="select user_name from "+ TABLE_NAME +" where user_name=? ";
         User obj = new User();
         obj.setUserName(user.getUserName());
         LinkedList<Object> objects = queryList(sql, obj);
@@ -47,7 +50,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public boolean judgePass(User user){
-        String sql="select password from "+getTableName(user) +" where user_name=? ";
+        String sql="select password from "+TABLE_NAME+" where user_name=? ";
         User obj = new User();
         obj.setUserName(user.getUserName());
         LinkedList<Object> objects = queryList(sql, obj);
@@ -56,7 +59,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         }
         if(objects.getFirst().equals(getDigest(user.getPassword()))){
             return true;
-        }return false;
+        }
+        return false;
     }
 
     /**
@@ -76,32 +80,17 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     /**
-     * 设置Id
+     * 为登录进来的用户设置Id以便后续查询
      * @param user
      * @return boolean 是否增加成功
      */
     @Override
-    public boolean setId(User user) {
-        Connection conn= getConnection();
-        PreparedStatement ps=null;
-        ResultSet rs=null;
-        try {
-            String sql="select id from user where user_name=?";
-            ps=conn.prepareStatement(sql);
-            ps.setString(1, user.getUserName());
-            rs=ps.executeQuery();
-            rs.next();
-            String id = rs.getString("id");
-            user.setId(id);
-            return true;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
-            freeConnection(conn);
-            close(ps,rs);
-        }
-        return false;
+    public void setId(User user) {
+            String sql="select id from "+TABLE_NAME+ " where user_name=?";
+            LinkedList id = queryList(sql, user);
+            if(!id.isEmpty()) {
+                System.out.println("用户的id是"+id.getFirst().toString());
+                LoginView.USER.setId(id.getFirst().toString());
+            }
     }
-
-
 }

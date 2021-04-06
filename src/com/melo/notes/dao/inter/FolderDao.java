@@ -23,6 +23,14 @@ public interface FolderDao {
 
 
     /**
+     * 增加知识库
+     * @param folder 知识库对象
+     * @return boolean 是否增加成功
+     */
+    boolean  addFolder(Folder folder);
+
+
+    /**
      * 根据知识库id删除知识库
      * @param folderId 知识库id
      * @return int 影响的行数

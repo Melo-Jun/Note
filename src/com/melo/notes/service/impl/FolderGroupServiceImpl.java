@@ -11,7 +11,6 @@ import com.melo.notes.view.FolderView;
 import com.melo.notes.view.LoginView;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * @author Jun
@@ -54,20 +53,22 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     /**
      * 根据用户Id获取知识库名称
      * @param user 用户
-     * @return ResultSet 结果集
+     * @return HashMap 知识库id-知识库名称
      */
     @Override
     public HashMap<Object, Object> showFolderName(User user) {
-        return folderDao.showFolderName(user);
+        User temp = new User();
+        temp.setId(user.getId());
+        return folderDao.showFolderName(temp);
     }
 
     /**
      * 根据知识库列出分组界面
      * @param folderId 知识库Id
-     * @return ResultSet 结果集
+     * @return
      */
     @Override
-    public LinkedList<Object> showNoteGroup(String folderId) {
+    public HashMap<Object, Object> showNoteGroup(String folderId) {
         return groupDao.showNoteGroup(folderId);
     }
 
@@ -109,7 +110,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
      * @return
      */
     @Override
-    public int addFolder(String name, String access){
+    public boolean addFolder(String name, String access){
             Folder folder = new Folder();
             folder.setFolderName(name);
             folder.setAccess(access);
@@ -124,7 +125,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
      * @return
      */
     @Override
-    public int addGroup(String name, String locatedFolder){
+    public boolean addGroup(String name, String locatedFolder){
         Group group = new Group();
         group.setGroupName(name);
         group.setAuthorId(LoginView.USER.getId());
@@ -132,7 +133,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
         //根据知识库名称反向获取知识库id
         folder.setFolderName(locatedFolder);
         group.setLocatedFolder(getId(folder));
-        return groupDao.insert(group);
+        return groupDao.insert(group)==1;
     }
 
     /**
@@ -170,6 +171,13 @@ public class FolderGroupServiceImpl implements FolderGroupService {
         return 0;
     }
 
+    /**
+     * 设置笔记分组
+     * @param selectedGroup 选中的笔记分组
+     * @param locatedFolder 目标知识库
+     * @return
+     */
+    @Override
     public int setGroup(String selectedGroup,String locatedFolder){
         if(isGroup(FolderView.selectedType)) {
             Folder folder = new Folder();

@@ -23,16 +23,16 @@ public interface FolderGroupService {
     /**
      * 根据用户名获取知识库名称
      * @param user 用户
-     * @return ResultSet 结果集
+     * @return HashMap 知识库id-知识库名称
      */
      HashMap<Object, Object> showFolderName(User user);
 
     /**
      * 根据知识库列出分组界面
-     * @param folderId 知识库Id
-     * @return ResultSet 结果集
+     * @param folderId 笔记分组Id
+     * @return HashMap 笔记分组id-笔记分组名称
      */
-     LinkedList<Object> showNoteGroup(String folderId);
+    HashMap<Object, Object> showNoteGroup(String folderId);
 
     /**
      * 根据传入类名删除对应类对象
@@ -49,7 +49,7 @@ public interface FolderGroupService {
      * @param access
      * @return
      */
-     int addFolder(String name, String access);
+     boolean addFolder(String name, String access);
 
     /**
      * 新增笔记分组
@@ -57,7 +57,7 @@ public interface FolderGroupService {
      * @param locatedFolder
      * @return
      */
-     int addGroup(String name,String locatedFolder);
+     boolean addGroup(String name,String locatedFolder);
 
     /**
      * 根据前台传入参数更新相应对象名称
@@ -68,6 +68,14 @@ public interface FolderGroupService {
      * @return int 影响的行数
      */
      int update(String selectedName,String updateName, String selectedType);
+
+    /**
+     * 设置笔记分组
+     * @param selectedGroup 选中的笔记分组
+     * @param locatedFolder 目标知识库
+     * @return
+     */
+     int setGroup(String selectedGroup,String locatedFolder);
 
     /**
      * 选择分组时判断是否为分组

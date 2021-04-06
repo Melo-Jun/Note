@@ -16,7 +16,7 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
 
     private final String TABLE_NAME="note";
 
-    private final String ALL_FIELD_NAME="id,title,author_id,text,access,gmt_create,gmt_modified,like_count,located_group";
+    private final String ALL_FIELD_NAME="id,title,author_id,text,access,like_count,located_group";
 
     public static Object instance(){
         return new NoteDaoImpl();
@@ -44,6 +44,7 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
         if(fieldValues.size()!=1){
             sql.append(" AND "+fieldNames.getLast()+" ="+"?");
         }
+        System.out.println(sql.toString());
         /**
          * 完成sql注入和执行
          */
@@ -61,7 +62,6 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
         return queryList(sql,obj).getFirst().toString();
     }
 
-
     /**
      * 通过点击标题查看按钮查看笔记详情
      * @param obj 根据的对象
@@ -73,23 +73,24 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
         /**
          * 将对象映射成属性和值(属性会映射为数据库字段名)
          */
-        LinkedList<Object> fieldNames = new LinkedList<>();
+       /* LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
-        fieldMapper(obj,fieldNames,fieldValues);
+        fieldMapper(obj,fieldNames,fieldValues);*/
         /**
          * 完成sql注入和执行
          */
         System.out.println(sql);
-        return queryAll(sql,obj);
+        return queryAll(sql,obj,Note.class);
     }
 
     /**
      * 新增笔记
      * @param note 笔记实体类
-     * @return
+     * @return boolean 是否增加成功
      */
     @Override
     public boolean addNote(Note note){
+        note.setId(getMaxId(note));
         return super.insert(note)==1;
     }
 }

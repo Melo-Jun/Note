@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import static com.melo.notes.util.JdbcUtils.*;
@@ -25,14 +26,14 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
     /**
      * 根据知识库id列出分组界面
      * @param folderId 知识库id
-     * @return LinkedList<Object> 结果集链表
+     * @return HashMap 笔记分组id-笔记分组名称
      */
     @Override
-    public LinkedList<Object> showNoteGroup(String folderId) {
-        String sql="select group_name from "+TABLE_NAME+" where located_folder=?";
+    public HashMap<Object, Object> showNoteGroup(String folderId) {
+        String sql="select id,group_name from "+TABLE_NAME+" where located_folder=?";
         Folder folder = new Folder();
         folder.setId(folderId);
-        return queryList(sql,folder);
+        return queryMap(sql,folder);
     }
 
     /**
@@ -45,6 +46,17 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
         Group group = new Group();
         group.setId(groupId);
         return delete(group);
+    }
+
+    /**
+     * 增加笔记分组
+     * @param group 笔记分组对象
+     * @return boolean 是否增加成功
+     */
+    @Override
+    public boolean addFolder(Group group){
+        group.setId(getMaxId(group));
+        return insert(group)==1;
     }
 
     /**
