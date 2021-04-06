@@ -1,6 +1,6 @@
 package com.melo.notes.entity;
 
-import com.melo.notes.entity.abs.BaseEntity;
+
 
 /**
  * @author Jun
@@ -8,25 +8,30 @@ import com.melo.notes.entity.abs.BaseEntity;
  * @description 笔记实体类
  * @date 2021-3-27 21:07
  */
-public class Note extends BaseEntity {
+public class Note  {
 
+    private String id;
     private String title;
     private String authorId;
     private String text;
     private String access;
-    private Integer likeCount;
+    private String likeCount;
     private String locatedGroup;
 
     public Note() {
     }
 
-    public Note(String title, String authorId, String text, String access, Integer likeCount, String locatedGroup) {
+    public Note(String title, String authorId, String text, String access, String likeCount, String locatedGroup) {
         this.title = title;
         this.authorId = authorId;
         this.text = text;
         this.access = access;
         this.likeCount = likeCount;
         this.locatedGroup = locatedGroup;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -45,12 +50,17 @@ public class Note extends BaseEntity {
         return access;
     }
 
-    public Integer getLikeCount() {
+
+    public String getLikeCount() {
         return likeCount;
     }
 
     public String getLocatedGroup() {
         return locatedGroup;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setTitle(String title) {
@@ -69,7 +79,7 @@ public class Note extends BaseEntity {
         this.access = access;
     }
 
-    public void setLikeCount(Integer likeCount) {
+    public void setLikeCount(String likeCount) {
         this.likeCount = likeCount;
     }
 

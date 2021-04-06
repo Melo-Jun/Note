@@ -24,6 +24,15 @@ public interface BaseDao {
      int executeUpdate(Object obj, String sql);
 
     /**
+     * 执行一条查询语句,并对结果集进行封装
+     * @param obj 对象
+     * @param sql sql语句
+     * @param resultMapper 实现不同功能映射的实现类
+     * @return 映射结果
+     */
+     Object executeQuery(Object obj, String sql, ResultMapper resultMapper);
+
+    /**
      * 增加一条记录进入数据库
      *
      * @param obj 要插入的对象
@@ -64,15 +73,16 @@ public interface BaseDao {
      * @param obj 用以填充的属性值
      * @return LinkedList 结果集封装LinkedList
      */
-     LinkedList<Object> queryList(String sql,Object obj);
+     LinkedList queryList(String sql,Object obj);
 
     /**
      * 查询所有
      * @param sql
      * @param obj
+     * @param clazz 用来创建实例的类
      * @return
      */
-    LinkedList<Object> queryAll(String sql,Object obj);
+    LinkedList queryAll(String sql,Object obj,Class clazz);
 
 
     /**
@@ -91,6 +101,13 @@ public interface BaseDao {
      */
     String getId(Object obj);
 
+    /**
+     *  用于插入一条记录时使用
+     * @description 数据库id设置为String无法自增(设置int映射时无法转化为object)
+     * @param obj 对象
+     * @return String  该对象表中最大id
+     */
+    String getMaxId(Object obj);
 
     /**
      * 检验数据库相应操作是否成功

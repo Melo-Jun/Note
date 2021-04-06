@@ -1,6 +1,7 @@
 import com.melo.notes.entity.User;
+import com.melo.notes.view.ListNoteTitle;
 import com.melo.notes.view.LoginView;
-import com.melo.notes.view.ShowNoteTitleView;
+import com.melo.notes.view.List;
 
 /**
  * @author Jun
@@ -8,10 +9,10 @@ import com.melo.notes.view.ShowNoteTitleView;
  * @description Õ¹Ê¾±Ê¼Ç
  * @date 2021-3-29 18:23
  */
-public class TestShowNote {
+public class TextListNoteTitle {
     public static void main(String[] args) {
         LoginView.USER=new User();
         LoginView.USER.setId("1");
-        new ShowNoteTitleView(LoginView.USER);
+        new ListNoteTitle();
     }
 }

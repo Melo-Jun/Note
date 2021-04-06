@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 /**
  * @author Jun
- * @program StudentSystem
+ * @program Note
  * @description 用于反射的工具
  */
 public class ReflectUtils {

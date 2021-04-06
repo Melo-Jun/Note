@@ -1,22 +1,21 @@
 package com.melo.notes.dao.impl;
 
 import com.melo.notes.dao.inter.BaseDao;
+import com.melo.notes.dao.inter.ResultMapper;
 import com.melo.notes.exception.DaoException;
-import com.melo.notes.util.StringUtils;
-import com.sun.javafx.collections.MappingChange;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
 
 import static com.melo.notes.util.JdbcUtils.*;
 import static com.melo.notes.util.ReflectUtils.getFields;
 import static com.melo.notes.util.ReflectUtils.getMethods;
 import static com.melo.notes.util.StringUtils.toColumnName;
+import static com.melo.notes.util.StringUtils.toEntityField;
 
 
 /**
@@ -27,9 +26,9 @@ import static com.melo.notes.util.StringUtils.toColumnName;
  */
 public class BaseDaoImpl implements BaseDao {
 
-
     /**
      * 封装数据库更新操作
+     *
      * @param obj
      * @param sql
      * @return int 影响的行数
@@ -37,28 +36,59 @@ public class BaseDaoImpl implements BaseDao {
     @Override
     public int executeUpdate(Object obj, String sql) {
         //影响的行数
-        int count=0;
-        Connection conn=getConnection();
-        PreparedStatement ps=null;
+        int count = 0;
+        Connection conn = getConnection();
+        PreparedStatement ps = null;
         try {
-            ps=conn.prepareStatement(sql);
+            ps = conn.prepareStatement(sql);
             //注入Sql填充参数
-            setParams(ps,obj);
+            setParams(ps, obj);
             count = ps.executeUpdate();
             System.out.println(sql);
             System.out.println(count);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }finally {
+        } finally {
             freeConnection(conn);
-            close(ps,null);
+            close(ps, null);
         }
         return count;
+    }
+
+    /**
+     * 执行一条查询语句,并对结果集进行封装
+     *
+     * @param obj          对象
+     * @param sql          sql语句
+     * @param resultMapper 实现不同功能映射的实现类
+     * @return 映射结果
+     */
+    @Override
+    public Object executeQuery(Object obj, String sql, ResultMapper resultMapper) {
+        Connection conn = getConnection();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement(sql);
+            //根据obj注入Sql填充参数
+            if (!obj.equals(null)) {
+                setParams(ps, obj);
+            }
+            rs = ps.executeQuery();
+            return resultMapper.doMap(rs);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            throw new DaoException("预编译查询语句异常：");
+        } finally {
+            freeConnection(conn);
+            close(ps, rs);
+        }
     }
 
 
     /**
      * 增加一条记录进入数据库
+     *
      * @param obj 对象名
      * @return int 影响的数据库行数
      */
@@ -66,14 +96,14 @@ public class BaseDaoImpl implements BaseDao {
     public int insert(Object obj) {
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
-        fieldMapper(obj,fieldNames,fieldValues);
+        fieldMapper(obj, fieldNames, fieldValues);
         /**
-             * 根据属性名生成预编译sql插入语句
-             */
-            StringBuilder sql = new StringBuilder("insert into " + getTableName(obj) + " (");
-            for(Object name: fieldNames){
-                System.out.println(name.toString());
-            sql.append(name.toString()+",");
+         * 根据属性名生成预编译sql插入语句
+         */
+        StringBuilder sql = new StringBuilder("insert into " + getTableName(obj) + " (");
+        for (Object name : fieldNames) {
+            System.out.println(name.toString());
+            sql.append(name.toString() + ",");
         }
         //将最后一个","改为")"，省去判断是否为最后一个")"
         sql.setCharAt(sql.length() - 1, ')');
@@ -82,8 +112,8 @@ public class BaseDaoImpl implements BaseDao {
             sql.append("?,");
         }
         sql.setCharAt(sql.length() - 1, ')');
-        return executeUpdate(obj,sql.toString());
-        }
+        return executeUpdate(obj, sql.toString());
+    }
 
     /**
      * 删除记录
@@ -94,11 +124,12 @@ public class BaseDaoImpl implements BaseDao {
     @Override
     public int delete(Object obj) {
         String sql = "delete from " + getTableName(obj) + " where id =?";
-        return executeUpdate(obj,sql);
+        return executeUpdate(obj, sql);
     }
 
     /**
      * 更新记录
+     *
      * @param obj 与更新有关的对象
      * @return int 影响的数据库记录数
      */
@@ -110,10 +141,10 @@ public class BaseDaoImpl implements BaseDao {
          */
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
-        fieldMapper(obj,fieldNames,fieldValues);
-        StringBuilder sql = new StringBuilder("update "+getTableName(obj)+" set "+fieldNames.getFirst()+" =?" +" where id=?");
+        fieldMapper(obj, fieldNames, fieldValues);
+        StringBuilder sql = new StringBuilder("update " + getTableName(obj) + " set " + fieldNames.getFirst() + " =?" + " where id=?");
         System.out.println(sql.toString());
-        return executeUpdate(obj,sql.toString());
+        return executeUpdate(obj, sql.toString());
     }
 
     /**
@@ -124,45 +155,19 @@ public class BaseDaoImpl implements BaseDao {
      * @return HashMap 结果集封装Map
      */
     @Override
-    public HashMap<Object, Object> queryMap(String sql, Object obj) {
-        HashMap<Object,Object> resultMap = new HashMap<>();
-        Connection conn=getConnection();
-        PreparedStatement ps=null;
-        ResultSet rs=null;
-        try {
-            ps=conn.prepareStatement(sql);
-            //根据obj注入Sql填充参数
-            setParams(ps,obj);
-            rs=ps.executeQuery();
-            while(rs.next()){
-                resultMap.put(rs.getObject(1),rs.getObject(2));
+    public HashMap queryMap(String sql, Object obj) {
+        return (HashMap) executeQuery(obj, sql, rs -> {
+            HashMap<Object, Object> resultMap = new HashMap<>();
+            try {
+                while (rs.next()) {
+                    resultMap.put(rs.getObject(1), rs.getObject(2));
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
-            freeConnection(conn);
-            close(ps,rs);
-        }
-        return resultMap;
+            return resultMap;
 
-
-        /**
-         * 根据搜索依据的字段名构造对象，取出对应数据库字段名和值
-         */
-        /*LinkedList<Object> fieldNames = new LinkedList<>();
-        LinkedList<Object> fieldValues = new LinkedList<>();
-        fieldMapper(src,fieldNames,fieldValues);
-        /**
-         * des用来获取表名，src用来填充sql
-         */
-       /* StringBuilder sql=new StringBuilder("select * from "+getTableName(des)+" where "+ fieldNames.getFirst()+" =?");
-        /**
-         * 将src的value值传过去填充
-         */
-        /*System.out.println(fieldNames.getFirst());
-        System.out.println(fieldValues);
-        System.out.println(fieldValues.getFirst());
-        return executeQuery(src,sql.toString(),fieldValues.getFirst());*/
+        });
     }
 
     /**
@@ -173,28 +178,21 @@ public class BaseDaoImpl implements BaseDao {
      * @return LinkedList 结果集封装LinkedList
      */
     @Override
-    public LinkedList<Object> queryList(String sql, Object obj) {
-        LinkedList<Object> resultList = new LinkedList<>();
-        Connection conn=getConnection();
-        PreparedStatement ps=null;
-        ResultSet rs=null;
-        try {
-            ps=conn.prepareStatement(sql);
-            //根据obj注入Sql填充参数
-            setParams(ps,obj);
-            System.out.println(sql);
-            rs=ps.executeQuery();
-            while(rs.next()){
-                resultList.add(rs.getObject(1));
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
-            freeConnection(conn);
-            close(ps,rs);
+    public LinkedList queryList(String sql, Object obj) {
+            return (LinkedList) executeQuery(obj, sql, rs -> {
+                LinkedList<Object> resultList = new LinkedList<>();
+                try {
+                    while (rs.next()) {
+                        resultList.add(rs.getObject(1));
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                return resultList;
+
+            });
         }
-        return resultList;
-    }
+
 
     /**
      * 查找所有属性
@@ -203,36 +201,48 @@ public class BaseDaoImpl implements BaseDao {
      * @return LinkedList<Object> values 所有值
      */
     @Override
-    public LinkedList<Object> queryAll(String sql, Object obj) {
-        LinkedList<Object> values = new LinkedList<>();
-        Connection conn=getConnection();
-        PreparedStatement ps=null;
-        ResultSet rs=null;
-        ResultSetMetaData rsmd=null;
-        try {
-            ps=conn.prepareStatement(sql);
-            //根据obj注入Sql填充参数
-            setParams(ps,obj);
-            rs=ps.executeQuery();
-            rsmd=rs.getMetaData();
-            while(rs.next()){
-                for(int i=1;i<=rsmd.getColumnCount();i++){
-                    // text另外分页展示
-                    if(!rsmd.getColumnName(i).equals("text")) {
-                        values.add(rsmd.getColumnName(i)+" :   "+ rs.getObject(i));
+    public LinkedList queryAll(String sql, Object obj,Class clazz) {
+        return (LinkedList) executeQuery(obj,sql,rs -> {
+            LinkedList<Object> values = new LinkedList<>();
+            ResultSetMetaData rsmd = null;
+            try {
+                rsmd = rs.getMetaData();
+                LinkedList<Method> methods = getMethods(clazz.newInstance());
+                //存储set方法
+                LinkedList<Method> setMethods = new LinkedList<>();
+                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                    /**
+                     * 将列名转化为实体类属性名
+                     */
+                    String columnName = rsmd.getColumnName(i);
+                    String fieldName = toEntityField(columnName);
+                    /**
+                     * 获取与列名有关的set方法,且会一一对应保证顺序
+                     */
+                    for (Method method : methods) {
+                        if (method.getName().startsWith("set") && method.getName().substring(3).equalsIgnoreCase(fieldName)) {
+                            setMethods.add(method);
+                        }
                     }
                 }
+                /**
+                 * 调用invoke执行set方法,映射成对象加入链表中
+                 */
+                while (rs.next()) {
+                    Object newInstance = clazz.newInstance();
+                    for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                        setMethods.get(i - 1).invoke(newInstance, rs.getObject(i));
+                    }
+                    values.add(newInstance);
+                }
+            } catch (SQLException | InstantiationException | IllegalAccessException throwables) {
+                throwables.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
             }
-            System.out.println(values);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
-            freeConnection(conn);
-            close(ps,rs);
-        }
-        return values;
-    }
-
+            return values;
+    });
+}
 
     /**
      * 将对象映射成属性名和属性值
@@ -278,6 +288,7 @@ public class BaseDaoImpl implements BaseDao {
         }
     }
 
+
     /**
      * 根据xxx获取id
      * @param obj xxx
@@ -291,8 +302,42 @@ public class BaseDaoImpl implements BaseDao {
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
         fieldMapper(obj,fieldNames,fieldValues);
-        StringBuilder sql = new StringBuilder("select id from " + getTableName(obj) + " where "+fieldNames.getFirst()+" =?");
-        return queryList(sql.toString(),obj).getFirst().toString();
+        String sql = "select id from " + getTableName(obj) + " where "+fieldNames.getFirst()+" =?";
+        return queryList(sql,obj).getFirst().toString();
+    }
+
+
+    /**
+     * 用于插入一条记录时使用
+     * @description 数据库id设置为String无法自增(设置int映射时无法转化为object)
+     * @param obj 对象
+     * @return String  该对象表中最大id
+     */
+    @Override
+    public String getMaxId(Object obj) {
+        String sql = "select MAX(id) from " + getTableName(obj);
+        Connection conn=getConnection();
+        Statement stmt=null;
+        ResultSet rs=null;
+        try {
+            stmt=conn.createStatement();
+            rs=stmt.executeQuery(sql);
+            if(rs.next()){
+                /**
+                 * 获取最大后+1
+                 */
+                char[] chars = rs.getString(1).toCharArray();
+                int i = (int)chars[0] + 1;
+                return String.valueOf((char)i);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            freeConnection(conn);
+            close(stmt,rs);
+        }
+        //查不到则说明是第一条记录
+        return "1";
     }
 
 

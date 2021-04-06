@@ -42,7 +42,7 @@ public class AddGroupView extends JFrame {
     private void submitActionPerformed(ActionEvent e) {
         String groupName = nameText.getText();
         Object locatedFolder= selectedLocatedFolder.getSelectedItem();
-        if(folderGroupService.addGroup(groupName,locatedFolder.toString())!=0&&!groupName.isEmpty()){
+        if(folderGroupService.addGroup(groupName,locatedFolder.toString())&&!groupName.isEmpty()){
             JOptionPane.showMessageDialog(null,"增加成功");
             this.dispose();
         }else {

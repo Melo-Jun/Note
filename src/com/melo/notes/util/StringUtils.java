@@ -26,4 +26,16 @@ public class StringUtils {
             }
         }return columnName;
     }
+
+    public static String toEntityField(String columnName){
+
+        StringBuilder filedName=new StringBuilder(columnName);
+        for(int i=0;i<filedName.length();i++){
+            if(filedName.charAt(i)=='_'){
+                filedName.deleteCharAt(i);
+                filedName.setCharAt(i+1,(char)(filedName.charAt(i+1)-32));
+            }
+        }
+        return filedName.toString();
+    }
 }

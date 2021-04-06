@@ -45,7 +45,7 @@ public class AddNoteView extends JFrame {
         String title = titleField.getText();
         String text = textArea.getText();
         String access = (String) this.accessSelect.getSelectedItem();
-        Note note = new Note( title, LoginView.USER.getId(), text, access ,0,TreeView.selectedId );
+        Note note = new Note( title, LoginView.USER.getId(), text, access ,"0",TreeView.selectedId );
         if(noteDao.addNote(note)){
             JOptionPane.showMessageDialog(null,"增加笔记成功");
             this.dispose();

@@ -16,15 +16,15 @@ import javax.swing.*;
 import javax.swing.GroupLayout;
 
 /**
- * @author 1
+ * @author Jun
  */
-public class setGroupView extends JFrame {
+public class SetGroupView extends JFrame {
 
     /**
      * 创建相关操作对象
      */
     FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
-    public setGroupView() {
+    public SetGroupView() {
         initComponents();
         /**
          * 初始化下拉框
@@ -40,13 +40,12 @@ public class setGroupView extends JFrame {
 
     private void submitActionPerformed(ActionEvent e) {
         String locatedFolder = (String) selectedLocatedFolder.getSelectedItem();
-        if (folderGroupService.setGroup(FolderView.selectedName, locatedFolder) != 0) {
+        if (folderGroupService.setGroup(FolderView.selectedName, locatedFolder) != 0&&!FolderView.selectedName.isEmpty()) {
             JOptionPane.showMessageDialog(null, "设置成功");
-            this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "请确认你选择的是笔记分组类型");
-            this.dispose();
         }
+        this.dispose();
     }
 
 

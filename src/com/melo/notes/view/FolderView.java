@@ -2,14 +2,15 @@
 
 package com.melo.notes.view;
 
+import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
+import com.melo.notes.service.impl.ListNoteTitleServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.*;
@@ -66,12 +67,14 @@ public class FolderView extends JFrame {
             JPanel panel = new JPanel(null);
             panel.setLocation(950, 400);
 
+            update.setBounds(100,5,100,40);
+            setGroup.setBounds(200,5,120,40);
+
             flush.setBounds(600,200,120,50);
-            update.setBounds(600,250,120,50);
+
             delete.setBounds(600,300,120,50);
             addFolder.setBounds(600,350,120,50);
             addGroup.setBounds(600,400,120,50);
-            setGroup.setBounds(600,450,120,50);
 
         /**
          * 增加监听器
@@ -105,17 +108,12 @@ public class FolderView extends JFrame {
         tempUser.setId(LoginView.USER.getId());
         HashMap<Object, Object> Folder = folderGroupService.showFolderName(tempUser);
                 /**
-                 * 先生成知识库
-                 */
-                Object folderId="";
-                Object folderName="";
-                /**
                  * 遍历获取folderId和folderName
                  */
-                Set<Map.Entry<Object, Object>> entries =  Folder.entrySet();
-                for(Map.Entry temp:entries) {
-                    folderId = temp.getKey();
-                    folderName = temp.getValue();
+                Set<Map.Entry<Object, Object>> folderSet =  Folder.entrySet();
+                for(Map.Entry tempFolder:folderSet) {
+                    Object folderId = tempFolder.getKey();
+                    Object folderName = tempFolder.getValue();
                     /**
                      * 根据folderName生成知识库
                      */
@@ -124,10 +122,30 @@ public class FolderView extends JFrame {
                     /**
                      * 再根据folderId生成相应笔记分组
                      */
-                    LinkedList<Object> groupNames = folderGroupService.showNoteGroup(folderId.toString());
-                    for(Object groupName:groupNames) {
+                    HashMap<Object, Object> Group = folderGroupService.showNoteGroup(folderId.toString());
+                    /**
+                     * 遍历获取groupId和groupName
+                     */
+                    Set<Map.Entry<Object, Object>> groupSet =  Group.entrySet();
+                    for(Map.Entry tempGroup:groupSet) {
+                        Object groupId = tempGroup.getKey();
+                        Object groupName = tempGroup.getValue();
                         DefaultMutableTreeNode group = new DefaultMutableTreeNode(groupName);
                         folder.add(group);
+                        /**
+                         * 最后根据groupId生成相应笔记
+                         */
+                        Note note = new Note();
+                        note.setAccess("公开");
+                        note.setLocatedGroup(groupId.toString());
+                        String[] notes = new ListNoteTitleServiceImpl().listNoteTitle(note);
+                        //判空
+                        if(notes[0]!=null) {
+                            for (int i = 0; i < notes.length&&notes[i]!=null; i++) {
+                                DefaultMutableTreeNode noteTree = new DefaultMutableTreeNode(notes[i]);
+                                group.add(noteTree);
+                            }
+                        }
                     }
                 }
 
@@ -228,7 +246,7 @@ public class FolderView extends JFrame {
              * 设置笔记分组
              */
             if(e.getSource()==setGroup){
-                new setGroupView().setVisible(true);
+                new SetGroupView().setVisible(true);
             }
             /**
              * 增加知识库操作
@@ -239,14 +257,8 @@ public class FolderView extends JFrame {
             /**
              * 增加笔记分组操作
              */
-            if(e.getSource()==addGroup){
-                 new AddGroupView().setVisible(true);
-                 }
-            /**
-             * 设置笔记分组操作
-             */
-            if(e.getSource()==setGroup){
-
+            if(e.getSource()==addGroup) {
+                new AddGroupView().setVisible(true);
             }
         }
 

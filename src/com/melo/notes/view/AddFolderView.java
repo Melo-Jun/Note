@@ -22,10 +22,6 @@ public class AddFolderView extends JFrame {
      */
     FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
 
-    /*public static String name=" ";
-    public static String access=" ";
-    public static String type=" ";*/
-
     public AddFolderView() {
         initComponents();
     }
@@ -33,7 +29,7 @@ public class AddFolderView extends JFrame {
     private void submitActionPerformed(ActionEvent e) {
         String name = nameText.getText();
         String access = (String)selectedAccess.getSelectedItem();
-        if(folderGroupService.addFolder(name,access)!=0&&!name.isEmpty()){
+        if(folderGroupService.addFolder(name,access)&&!name.isEmpty()){
             JOptionPane.showMessageDialog(null,"增加成功");
             this.dispose();
         }else {

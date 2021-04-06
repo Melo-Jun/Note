@@ -3,6 +3,7 @@ package com.melo.notes.dao.inter;
 import com.melo.notes.entity.Group;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -17,7 +18,7 @@ public interface GroupDao {
      * @param folderId 知识库id
      * @return LinkedList<Object> 结果集链表
      */
-    LinkedList<Object> showNoteGroup(String folderId);
+    HashMap<Object, Object> showNoteGroup(String folderId);
 
     /**
      * 删除分组
@@ -25,6 +26,13 @@ public interface GroupDao {
      * @return int 影响的行数
      */
     int deleteGroup(String groupId);
+
+    /**
+     * 增加笔记分组
+     * @param group 笔记分组对象
+     * @return boolean 是否增加成功
+     */
+    boolean addFolder(Group group);
 
     /**
      * 更改知识库名称

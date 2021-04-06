@@ -4,8 +4,10 @@
 
 package com.melo.notes.view;
 
+import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
+import com.melo.notes.service.impl.ListNoteTitleServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
@@ -76,11 +78,6 @@ public class TreeView extends JFrame {
         submit.addMouseListener(l);
 
         /**
-         * 加入面板中
-         */
-
-
-        /**
          * 创建根节点
          */
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("知识库");
@@ -92,17 +89,12 @@ public class TreeView extends JFrame {
         tempUser.setId(LoginView.USER.getId());
         HashMap<Object, Object> Folder = folderGroupService.showFolderName(tempUser);
         /**
-         * 先生成知识库
-         */
-        Object folderId="";
-        Object folderName="";
-        /**
          * 遍历获取folderId和folderName
          */
-        Set<Map.Entry<Object, Object>> entries =  Folder.entrySet();
-        for(Map.Entry temp:entries) {
-            folderId = temp.getKey();
-            folderName = temp.getValue();
+        Set<Map.Entry<Object, Object>> folderSet =  Folder.entrySet();
+        for(Map.Entry tempFolder:folderSet) {
+            Object folderId = tempFolder.getKey();
+            Object folderName = tempFolder.getValue();
             /**
              * 根据folderName生成知识库
              */
@@ -111,8 +103,13 @@ public class TreeView extends JFrame {
             /**
              * 再根据folderId生成相应笔记分组
              */
-            LinkedList<Object> groupNames = folderGroupService.showNoteGroup(folderId.toString());
-            for(Object groupName:groupNames) {
+            HashMap<Object, Object> Group = folderGroupService.showNoteGroup(folderId.toString());
+            /**
+             * 遍历获取groupId和groupName
+             */
+            Set<Map.Entry<Object, Object>> groupSet =  Group.entrySet();
+            for(Map.Entry tempGroup:groupSet) {
+                Object groupName = tempGroup.getValue();
                 DefaultMutableTreeNode group = new DefaultMutableTreeNode(groupName);
                 folder.add(group);
             }
