@@ -3,7 +3,6 @@ package com.melo.notes.dao.inter;
 import com.melo.notes.exception.DaoException;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 
