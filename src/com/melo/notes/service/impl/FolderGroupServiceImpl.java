@@ -1,14 +1,17 @@
 package com.melo.notes.service.impl;
 
+import com.melo.notes.dao.impl.BaseDaoImpl;
 import com.melo.notes.dao.impl.FolderDaoImpl;
 import com.melo.notes.dao.impl.GroupDaoImpl;
 import com.melo.notes.entity.Folder;
 import com.melo.notes.entity.Group;
+import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.inter.FolderGroupService;
 import com.melo.notes.util.BeanFactory;
 import com.melo.notes.view.FolderView;
 import com.melo.notes.view.LoginView;
+import com.melo.notes.view.UpdateNoteView;
 
 import java.util.HashMap;
 
@@ -27,13 +30,15 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     /**
      * 各对象所在层级
      */
-    private final int FOLDERTREEPATHCOUNT=2;
-    private final int GROUPTREEPATHCOUNT=3;
+    private final int FOLDERTYPE =2;
+    private final int GROUPTYPE =3;
+    private final int NOTETYPE =4;
     /**
      * 相应对象名称
      */
     private final String FOLDER="知识库";
     private final String GROUP="笔记分组";
+    private final String NOTE="笔记";
 
     /**
      * 根据节点数判断是什么类
@@ -44,22 +49,22 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     @Override
     public String judgeType(int TreePathCount) {
         switch (TreePathCount){
-            case FOLDERTREEPATHCOUNT: return FOLDER;
-            case GROUPTREEPATHCOUNT: return GROUP;
+            case FOLDERTYPE: return FOLDER;
+            case GROUPTYPE: return GROUP;
+            case NOTETYPE: return NOTE;
             default:return " ";
         }
     }
 
     /**
-     * 根据用户Id获取知识库名称
-     * @param user 用户
+     * 根据登录的用户Id获取知识库名称
      * @return HashMap 知识库id-知识库名称
      */
     @Override
-    public HashMap<Object, Object> showFolderName(User user) {
-        User temp = new User();
-        temp.setId(user.getId());
-        return folderDao.showFolderName(temp);
+    public HashMap<Object, Object> showFolderName() {
+        User user = new User();
+        user.setId(LoginView.USER.getId());
+        return folderDao.showFolderName(user);
     }
 
     /**
@@ -168,6 +173,10 @@ public class FolderGroupServiceImpl implements FolderGroupService {
                 group.setGroupName(updateName);
                 return groupDao.updateGroupName(group);
             }
+        if(selectedType.equals(NOTE)){
+            new UpdateNoteView(LoginView.USER);
+            return 1;
+        }
         return 0;
     }
 
@@ -193,6 +202,22 @@ public class FolderGroupServiceImpl implements FolderGroupService {
         return 0;
     }
 
+    public int setNote(String selectedNote,String locatedGroup){
+        if(isNote(FolderView.selectedType)){
+            Group group = new Group();
+            group.setGroupName(locatedGroup);
+            Note note = new Note();
+            note.setTitle(selectedNote);
+            String id = getId(note);
+            note.setId(id);
+            note.setLocatedGroup(getId(group));
+            note.setTitle(null);
+            return new BaseDaoImpl().update(note);
+        }
+        return 0;
+    }
+
+
     /**
      * 选择分组时判断是否为分组
      * @param selectedClassName 选中的对应类
@@ -201,6 +226,13 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     @Override
     public boolean isGroup(String selectedClassName) {
         if(selectedClassName.equals(GROUP)){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isNote(String selectedClassName) {
+        if(selectedClassName.equals(NOTE)){
             return true;
         }
         return false;

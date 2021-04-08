@@ -137,13 +137,19 @@ public class BaseDaoImpl implements BaseDao {
     public int update(Object obj) {
         /**
          * 根据更新依据的字段名构造对象，取出对应数据库字段名和值
-         * 此处id是在父类里边,故fieldNames.getFirst不是id
          */
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
         fieldMapper(obj, fieldNames, fieldValues);
-        StringBuilder sql = new StringBuilder("update " + getTableName(obj) + " set " + fieldNames.getFirst() + " =?" + " where id=?");
-        System.out.println(sql.toString());
+        StringBuilder sql = new StringBuilder("update " + getTableName(obj) + " set ");
+        for(Object fieldName:fieldNames) {
+            if(!fieldName.toString().equals("id")) {
+                sql.append(fieldName + "=?, ");
+            }
+        }
+        //删除最后一个逗号
+        sql.deleteCharAt(sql.length()-2);
+        sql.append("where id=?");
         return executeUpdate(obj, sql.toString());
     }
 
@@ -166,7 +172,6 @@ public class BaseDaoImpl implements BaseDao {
                 throwables.printStackTrace();
             }
             return resultMap;
-
         });
     }
 
@@ -189,7 +194,6 @@ public class BaseDaoImpl implements BaseDao {
                     throwables.printStackTrace();
                 }
                 return resultList;
-
             });
         }
 
@@ -340,25 +344,5 @@ public class BaseDaoImpl implements BaseDao {
         return "1";
     }
 
-
-    /**
-     * 判断操作是否成功
-     * @param ps
-     * @return boolean 是否成功
-     */
-    @Override
-    public boolean isSuccess(PreparedStatement ps) {
-        int count = 0;
-        try {
-            count = ps.executeUpdate();
-            System.out.println(count);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }if(count==1) {
-            return true;
-        }else {
-            throw new DaoException("查无此人");
-        }
-    }
 
 }

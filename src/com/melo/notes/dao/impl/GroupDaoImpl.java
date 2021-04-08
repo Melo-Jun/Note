@@ -60,7 +60,7 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
     }
 
     /**
-     * 更改知识库名称
+     * 更改笔记分组名称
      *
      * @param group 在service完成封装后的对象
      * @return

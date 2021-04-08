@@ -29,9 +29,7 @@ public class SetGroupView extends JFrame {
         /**
          * 初始化下拉框
          */
-        User user = new User();
-        user.setId(LoginView.USER.getId());
-        HashMap<Object, Object> folderName = folderGroupService.showFolderName(user);
+        HashMap<Object, Object> folderName = folderGroupService.showFolderName();
         Collection<Object> values = folderName.values();
         for(Object temp:values){
             selectedLocatedFolder.addItem(temp);

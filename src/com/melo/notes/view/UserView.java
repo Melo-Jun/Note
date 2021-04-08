@@ -40,7 +40,7 @@ public class UserView extends JFrame {
     }
 
     private void showNoteActionPerformed(ActionEvent e) {
-        new ListNoteTitle();
+        new TableView();
     }
 
 

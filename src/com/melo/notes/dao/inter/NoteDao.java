@@ -20,11 +20,11 @@ public interface NoteDao {
      LinkedList<Object> showNoteTitle(Object obj);
 
     /**
-     * 通过点击标题查看按钮查看笔记详情
+     * 列出笔记所有信息(内容另外分页展示)
      * @param obj 根据的对象
      * @return
      */
-    LinkedList<Object> listNoteAll(Object obj);
+    LinkedList<Object> showNoteAll(Object obj);
 
     /**
      * 分页查询文本

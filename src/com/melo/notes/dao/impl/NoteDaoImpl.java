@@ -44,7 +44,6 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
         if(fieldValues.size()!=1){
             sql.append(" AND "+fieldNames.getLast()+" ="+"?");
         }
-        System.out.println(sql.toString());
         /**
          * 完成sql注入和执行
          */
@@ -53,34 +52,48 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
 
     /**
      *分页查询文本
-     * @param obj
-     * @return
+     * @param obj 根据对象id
+     * @return String 笔记内容
      */
     @Override
     public String showNoteText(Object obj) {
-        String sql="select text from "+TABLE_NAME+" where title=? ";
+        //String sql="select text from "+TABLE_NAME+" where title=? ";
+        String sql="select text from "+TABLE_NAME+" where id=? ";
         return queryList(sql,obj).getFirst().toString();
     }
 
     /**
-     * 通过点击标题查看按钮查看笔记详情
+     * 列出笔记所有信息(内容另外分页展示)
      * @param obj 根据的对象
      * @return
      */
     @Override
-    public LinkedList<Object> listNoteAll(Object obj) {
-        String sql = "select "+ALL_FIELD_NAME+" from "+TABLE_NAME+" where title=? ";
+    public LinkedList<Object> showNoteAll(Object obj) {
+        //String sql = "select "+ALL_FIELD_NAME+" from "+TABLE_NAME+" where title=? ";
+        StringBuilder sql = new StringBuilder( "select "+ALL_FIELD_NAME+" from "+TABLE_NAME);
         /**
          * 将对象映射成属性和值(属性会映射为数据库字段名)
          */
-       /* LinkedList<Object> fieldNames = new LinkedList<>();
+        LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
-        fieldMapper(obj,fieldNames,fieldValues);*/
+        fieldMapper(obj,fieldNames,fieldValues);
+        /**
+         * 将字段名填入sql语句
+         * 没有where条件则不添加
+         */
+        if(fieldValues.size()!=0) {
+            sql.append(" where ");
+            for (Object fieldName : fieldNames) {
+                sql.append(fieldName + "=? AND ");
+            }
+        }
+        //删除最后一个AND
+        sql.delete(sql.length()-4,sql.length());
         /**
          * 完成sql注入和执行
          */
-        System.out.println(sql);
-        return queryAll(sql,obj,Note.class);
+        System.out.println(sql.toString());
+        return queryAll(sql.toString(),obj,Note.class);
     }
 
     /**

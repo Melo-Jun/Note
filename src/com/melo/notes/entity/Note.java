@@ -1,6 +1,7 @@
 package com.melo.notes.entity;
 
 
+import com.melo.notes.entity.abs.BaseEntity;
 
 /**
  * @author Jun
@@ -8,9 +9,8 @@ package com.melo.notes.entity;
  * @description 笔记实体类
  * @date 2021-3-27 21:07
  */
-public class Note  {
+public class Note extends BaseEntity {
 
-    private String id;
     private String title;
     private String authorId;
     private String text;
@@ -28,10 +28,6 @@ public class Note  {
         this.access = access;
         this.likeCount = likeCount;
         this.locatedGroup = locatedGroup;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getTitle() {
@@ -59,9 +55,6 @@ public class Note  {
         return locatedGroup;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public void setTitle(String title) {
         this.title = title;

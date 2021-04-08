@@ -38,6 +38,7 @@ public class FolderView extends JFrame {
      * 选中的类型
      */
     public static String selectedType ="";
+    private final String NOTE="笔记";
 
     JFrame jf = new JFrame("设置笔记分组");
     private Listener l = new Listener();
@@ -47,6 +48,7 @@ public class FolderView extends JFrame {
     private JButton addGroup = new JButton("新增笔记分组");
     private JButton update = new JButton("修改名称");
     private JButton setGroup = new JButton("设置笔记分组");
+    private JButton updateNote = new JButton("设置笔记");
 
     /**
      * 创建相关操作对象
@@ -69,6 +71,7 @@ public class FolderView extends JFrame {
 
             update.setBounds(100,5,100,40);
             setGroup.setBounds(200,5,120,40);
+            updateNote.setBounds(300,5,120,40);
 
             flush.setBounds(600,200,120,50);
 
@@ -85,6 +88,7 @@ public class FolderView extends JFrame {
         addGroup.addMouseListener(l);
         setGroup.addMouseListener(l);
         flush.addMouseListener(l);
+        updateNote.addMouseListener(l);
 
         /**
          * 加入面板中
@@ -95,6 +99,7 @@ public class FolderView extends JFrame {
             panel.add(setGroup);
             panel.add(addFolder);
             panel.add(addGroup);
+            panel.add(updateNote);
 
         /**
          * 创建根节点
@@ -104,9 +109,7 @@ public class FolderView extends JFrame {
         /**
          * 根据知识库名生成相应笔记分组
          */
-        User tempUser = new User();
-        tempUser.setId(LoginView.USER.getId());
-        HashMap<Object, Object> Folder = folderGroupService.showFolderName(tempUser);
+        HashMap<Object, Object> Folder = folderGroupService.showFolderName();
                 /**
                  * 遍历获取folderId和folderName
                  */
@@ -172,26 +175,6 @@ public class FolderView extends JFrame {
                 }
             });
 
-            // 节点增删改监听器
-            tree.getModel().addTreeModelListener(new TreeModelListener() {
-                @Override
-                public void treeNodesChanged(TreeModelEvent e) {
-                    System.out.println("节点改变: " + e.getTreePath().getLastPathComponent());
-                }
-                @Override
-                public void treeNodesInserted(TreeModelEvent e) {
-                    System.out.println("节点插入: " + e.getTreePath());
-                }
-                @Override
-                public void treeNodesRemoved(TreeModelEvent e) {
-                    System.out.println("节点移除: " + e.getTreePath());
-                }
-                @Override
-                public void treeStructureChanged(TreeModelEvent e) {
-                    System.out.println("结构改变: " + e.getTreePath());
-                }
-            });
-
             // 创建滚动面板，包裹树（因为树节点展开后可能需要很大的空间来显示，所以需要用一个滚动面板来包裹）
             JScrollPane scrollPane = new JScrollPane(tree);
             scrollPane.setBounds(50,50,500,450);
@@ -232,6 +215,7 @@ public class FolderView extends JFrame {
             /**
              * 修改操作
              */
+            //修改名称
             if(e.getSource()==update){
                 String updateName = JOptionPane.showInputDialog("请输入修改名称");
                 if(folderGroupService.update(selectedName,updateName,selectedType)!=0){
@@ -240,6 +224,14 @@ public class FolderView extends JFrame {
                     new FolderView(LoginView.USER);
                 }else {
                     JOptionPane.showMessageDialog(null,"修改失败");
+                }
+            }
+            //修改笔记内容
+            if(e.getSource()==updateNote){
+                if(selectedType.equals(NOTE)) {
+                    new UpdateNoteView(LoginView.USER);
+                }else {
+                    JOptionPane.showMessageDialog(null,"请确认你选中的是笔记");
                 }
             }
             /**

@@ -108,10 +108,4 @@ public interface BaseDao {
      */
     String getMaxId(Object obj);
 
-    /**
-     * 检验数据库相应操作是否成功
-     * @param ps
-     * @return
-     */
-    boolean isSuccess(PreparedStatement ps);
 }

@@ -33,7 +33,7 @@ public class ReflectUtils {
     public static LinkedList<Field> getFields(Class clazz) {
         LinkedList<Field> fields = new LinkedList<>();
         /**
-         * 遍历获取所有除了object父类的方法
+         * 遍历获取所有除了object父类的属性
          */
         for (Class cla = clazz; cla != Object.class; cla = cla.getSuperclass()) {
             fields.addAll(Arrays.asList(cla.getDeclaredFields()));

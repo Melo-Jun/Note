@@ -78,10 +78,11 @@ public class ListNoteTitle extends JFrame {
                 if(e.getSource()==show){
                     NoteTextBean noteTextBean = new NoteTextBean(title);
                     Note note = new Note();
-                    note.setTitle(title);
+                    note.setAccess("公开");
+                    new TableView();
                     /*String[] values = listNoteTitleService.listNoteAll(note);
                     list.setListData(values);*/
-                    new NoteTextView(listNoteTitleService.showNoteText(note)).setVisible(true);
+                   // new NoteTextView(listNoteTitleService.showNoteText(note)).setVisible(true);
                 }
                 /**
                  * 根据标题搜索

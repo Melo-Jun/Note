@@ -21,11 +21,10 @@ public interface FolderGroupService {
     String judgeType(int TreePathCount);
 
     /**
-     * 根据用户名获取知识库名称
-     * @param user 用户
+     * 根据登录的用户id获取知识库名称
      * @return HashMap 知识库id-知识库名称
      */
-     HashMap<Object, Object> showFolderName(User user);
+     HashMap<Object, Object> showFolderName();
 
     /**
      * 根据知识库列出分组界面

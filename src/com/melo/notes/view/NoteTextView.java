@@ -14,6 +14,7 @@ import javax.swing.GroupLayout;
 public class NoteTextView extends JFrame {
     public NoteTextView(String text) {
         initComponents();
+        setVisible(true);
         this.setTitle("±Ê¼ÇÄÚÈÝ");
         setBounds(700,566,500,400);
         textArea1.setText(text);

@@ -1,4 +1,4 @@
-# 备份
+备份
 
 queryAll
 
@@ -75,7 +75,7 @@ return values;
 
 - 可以写判断输入是否有效的父类,可变参数其实是数组,用for each
 
-- 此处的生成对象有没有必要封装成service![image-20210406093435527](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406093435527.png)
+- 此处的生成对象有没有必要封装成service,**都弄成service中即可吧**![image-20210406093435527](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406093435527.png)
 
 - 此处点击author_id可以查看用户详情信息会好一点,等完成设置用户信息了再
 
@@ -95,23 +95,27 @@ return values;
 
 # 待办
 
-- executeQuery封装起来,还是不封装了,全部都写成queryAll?然后各个Dao再去进行处理掉了
+- 写根据id和folderid列出相关名称
+
+    >![image-20210407183049724](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210407183049724.png)
+
+    
+
 - 修改了id没有自增了,以及likecount为string了
-- 展示笔记详情内容,在表格中实现
-- 将结果集的对象再变成vector
-- ![image-20210406183002226](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406183002226.png)
+
+    >   likeCount:将getMaxId中的方法弄到StringUtils中即可
+
 
 
 -   此处注释掉的应该不用用到吧![image-20210406205640002](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406205640002.png)
 
 # BaseDao
 
-## select
-- queryAll用在查看笔记详情内容，也适用于其他查找所有的吧，obj是业务对象即可
+## update
 
-> ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210405082055678.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NDA1Nzgy,size_16,color_FFFFFF,t_70)
-> ![在这里插入图片描述](https://img-blog.csdnimg.cn/202104050824063.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NDA1Nzgy,size_16,color_FFFFFF,t_70)
-> 这两个好像可以合并，返回结果一样，查找单一和查找所有其实都可以用rsmd那个来实现？
+- 修改update![image-20210408124219910](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210408124219910.png)
+
+## select
 
 ### 封装
 
@@ -213,9 +217,13 @@ delete一定得根据主键吧,才不会误删
 
 # NoteDao
 
--   ~~待修改~~![image-20210406193605499](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406193605499.png)
+-   showNoteTitle好像不用用到了
 
 # FolderDao
+
+- showNoteAll
+
+  > 目前只能展示公开的,但是用户要查找的话,是不是access那块要改一下先
 
 - showFolderName应该还可以重构一下,生出Jtree那块
 
@@ -275,12 +283,22 @@ public int update(Object obj) {
 
  # View
 
+## 分工
+
+-   设置笔记分组的时候,顺便可以查看自己的笔记,修改自己的笔记,在笔记中去设置笔记分组(仅仅是设置笔记分组而已,修改还是在查看笔记那边笔记方便.因为要根据id去获取text,如果在folderView中可能标题重名就GG了)
+
+    >   **还是得跳出一个类似新增笔记的界面,因为有treeView笔记方便来设置笔记分组,就设置可编辑咯,可以在表格加一个按钮,查看自己的笔记并设置**
+
+-   管理员和查看别人的都用表格,修改用户信息也用表格,查看自己个人信息也用表格?
+
+# TableView
+
+-   列出所有笔记![image-20210407183405940](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210407183405940.png)
+
  ## FolderView
+
  - 生成知识库,笔记分组,笔记,前两个都用到了queryMap
-
-   ---
-
- - 记录选中的名称和类型,然后在service中判断要执行哪个方法
+ - 记录选中的名称和类型,然后在service中判断要执行哪个方
 
  > 需要根据选中的名称生成对象,反获取id后将id传给相应Dao的delete操作,delete中又去生成对象再传给Base的delete
  >
@@ -291,7 +309,7 @@ public int update(Object obj) {
 - update
 
   1. 参数:字段名,属性值,id,表名
-  2. 参数:或者都统一为对象,base里边,然后set ?=?(可以这样吗)
+  2. ~~参数:或者都统一为对象,base里边,然后set ?=?(可以这样吗)不可以~~
 
   > 怎么操作,根据选中的行数获取他的:前作为字段名,属性值的话呢,感觉得switch一样,应该不同的选择会用到设置不同的set方法,或者都用append就好?根据是根据id,where后边尽量是id,去获取第一行即可,表名还是得传对象,如果是通用的Base都得传对象
 

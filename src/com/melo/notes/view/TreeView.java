@@ -30,10 +30,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class TreeView extends JFrame {
     /**
-     * 用户
-     */
-    User user=LoginView.USER;
-    /**
      * 选中的名称以及相应id
      */
     public static String selectedName ="";
@@ -56,10 +52,6 @@ public class TreeView extends JFrame {
      * @return
      */
     FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
-
-    public String getLocatedGroup() {
-        return selectedName;
-    }
 
     public TreeView() {
 
@@ -85,9 +77,7 @@ public class TreeView extends JFrame {
         /**
          * 根据知识库名生成相应笔记分组
          */
-        User tempUser = new User();
-        tempUser.setId(LoginView.USER.getId());
-        HashMap<Object, Object> Folder = folderGroupService.showFolderName(tempUser);
+        HashMap<Object, Object> Folder = folderGroupService.showFolderName();
         /**
          * 遍历获取folderId和folderName
          */
@@ -135,26 +125,6 @@ public class TreeView extends JFrame {
                 selectedName = e.getPath().getLastPathComponent().toString();
                 selectedClassName = folderGroupService.judgeType(e.getPath().getPathCount());
                 System.out.println(selectedClassName);
-            }
-        });
-
-        // 节点增删改监听器
-        tree.getModel().addTreeModelListener(new TreeModelListener() {
-            @Override
-            public void treeNodesChanged(TreeModelEvent e) {
-                System.out.println("节点改变: " + e.getTreePath().getLastPathComponent());
-            }
-            @Override
-            public void treeNodesInserted(TreeModelEvent e) {
-                System.out.println("节点插入: " + e.getTreePath());
-            }
-            @Override
-            public void treeNodesRemoved(TreeModelEvent e) {
-                System.out.println("节点移除: " + e.getTreePath());
-            }
-            @Override
-            public void treeStructureChanged(TreeModelEvent e) {
-                System.out.println("结构改变: " + e.getTreePath());
             }
         });
 

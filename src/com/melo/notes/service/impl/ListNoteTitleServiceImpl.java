@@ -44,7 +44,7 @@ public class ListNoteTitleServiceImpl implements ListNoteTitleService {
      */
     @Override
     public String[] listNoteAll(Object obj) {
-        LinkedList<Object> objects = noteDao.listNoteAll(obj);
+        LinkedList<Object> objects = noteDao.showNoteAll(obj);
         String[] strings = new String[100];
         int i=0;
         for(Object temp:objects){
