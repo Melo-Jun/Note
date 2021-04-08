@@ -8,6 +8,6 @@ public class TextNoteTextView {
     public static void main(String[] args) {
         LoginView.USER=new User();
         LoginView.USER.setId("1");
-        new NoteTextView(new NoteDaoImpl().showNoteText(new NoteTextBean("想"))).setVisible(true);
+        new NoteTextView(new NoteDaoImpl().showNoteText(new NoteTextBean("想")));
     }
 }

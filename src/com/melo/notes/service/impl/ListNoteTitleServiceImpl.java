@@ -1,6 +1,7 @@
 package com.melo.notes.service.impl;
 
 import com.melo.notes.dao.impl.NoteDaoImpl;
+import com.melo.notes.exception.DaoException;
 import com.melo.notes.service.inter.ListNoteTitleService;
 import com.melo.notes.util.BeanFactory;
 
@@ -65,4 +66,7 @@ public class ListNoteTitleServiceImpl implements ListNoteTitleService {
         return noteDao.showNoteText(obj);
     }
 
+    public void fieldMapper(Object obj, LinkedList fieldNames, LinkedList fieldValues) throws DaoException {
+        noteDao.fieldMapper(obj,fieldNames,fieldValues);
+    }
 }

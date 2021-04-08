@@ -68,7 +68,7 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
      * @return
      */
     @Override
-    public LinkedList<Object> showNoteAll(Object obj) {
+    public LinkedList showNoteAll(Object obj) {
         //String sql = "select "+ALL_FIELD_NAME+" from "+TABLE_NAME+" where title=? ";
         StringBuilder sql = new StringBuilder( "select "+ALL_FIELD_NAME+" from "+TABLE_NAME);
         /**

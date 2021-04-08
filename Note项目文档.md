@@ -291,13 +291,16 @@ public int update(Object obj) {
 
 -   管理员和查看别人的都用表格,修改用户信息也用表格,查看自己个人信息也用表格?
 
-# TableView
+## TableView
 
 -   列出所有笔记![image-20210407183405940](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210407183405940.png)
 
  ## FolderView
 
- - 生成知识库,笔记分组,笔记,前两个都用到了queryMap
+- 还得增加一个删除笔记的功能,以及此处是根据标题,若改为根据id,也还是会受影响,最好加个不可重名吧
+
+  > ![image-20210408154053453](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210408154053453.png)
+
  - 记录选中的名称和类型,然后在service中判断要执行哪个方
 
  > 需要根据选中的名称生成对象,反获取id后将id传给相应Dao的delete操作,delete中又去生成对象再传给Base的delete

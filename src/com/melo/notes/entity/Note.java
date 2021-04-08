@@ -30,6 +30,14 @@ public class Note extends BaseEntity {
         this.locatedGroup = locatedGroup;
     }
 
+    public Note(String title, String authorId, String text, String access, String locatedGroup) {
+        this.title = title;
+        this.authorId = authorId;
+        this.text = text;
+        this.access = access;
+        this.locatedGroup = locatedGroup;
+    }
+
     public String getTitle() {
         return title;
     }

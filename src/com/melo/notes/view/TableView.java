@@ -8,15 +8,14 @@ import java.awt.event.*;
 
 import com.melo.notes.bean.AuthorBean;
 import com.melo.notes.bean.NoteBean;
-import com.melo.notes.dao.impl.BaseDaoImpl;
 import com.melo.notes.dao.impl.NoteDaoImpl;
 import com.melo.notes.entity.Note;
 import com.melo.notes.service.impl.ListNoteTitleServiceImpl;
+import com.melo.notes.service.impl.TableServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
 import java.util.LinkedList;
-import java.util.Vector;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 import javax.swing.table.*;
@@ -33,7 +32,7 @@ public class TableView extends JFrame {
      * @return
      */
     ListNoteTitleServiceImpl listNoteTitleService=(ListNoteTitleServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.ListNoteTitleService);
-
+    TableServiceImpl tableService =(TableServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.TableViewService);
     DefaultTableModel model= null;
 
     public TableView() {
@@ -56,7 +55,7 @@ public class TableView extends JFrame {
      */
     private void noteTextActionPerformed(ActionEvent e) {
         Integer row=table.getSelectedRow();
-        Object valueAt = model.getValueAt(row, 5);
+        Object valueAt = model.getValueAt(row, 0);
         Note note = new Note();
         note.setId(valueAt.toString());
         new NoteTextView(listNoteTitleService.showNoteText(note));
@@ -79,10 +78,6 @@ public class TableView extends JFrame {
     private void searchByAuthorIdActionPerformed(ActionEvent e) {
         String authorId = JOptionPane.showInputDialog("请输入作者id");
         AuthorBean authorBean = new AuthorBean(PUBLIC,authorId);
-        /*Note note = new Note();
-        note.setAuthorId(authorId);
-        note.setAccess(PUBLIC);
-        fillTable(note);*/
         fillTable(authorBean);
     }
 
@@ -91,34 +86,13 @@ public class TableView extends JFrame {
     }
 
     private void fillTable(Object obj){
-        //记录列数
-        int count=0;
         model= (DefaultTableModel)table.getModel();
         model.setRowCount(0);
-        LinkedList<Object> notes = new NoteDaoImpl().showNoteAll(obj);
-        for(Object tempNote:notes) {
-            Vector<Object> objects = new Vector<>();
-            /**
-             * 获取对象属性值
-             */
-            LinkedList<Object> fieldNames = new LinkedList<>();
-            LinkedList<Object> fieldValues = new LinkedList<>();
-            new BaseDaoImpl().fieldMapper(tempNote, fieldNames, fieldValues);
-            for (Object value : fieldValues) {
-                count++;
-                /**
-                 * 过滤掉text内容,另外单独展示
-                 */
-                if (count != 4) {
-                    objects.add(value);
-                }
-            }
-            count=0;
-            model.addRow(objects);
+        LinkedList<Note> notes = new NoteDaoImpl().showNoteAll(obj);
+        for(Note tempNote:notes) {
+            model.addRow(tableService.fillTable(tempNote));
         }
     }
-
-
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -147,11 +121,11 @@ public class TableView extends JFrame {
                 new Object[][] {
                 },
                 new String[] {
-                    "title", "authorId", "access", "likeCount", "locatedGroup", "id"
+                    "id", "title", "authorId", "access", "likeCount", "locatedGroup"
                 }
             ) {
                 boolean[] columnEditable = new boolean[] {
-                    true, true, true, false, true, true
+                    true, true, true, true, false, true
                 };
                 @Override
                 public boolean isCellEditable(int rowIndex, int columnIndex) {
