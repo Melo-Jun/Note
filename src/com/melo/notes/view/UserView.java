@@ -43,6 +43,10 @@ public class UserView extends JFrame {
         new TableView();
     }
 
+    private void updateActionPerformed(ActionEvent e) {
+        new PersonalUserView();
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -51,6 +55,8 @@ public class UserView extends JFrame {
         showNote = new JMenuItem();
         addNote = new JMenuItem();
         setNote = new JMenuItem();
+        user = new JMenu();
+        update = new JMenuItem();
         welcome = new JLabel();
 
         //======== this ========
@@ -75,20 +81,35 @@ public class UserView extends JFrame {
 
                 //---- showNote ----
                 showNote.setText("\u67e5\u770b\u7b14\u8bb0");
+                showNote.setFont(new Font("Microsoft YaHei UI", showNote.getFont().getStyle() & ~Font.ITALIC, showNote.getFont().getSize() + 4));
                 showNote.addActionListener(e -> showNoteActionPerformed(e));
                 note.add(showNote);
 
                 //---- addNote ----
                 addNote.setText("\u589e\u52a0\u7b14\u8bb0");
+                addNote.setFont(new Font("Microsoft YaHei UI", addNote.getFont().getStyle() & ~Font.ITALIC, addNote.getFont().getSize() + 4));
                 addNote.addActionListener(e -> addNoteActionPerformed(e));
                 note.add(addNote);
 
                 //---- setNote ----
                 setNote.setText("\u8bbe\u7f6e\u5206\u7ec4");
+                setNote.setFont(new Font("Microsoft YaHei UI", setNote.getFont().getStyle() & ~Font.ITALIC, setNote.getFont().getSize() + 4));
                 setNote.addActionListener(e -> setNoteActionPerformed(e));
                 note.add(setNote);
             }
             menuBar.add(note);
+
+            //======== user ========
+            {
+                user.setText("\u8bbe\u7f6e\u4e2a\u4eba\u4fe1\u606f");
+                user.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
+
+                //---- update ----
+                update.setText("\u4fee\u6539\u7528\u6237\u540d\u5bc6\u7801");
+                update.addActionListener(e -> updateActionPerformed(e));
+                user.add(update);
+            }
+            menuBar.add(user);
         }
         setJMenuBar(menuBar);
 
@@ -124,6 +145,8 @@ public class UserView extends JFrame {
     private JMenuItem showNote;
     private JMenuItem addNote;
     private JMenuItem setNote;
+    private JMenu user;
+    private JMenuItem update;
     private JLabel welcome;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

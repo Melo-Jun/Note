@@ -1,10 +1,14 @@
 package com.melo.notes.dao.inter;
 
+import com.melo.notes.entity.User;
 import com.melo.notes.exception.DaoException;
 
 import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import static com.melo.notes.util.JdbcUtils.getTableName;
+import static com.melo.notes.util.Md5Utils.getDigest;
 
 /**
  * @author Jun

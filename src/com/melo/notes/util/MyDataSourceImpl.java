@@ -1,6 +1,5 @@
-package com.melo.notes.dao.impl;
+package com.melo.notes.util;
 
-import com.melo.notes.dao.inter.MyDataSource;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @description 数据库连接池实现类
  * @date 2021-3-28 20:37
  */
-public class MyDataSourceImpl implements MyDataSource {
+public class MyDataSourceImpl  {
     /**
      * 配置文件路径
      */
@@ -108,7 +107,6 @@ public class MyDataSourceImpl implements MyDataSource {
      * @return
      * @throws SQLException
      */
-    @Override
     public synchronized Connection getConnection() throws SQLException {
         if (connPool.size() > 0) {
             Connection conn = connPool.removeLast();
@@ -129,7 +127,6 @@ public class MyDataSourceImpl implements MyDataSource {
      * 释放连接，归还到数据库连接池中
      * @param coon
      */
-    @Override
     public void freeConnection(Connection coon) {
         this.connPool.addLast(coon);
     }
@@ -138,7 +135,6 @@ public class MyDataSourceImpl implements MyDataSource {
      * 获取当前连接数 (便于操作)
      * @return
      */
-    @Override
     public synchronized int getCurrentConnection() {
         return currentCount;
     }
@@ -147,7 +143,6 @@ public class MyDataSourceImpl implements MyDataSource {
      * 获取空闲连接数
      * @return
      */
-    @Override
     public synchronized int getfreeCount() {
         return this.connPool.size();
     }

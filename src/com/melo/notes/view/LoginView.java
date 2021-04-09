@@ -31,7 +31,8 @@ public class LoginView extends JFrame {
     /**
      * 登录成功状态码
      */
-    private final String SUCCESS="登录成功";
+    private final String USERVIEW="登录成功";
+    private final String ADMINVIEW="欢迎管理员";
     /**
      * 存储登录进来的用户
      */
@@ -52,15 +53,18 @@ public class LoginView extends JFrame {
         String access = (String) this.access.getSelectedItem();
         String message = loginViewService.isValid(userName, password, access);
         JOptionPane.showMessageDialog(null,message);
-        if(message.equals(SUCCESS)){
-                USER= new User(userName, password);
-                /**
-                 * 销毁当前窗口并存储user设置id，跳转到用户界面
-                 */
-                loginViewService.setId(USER);
-                this.dispose();
-                new UserView(USER).setVisible(true);
-            }
+        if(message.equals(USERVIEW)) {
+            USER = new User(userName, password);
+            /**
+             * 销毁当前窗口并存储user设置id，跳转到用户界面
+             */
+            loginViewService.setId(USER);
+            this.dispose();
+            new UserView(USER).setVisible(true);
+        }
+        if(message.equals(ADMINVIEW)){
+            new AdminView();
+        }
     }
     /**
      * 注册按钮事件

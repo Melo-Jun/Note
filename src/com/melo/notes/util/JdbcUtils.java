@@ -1,8 +1,7 @@
 package com.melo.notes.util;
 import com.melo.notes.exception.DaoException;
 import com.melo.notes.dao.impl.BaseDaoImpl;
-import com.melo.notes.dao.impl.MyDataSourceImpl;
-import com.melo.notes.dao.inter.MyDataSource;
+
 
 import java.io.IOException;
 import java.sql.*;
@@ -14,7 +13,7 @@ import java.util.Properties;
  */
 public class JdbcUtils {
 
-    private static BaseDaoImpl baseDao=new BaseDaoImpl();
+    private static BaseDaoImpl baseDao=(BaseDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.BaseDao);
 
     private final static String PROP_PATH = "db.properties";
     /**
@@ -63,7 +62,7 @@ public class JdbcUtils {
         }
     }
 
-    private static MyDataSource dataSrc = new MyDataSourceImpl();
+    private static MyDataSourceImpl dataSrc = new MyDataSourceImpl();
 
 
     /**

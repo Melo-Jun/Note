@@ -139,7 +139,6 @@ public class FolderView extends JFrame {
                          * 最后根据groupId生成相应笔记
                          */
                         Note note = new Note();
-                        note.setAccess("公开");
                         note.setLocatedGroup(groupId.toString());
                         String[] notes = new ListNoteTitleServiceImpl().listNoteTitle(note);
                         //判空

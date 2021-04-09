@@ -66,7 +66,7 @@ public class ListNoteTitleServiceImpl implements ListNoteTitleService {
         return noteDao.showNoteText(obj);
     }
 
-    public void fieldMapper(Object obj, LinkedList fieldNames, LinkedList fieldValues) throws DaoException {
+    /*public void fieldMapper(Object obj, LinkedList fieldNames, LinkedList fieldValues) throws DaoException {
         noteDao.fieldMapper(obj,fieldNames,fieldValues);
-    }
+    }*/
 }

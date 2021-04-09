@@ -18,10 +18,6 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
 
     private final String ALL_FIELD_NAME="id,title,author_id,text,access,like_count,located_group";
 
-    public static Object instance(){
-        return new NoteDaoImpl();
-    }
-
     /**
      * 根据xxx列出笔记标题
      * @param obj 根据的对象
@@ -30,7 +26,7 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
      */
     @Override
     public LinkedList<Object> showNoteTitle(Object obj) {
-        StringBuilder sql = new StringBuilder( "select title from "+TABLE_NAME+" where access=? ");
+        StringBuilder sql = new StringBuilder( "select title from "+TABLE_NAME);
         /**
          * 将对象映射成属性和值(属性会映射为数据库字段名)
          */
@@ -39,11 +35,17 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
         fieldMapper(obj,fieldNames,fieldValues);
         /**
          * 将字段名填入sql语句
-         * 不等于1说明还有其他根据条件,则动态增加条件
+         * 没有where条件则不添加
          */
-        if(fieldValues.size()!=1){
-            sql.append(" AND "+fieldNames.getLast()+" ="+"?");
+        if(fieldValues.size()!=0) {
+            sql.append(" where ");
+            for (Object fieldName : fieldNames) {
+                sql.append(fieldName + "=? AND ");
+            }
         }
+        //删除最后一个AND
+        sql.delete(sql.length()-4,sql.length());
+        System.out.println(sql.toString());
         /**
          * 完成sql注入和执行
          */

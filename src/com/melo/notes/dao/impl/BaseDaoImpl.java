@@ -344,5 +344,4 @@ public class BaseDaoImpl implements BaseDao {
         return "1";
     }
 
-
 }

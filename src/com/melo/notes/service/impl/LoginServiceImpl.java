@@ -1,9 +1,13 @@
 package com.melo.notes.service.impl;
 
+import com.melo.notes.dao.impl.AdminDaoImpl;
 import com.melo.notes.dao.impl.UserDaoImpl;
+import com.melo.notes.entity.Admin;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.inter.LoginService;
 import com.melo.notes.util.BeanFactory;
+
+import javax.swing.*;
 
 /**
  * @author Jun
@@ -14,7 +18,7 @@ import com.melo.notes.util.BeanFactory;
 public class LoginServiceImpl implements LoginService {
 
 
-    private static String ADMIN = "管理员";
+    private String ADMIN = "管理员";
     /**
      * 相关操作类对象
      */
@@ -49,6 +53,7 @@ public class LoginServiceImpl implements LoginService {
         return userDao.judgePass(user);
     }
 
+
     /**
      * 判断输入是否有效
      * @param userName
@@ -64,7 +69,13 @@ public class LoginServiceImpl implements LoginService {
         if (password.isEmpty()||password.contains(SPACE)) {
             return "密码不合格";
         }
-        if (access == ADMIN) {
+        if (access.equals(ADMIN)) {
+            Admin admin = new Admin(userName,password);
+            if(new AdminDaoImpl().isAdmin(admin)){
+                return "欢迎管理员";
+            }else{
+                return "想啥呢宝贝";
+            }
 
         } else {
             User user = new User(userName, password);
@@ -74,7 +85,6 @@ public class LoginServiceImpl implements LoginService {
                 return "用户或密码有误";
             }
         }
-        return "登录失败";
     }
 
 }

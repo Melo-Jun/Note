@@ -49,6 +49,38 @@ try {
 return values;
 ```
 
+showNoteTitle(要根据权限的,后来发现只需要列出所有即可)
+
+```java
+/**
+ * 根据xxx列出笔记标题
+ * @param obj 根据的对象
+ * @notice 无根据时则传null
+ * @return
+ */
+@Override
+public LinkedList<Object> showNoteTitle(Object obj) {
+    StringBuilder sql = new StringBuilder( "select title from "+TABLE_NAME+" where access=? ");
+    /**
+     * 将对象映射成属性和值(属性会映射为数据库字段名)
+     */
+    LinkedList<Object> fieldNames = new LinkedList<>();
+    LinkedList<Object> fieldValues = new LinkedList<>();
+    fieldMapper(obj,fieldNames,fieldValues);
+    /**
+     * 将字段名填入sql语句
+     * 不等于1说明还有其他根据条件,则动态增加条件
+     */
+    if(fieldValues.size()!=1){
+        sql.append(" AND "+fieldNames.getLast()+" ="+"?");
+    }
+    /**
+     * 完成sql注入和执行
+     */
+    return queryList(sql.toString(),obj);
+}
+```
+
 # 疑问
 
 -   父类的方法是最早获取到的??那那个是怎么实现的,access那个![image-20210406165842766](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406165842766.png)
@@ -64,6 +96,10 @@ return values;
 - 解决资源关闭问题,return放在try里边就可以了阿,做完map再return![image-20210406202817792](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406202817792.png)
 
 # 优化
+
+- 写个常量类
+
+    > ![image-20210408185551990](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210408185551990.png)
 
 - 前台构造对象最好放在service中传给Dao?或者在Dao里边再构造也可以,setId是在service中
 
@@ -293,7 +329,39 @@ public int update(Object obj) {
 
 ## TableView
 
--   列出所有笔记![image-20210407183405940](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210407183405940.png)
+- 列出所有笔记
+
+  old:![image-20210407183405940](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210407183405940.png)
+
+  ```java
+  private void fillTable(Object obj){
+      //记录列数
+      int count=0;
+      model= (DefaultTableModel)table.getModel();
+      model.setRowCount(0);
+      LinkedList<Note> notes = new NoteDaoImpl().showNoteAll(obj);
+      for(Note tempNote:notes) {
+          Vector<Object> objects = new Vector<>();
+          /**
+           * 获取对象属性值
+           */
+          LinkedList<Object> fieldNames = new LinkedList<>();
+          LinkedList<Object> fieldValues = new LinkedList<>();
+          listNoteTitleService.fieldMapper(tempNote, fieldNames, fieldValues);
+          for (Object value : fieldValues) {
+              count++;
+              /**
+               * 过滤掉text内容,另外单独展示
+               */
+              if (count != 4) {
+                  //objects.add(value);
+              }
+          }
+  ```
+
+  new:封装在service中
+
+  ![image-20210408162736381](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210408162736381.png)
 
  ## FolderView
 

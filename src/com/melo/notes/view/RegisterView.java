@@ -21,7 +21,7 @@ public class RegisterView extends JFrame {
     /**
      * 注册成功状态码
      */
-    private final String SUCCESS="注册成功";
+    private final String SUCCESS="操作成功";
 
     /**
      * 创建相关操作类对象

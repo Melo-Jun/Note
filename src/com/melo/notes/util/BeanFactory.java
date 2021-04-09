@@ -25,7 +25,7 @@ import java.util.Properties;
             /**
              * Dao实现类
              */
-            UserDao("UserDao"), NoteDao("NoteDao"),LoginDao("LoginDao"),
+            BaseDao("BaseDao"),UserDao("UserDao"), NoteDao("NoteDao"),LoginDao("LoginDao"),
             FolderDao("FolderDao"),GroupDao("GroupDao");
 
             private String name;
