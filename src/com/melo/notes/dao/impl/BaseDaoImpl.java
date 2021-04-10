@@ -70,7 +70,7 @@ public class BaseDaoImpl implements BaseDao {
         try {
             ps = conn.prepareStatement(sql);
             //根据obj注入Sql填充参数
-            if (!obj.equals(null)) {
+            if (obj != null) {
                 setParams(ps, obj);
             }
             rs = ps.executeQuery();
@@ -163,7 +163,7 @@ public class BaseDaoImpl implements BaseDao {
         fieldMapper(obj, fieldNames, fieldValues);
         StringBuilder sql = new StringBuilder("update " + getTableName(obj) + " set ");
         for(Object fieldName:fieldNames) {
-            if(!fieldName.toString().equals("id")) {
+            if(!"id".equals(fieldName.toString())) {
                 sql.append(fieldName + "=?, ");
             }
         }

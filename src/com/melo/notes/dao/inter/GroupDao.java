@@ -1,5 +1,6 @@
 package com.melo.notes.dao.inter;
 
+import com.melo.notes.entity.Folder;
 import com.melo.notes.entity.Group;
 
 import java.sql.ResultSet;
@@ -15,10 +16,10 @@ import java.util.LinkedList;
 public interface GroupDao {
     /**
      * 根据知识库id列出分组界面
-     * @param folderId 知识库id
+     * @param folder 知识库对象
      * @return LinkedList<Object> 结果集链表
      */
-    HashMap<Object, Object> showNoteGroup(String folderId);
+    HashMap<Object, Object> showNoteGroup(Folder folder);
 
     /**
      * 删除分组

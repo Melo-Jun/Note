@@ -42,13 +42,13 @@ public class FolderGroupServiceImpl implements FolderGroupService {
 
     /**
      * 根据节点数判断是什么类
-     * @param TreePathCount
+     * @param treePathCount
      * @return String 对象名称
      * @notice 没有选中则返回null
      */
     @Override
-    public String judgeType(int TreePathCount) {
-        switch (TreePathCount){
+    public String judgeType(int treePathCount) {
+        switch (treePathCount){
             case FOLDERTYPE: return FOLDER;
             case GROUPTYPE: return GROUP;
             case NOTETYPE: return NOTE;
@@ -74,7 +74,9 @@ public class FolderGroupServiceImpl implements FolderGroupService {
      */
     @Override
     public HashMap<Object, Object> showNoteGroup(String folderId) {
-        return groupDao.showNoteGroup(folderId);
+        Folder folder = new Folder();
+        folder.setId(folderId);
+        return groupDao.showNoteGroup(folder);
     }
 
     /**

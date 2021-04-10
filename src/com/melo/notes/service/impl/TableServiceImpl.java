@@ -1,9 +1,13 @@
 package com.melo.notes.service.impl;
 
+import com.melo.notes.dao.impl.GroupDaoImpl;
 import com.melo.notes.dao.impl.LikeListDaoImpl;
 import com.melo.notes.dao.impl.NoteDaoImpl;
+import com.melo.notes.dao.impl.UserDaoImpl;
+import com.melo.notes.entity.Group;
 import com.melo.notes.entity.LikeList;
 import com.melo.notes.entity.Note;
+import com.melo.notes.entity.User;
 import com.melo.notes.service.inter.TableService;
 import com.melo.notes.util.BeanFactory;
 import com.melo.notes.view.LoginView;
@@ -24,7 +28,8 @@ public class TableServiceImpl implements TableService {
      */
     private final NoteDaoImpl noteDao = (NoteDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.NoteDao);
     private final LikeListDaoImpl likeListDao=(LikeListDaoImpl)BeanFactory.getBean(BeanFactory.DaoType.LikeListDao);
-
+    private final UserDaoImpl userDao=(UserDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.UserDao);
+    private final GroupDaoImpl groupDao=(GroupDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.GroupDao);
     /**
      * 提取笔记属性填充表格
      * @param tempNote 临时的笔记对象
@@ -42,20 +47,39 @@ public class TableServiceImpl implements TableService {
         return values;
     }
 
+    /**
+     * 获取点赞过该笔记的用户
+     * @param noteId 笔记id
+     * @return 用户链表
+     */
+    @Override
     public LinkedList showLikeUser(String noteId){
         LikeList likeList = new LikeList();
         likeList.setNoteId(noteId);
         return likeListDao.showLikeUser(likeList);
     }
 
-    public boolean updateLikeCount(String updateLikeCount,String noteId){
+    /**
+     * 更新点赞数
+     * @param updateLikeCount 更改后的点赞数
+     * @param noteId 笔记id
+     * @return 是否操作成功
+     */
+    @Override
+    public boolean updateLikeCount(String updateLikeCount, String noteId){
         Note note = new Note();
         note.setId(noteId);
         note.setLikeCount(updateLikeCount);
         return noteDao.update(note)==1;
     }
 
-
+    /**
+     * 点赞
+     * @param updateLikeCount 更改后的点赞数
+     * @param noteId 笔记id
+     * @return 操作是否成功
+     */
+    @Override
     public boolean increaseLikeCount(String updateLikeCount, String noteId){
         LinkedList likeUsers = showLikeUser(noteId);
         if(!likeUsers.isEmpty()&&likeUsers.contains(LoginView.USER.getId())){
@@ -69,6 +93,13 @@ public class TableServiceImpl implements TableService {
     }
 
 
+    /**
+     * 取消点赞
+     * @param updateLikeCount 更改后的点赞数
+     * @param noteId 笔记id
+     * @return 操作是否成功
+     */
+    @Override
     public boolean decreaseLikeCount(String updateLikeCount, String noteId){
         LinkedList likeUsers = showLikeUser(noteId);
         if(!likeUsers.contains(LoginView.USER.getId())){
@@ -81,4 +112,20 @@ public class TableServiceImpl implements TableService {
         return updateLikeCount(updateLikeCount,noteId);
     }
 
+    /**
+     * 展示笔记作者名
+     * @param authorId 作者id
+     * @return 作者名
+     */
+    public String showNoteAuthor(String authorId){
+        User user = new User();
+        user.setId(authorId);
+        return userDao.showUserName(user);
+    }
+
+    public String showGroupName(String groupId){
+        Group group = new Group();
+        group.setId(groupId);
+        return groupDao.showGroupName(group);
+    }
 }

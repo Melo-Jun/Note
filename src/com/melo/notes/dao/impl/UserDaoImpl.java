@@ -22,7 +22,7 @@ import static com.melo.notes.util.Md5Utils.getDigest;
  */
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
-    private String TABLE_NAME="user";
+    private final String TABLE_NAME="user";
 
     /**
      * 验证是否已存在该用户
@@ -89,8 +89,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             String sql="select id from "+TABLE_NAME+ " where user_name=?";
             LinkedList id = queryList(sql, user);
             if(!id.isEmpty()) {
-                System.out.println("用户的id是"+id.getFirst().toString());
                 LoginView.USER.setId(id.getFirst().toString());
             }
+    }
+
+    public String showUserName(User user){
+        String sql="select user_name from "+TABLE_NAME+" where id=?";
+        return queryList(sql,user).getFirst().toString();
     }
 }

@@ -97,6 +97,8 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 # 优化
 
+- 写判空不执行按钮![image-20210410153556119](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210410153556119.png)
+
 - 写个常量类
 
     > ![image-20210408185551990](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210408185551990.png)

@@ -3,17 +3,8 @@ package com.melo.notes.dao.impl;
 import com.melo.notes.dao.inter.FolderDao;
 import com.melo.notes.entity.Folder;
 import com.melo.notes.entity.User;
-import com.melo.notes.view.FolderView;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-
-import static com.melo.notes.util.JdbcUtils.*;
 
 /**
  * @author Jun
@@ -35,7 +26,7 @@ public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
      * @return HashMap id和名称的键值对
      */
     @Override
-    public HashMap<Object, Object> showFolderName(User user) {
+    public HashMap showFolderName(User user) {
         String sql="select id,folder_name from "+TABLE_NAME+" where author_id=?";
         System.out.println(user.getId());
         return queryMap(sql,user);
@@ -68,7 +59,7 @@ public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
     /**
      * 更改知识库名称
      * @param folder 在service完成封装后的对象
-     * @return
+     * @return int 影响的行数
      */
     @Override
     public int updateFolderName(Folder folder) {

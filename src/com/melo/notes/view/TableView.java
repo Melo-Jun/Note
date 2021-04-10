@@ -49,6 +49,13 @@ public class TableView extends JFrame {
      * @param e
      */
     private void table1MouseClicked(MouseEvent e) {
+        Integer row=table.getSelectedRow();
+        String authorId= (String) model.getValueAt(row, 2);
+        String authorName = tableService.showNoteAuthor(authorId);
+        String groupId=(String)model.getValueAt(row,5);
+        System.out.println(groupId+"笔记id");
+        String groupName=tableService.showGroupName(groupId);
+        authorFolder.setText("作者名称:"+authorName+"\n"+"笔记分组名称:"+groupName);
     }
 
     /**
@@ -57,10 +64,12 @@ public class TableView extends JFrame {
      */
     private void noteTextActionPerformed(ActionEvent e) {
         Integer row=table.getSelectedRow();
-        Object valueAt = model.getValueAt(row, 0);
-        Note note = new Note();
-        note.setId(valueAt.toString());
-        new NoteTextView(noteService.showNoteText(note));
+        if(row!=-1) {
+            Object noteId = model.getValueAt(row, 0);
+            Note note = new Note();
+            note.setId(noteId.toString());
+            new NoteTextView(noteService.showNoteText(note));
+        }
     }
 
     /**
@@ -83,6 +92,10 @@ public class TableView extends JFrame {
         fillTable(authorBean);
     }
 
+    /**
+     * 返回刷新按钮
+     * @param e
+     */
     private void backActionPerformed(ActionEvent e) {
         fillTable(allNote);
     }
@@ -109,7 +122,6 @@ public class TableView extends JFrame {
         String id=(String)model.getValueAt(row,0);
         String likeCount = (String)model.getValueAt(row, 4);
         String updateLikeCount = StringUtils.increaseOne(likeCount);
-        //tableService.updateLikeCount(updateLikeCount,id);
         if(tableService.increaseLikeCount(updateLikeCount,id)) {
             JOptionPane.showMessageDialog(null,"操作成功");
             fillTable(allNote);
@@ -194,6 +206,9 @@ public class TableView extends JFrame {
 
         //======== scrollPane2 ========
         {
+
+            //---- authorFolder ----
+            authorFolder.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
             scrollPane2.setViewportView(authorFolder);
         }
 
@@ -231,8 +246,8 @@ public class TableView extends JFrame {
             contentPaneLayout.createParallelGroup()
                 .addGroup(contentPaneLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
-                    .addGap(43, 43, 43)
+                    .addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
                     .addGroup(contentPaneLayout.createParallelGroup()
                         .addComponent(label1, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE)
                         .addGroup(contentPaneLayout.createSequentialGroup()
@@ -257,7 +272,6 @@ public class TableView extends JFrame {
                     .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(contentPaneLayout.createParallelGroup()
-                        .addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
                         .addGroup(contentPaneLayout.createSequentialGroup()
                             .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(label1)
@@ -272,7 +286,8 @@ public class TableView extends JFrame {
                                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(searchByAuthorId)))
                             .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(back)))
+                            .addComponent(back))
+                        .addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(30, Short.MAX_VALUE))
         );
         pack();
@@ -282,6 +297,7 @@ public class TableView extends JFrame {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JScrollPane scrollPane1;
+    //private JTable table;
     private JScrollPane scrollPane2;
     private JTextArea authorFolder;
     private JLabel label1;

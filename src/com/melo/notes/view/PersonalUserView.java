@@ -4,6 +4,7 @@
 
 package com.melo.notes.view;
 
+import java.awt.event.*;
 import com.melo.notes.service.impl.RegisterServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
@@ -29,6 +30,10 @@ public class PersonalUserView extends JFrame {
         initComponents();
         setVisible(true);
         nameText.setText(LoginView.USER.getUserName());
+        setSize(300,350);
+    }
+
+    private void submitActionPerformed(ActionEvent e) {
         String userName = nameText.getText();
         String firstPass = String.valueOf(newPassword.getPassword());
         String secondPass = String.valueOf(newPassword2.getPassword());
@@ -37,7 +42,6 @@ public class PersonalUserView extends JFrame {
         if(message.equals(SUCCESS)){
             this.dispose();
         }
-        setSize(300,350);
     }
 
     private void initComponents() {
@@ -53,19 +57,21 @@ public class PersonalUserView extends JFrame {
         newPassword2 = new JPasswordField();
 
         //======== this ========
+        setTitle("\u8bbe\u7f6e\u4e2a\u4eba\u4fe1\u606f");
         Container contentPane = getContentPane();
 
         //---- label1 ----
-        label1.setText("\u7528\u6237\u540d\u79f0");
+        label1.setText("\u7528\u6237\u540d");
 
         //---- oldPass ----
         oldPass.setText("\u539f\u6765\u7684\u5bc6\u7801");
 
         //---- newPass ----
-        newPass.setText("\u66f4\u65b0\u7684\u5bc6\u7801");
+        newPass.setText("\u8bf7\u8f93\u5165\u65b0\u5bc6\u7801");
 
         //---- submit ----
         submit.setText("\u786e\u8ba4\u4fee\u6539");
+        submit.addActionListener(e -> submitActionPerformed(e));
 
         //---- newPass2 ----
         newPass2.setText("\u518d\u6b21\u8f93\u5165");
@@ -119,7 +125,7 @@ public class PersonalUserView extends JFrame {
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(newPass2)
                         .addComponent(newPassword2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                     .addComponent(submit)
                     .addGap(59, 59, 59))
         );

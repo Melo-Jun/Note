@@ -40,8 +40,8 @@ public class LoginView extends JFrame {
 
     public LoginView() {
         initComponents();
-        setSize(1300, 800);
-        setLocation(330,120);
+        setSize(250, 400);
+        setLocation(800,300);
     }
 
     private void loginActionPerformed(ActionEvent e) {
@@ -94,7 +94,7 @@ public class LoginView extends JFrame {
         setTitle("\u767b\u5f55");
         setLocationByPlatform(true);
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
-        setMinimumSize(new Dimension(950, 650));
+        setMinimumSize(new Dimension(350, 150));
         setResizable(false);
         Container contentPane = getContentPane();
 
@@ -133,46 +133,46 @@ public class LoginView extends JFrame {
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(contentPaneLayout.createSequentialGroup()
+                    .addGap(44, 44, 44)
                     .addGroup(contentPaneLayout.createParallelGroup()
+                        .addComponent(userName)
                         .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addGap(234, 234, 234)
-                            .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                .addComponent(register)
-                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addComponent(access, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(login))))
+                            .addGap(5, 5, 5)
+                            .addComponent(password, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(access, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE))
+                    .addGap(28, 28, 28)
+                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                         .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addGap(73, 73, 73)
-                            .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addComponent(password, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE))
-                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addComponent(userName)
-                                    .addGap(46, 46, 46)
-                                    .addComponent(userNameText, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)))))
-                    .addGap(129, 176, Short.MAX_VALUE))
+                            .addComponent(register)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(login))
+                        .addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(userNameText, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE))
+                    .addGap(49, 49, 49))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(contentPaneLayout.createSequentialGroup()
-                    .addGap(182, 182, 182)
-                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addGap(104, 104, 104)
+                    .addGroup(contentPaneLayout.createParallelGroup()
                         .addComponent(userName, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(userNameText, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addComponent(userNameText, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)))
+                    .addGap(25, 25, 25)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(password, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
                         .addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
-                    .addGap(38, 38, 38)
-                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(login)
-                        .addComponent(access, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                    .addGap(38, 38, 38)
-                    .addComponent(register)
-                    .addContainerGap())
+                    .addGroup(contentPaneLayout.createParallelGroup()
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addGap(24, 24, 24)
+                            .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(register)
+                                .addComponent(login)))
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addGap(27, 27, 27)
+                            .addComponent(access, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                    .addGap(42, 42, 42))
         );
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents

@@ -63,6 +63,6 @@ public class StringUtils {
     public static String decreaseOne(String temp) {
         char[] chars = temp.toCharArray();
         int i = (int)chars[0] - 1;
-        return temp.equals("0")?temp: String.valueOf((char)i);
+        return "0".equals(temp)?temp: String.valueOf((char)i);
     }
 }

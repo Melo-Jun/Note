@@ -25,15 +25,18 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
 
     /**
      * 根据知识库id列出分组界面
-     * @param folderId 知识库id
+     * @param folder 知识库对象
      * @return HashMap 笔记分组id-笔记分组名称
      */
     @Override
-    public HashMap<Object, Object> showNoteGroup(String folderId) {
+    public HashMap<Object, Object> showNoteGroup(Folder folder) {
         String sql="select id,group_name from "+TABLE_NAME+" where located_folder=?";
-        Folder folder = new Folder();
-        folder.setId(folderId);
         return queryMap(sql,folder);
+    }
+
+    public String showGroupName(Group group){
+        String sql="select group_name from " +TABLE_NAME+" where id=?";
+        return queryList(sql,group).getFirst().toString();
     }
 
     /**

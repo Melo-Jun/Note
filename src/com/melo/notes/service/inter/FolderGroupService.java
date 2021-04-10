@@ -15,10 +15,10 @@ public interface FolderGroupService {
 
     /**
      * 根据节点数判断是什么类
-     * @param TreePathCount
+     * @param treePathCount 节点数
      * @return String 对象名称
      */
-    String judgeType(int TreePathCount);
+    String judgeType(int treePathCount);
 
     /**
      * 根据登录的用户id获取知识库名称
