@@ -126,8 +126,8 @@ public class JdbcUtils {
 
     /**
      * 根据类获取对应的表名
-     * @param key
-     * @return
+     * @param key 键值
+     * @return 对应表名
      */
     public static String getTableName(String key){
         try {
