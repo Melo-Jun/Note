@@ -5,17 +5,16 @@ package com.melo.notes.view;
 import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
-import com.melo.notes.service.impl.ListNoteTitleServiceImpl;
+import com.melo.notes.service.impl.NoteServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.*;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -54,6 +53,8 @@ public class FolderView extends JFrame {
      * 创建相关操作对象
      */
     FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
+    NoteServiceImpl noteService =(NoteServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.NoteService);
+
 
     public String getLocatedGroup() {
         return selectedName;
@@ -140,14 +141,20 @@ public class FolderView extends JFrame {
                          */
                         Note note = new Note();
                         note.setLocatedGroup(groupId.toString());
-                        String[] notes = new ListNoteTitleServiceImpl().listNoteTitle(note);
+                        LinkedList<Object> titles = noteService.showNoteTitle(note);
+                        if(!titles.isEmpty()){
+                            for(Object title:titles){
+                                DefaultMutableTreeNode noteTree = new DefaultMutableTreeNode(title);
+                                group.add(noteTree);
+                            }
+                        }
                         //判空
-                        if(notes[0]!=null) {
+                       /* if(notes[0]!=null) {
                             for (int i = 0; i < notes.length&&notes[i]!=null; i++) {
                                 DefaultMutableTreeNode noteTree = new DefaultMutableTreeNode(notes[i]);
                                 group.add(noteTree);
                             }
-                        }
+                        }*/
                     }
                 }
 

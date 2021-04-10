@@ -10,9 +10,10 @@ import com.melo.notes.bean.AuthorBean;
 import com.melo.notes.bean.NoteBean;
 import com.melo.notes.dao.impl.NoteDaoImpl;
 import com.melo.notes.entity.Note;
-import com.melo.notes.service.impl.ListNoteTitleServiceImpl;
+import com.melo.notes.service.impl.NoteServiceImpl;
 import com.melo.notes.service.impl.TableServiceImpl;
 import com.melo.notes.util.BeanFactory;
+import com.melo.notes.util.StringUtils;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -31,9 +32,10 @@ public class TableView extends JFrame {
      * 创建相关操作对象
      * @return
      */
-    ListNoteTitleServiceImpl listNoteTitleService=(ListNoteTitleServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.ListNoteTitleService);
-    TableServiceImpl tableService =(TableServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.TableViewService);
-    DefaultTableModel model= null;
+    private final NoteServiceImpl noteService =(NoteServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.NoteService);
+    private final TableServiceImpl tableService =(TableServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.TableViewService);
+    private DefaultTableModel model= null;
+    private JTable table=null;
 
     public TableView() {
         initComponents();
@@ -58,7 +60,7 @@ public class TableView extends JFrame {
         Object valueAt = model.getValueAt(row, 0);
         Note note = new Note();
         note.setId(valueAt.toString());
-        new NoteTextView(listNoteTitleService.showNoteText(note));
+        new NoteTextView(noteService.showNoteText(note));
     }
 
     /**
@@ -85,12 +87,51 @@ public class TableView extends JFrame {
         fillTable(allNote);
     }
 
+    /**
+     * 填充表格
+     * @param obj 笔记对象
+     */
     private void fillTable(Object obj){
         model= (DefaultTableModel)table.getModel();
         model.setRowCount(0);
         LinkedList<Note> notes = new NoteDaoImpl().showNoteAll(obj);
         for(Note tempNote:notes) {
             model.addRow(tableService.fillTable(tempNote));
+        }
+    }
+
+    /**
+     * 点赞按钮事件
+     * @param e
+     */
+    private void likeActionPerformed(ActionEvent e) {
+        Integer row=table.getSelectedRow();
+        String id=(String)model.getValueAt(row,0);
+        String likeCount = (String)model.getValueAt(row, 4);
+        String updateLikeCount = StringUtils.increaseOne(likeCount);
+        //tableService.updateLikeCount(updateLikeCount,id);
+        if(tableService.increaseLikeCount(updateLikeCount,id)) {
+            JOptionPane.showMessageDialog(null,"操作成功");
+            fillTable(allNote);
+        }else {
+            JOptionPane.showMessageDialog(null,"操作失败");
+        }
+    }
+
+    /**
+     * 取消点赞按钮事件
+     * @param e
+     */
+    private void withdrawLikeActionPerformed(ActionEvent e) {
+        Integer row=table.getSelectedRow();
+        String id=(String)model.getValueAt(row,0);
+        String likeCount = (String)model.getValueAt(row, 4);
+        String updateLikeCount = StringUtils.decreaseOne(likeCount);
+        if(tableService.decreaseLikeCount(updateLikeCount,id)) {
+            JOptionPane.showMessageDialog(null,"操作成功");
+            fillTable(allNote);
+        }else {
+            JOptionPane.showMessageDialog(null,"操作失败");
         }
     }
 
@@ -101,8 +142,8 @@ public class TableView extends JFrame {
         scrollPane2 = new JScrollPane();
         authorFolder = new JTextArea();
         label1 = new JLabel();
-        button1 = new JButton();
-        button2 = new JButton();
+        like = new JButton();
+        withdrawLike = new JButton();
         noteText = new JButton();
         searchByTitle = new JButton();
         searchByAuthorId = new JButton();
@@ -160,11 +201,13 @@ public class TableView extends JFrame {
         label1.setText("\u7559\u4e0b\u4f60\u7684like\u5728\u6b64");
         label1.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
 
-        //---- button1 ----
-        button1.setText("\u70b9\u8d5e");
+        //---- like ----
+        like.setText("\u70b9\u8d5e");
+        like.addActionListener(e -> likeActionPerformed(e));
 
-        //---- button2 ----
-        button2.setText("\u53d6\u6d88\u70b9\u8d5e");
+        //---- withdrawLike ----
+        withdrawLike.setText("\u53d6\u6d88\u70b9\u8d5e");
+        withdrawLike.addActionListener(e -> withdrawLikeActionPerformed(e));
 
         //---- noteText ----
         noteText.setText("\u67e5\u770b\u7b14\u8bb0\u5185\u5bb9");
@@ -189,14 +232,13 @@ public class TableView extends JFrame {
                 .addGroup(contentPaneLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
-                    .addGap(36, 36, 36)
-                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addGap(43, 43, 43)
+                    .addGroup(contentPaneLayout.createParallelGroup()
                         .addComponent(label1, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE)
                         .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addComponent(button1)
+                            .addComponent(like)
                             .addGap(18, 18, 18)
-                            .addComponent(button2)
-                            .addGap(6, 6, 6)))
+                            .addComponent(withdrawLike)))
                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                         .addComponent(noteText, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -220,20 +262,18 @@ public class TableView extends JFrame {
                             .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(label1)
                                 .addComponent(noteText))
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(contentPaneLayout.createParallelGroup()
+                                .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                    .addComponent(like)
+                                    .addComponent(withdrawLike))
                                 .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addGap(50, 50, 50)
-                                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(button2)
-                                        .addComponent(button1)))
-                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(searchByTitle)
                                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(searchByAuthorId)))
                             .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(back)))
-                    .addContainerGap(27, Short.MAX_VALUE))
+                    .addContainerGap(30, Short.MAX_VALUE))
         );
         pack();
         setLocationRelativeTo(getOwner());
@@ -242,12 +282,11 @@ public class TableView extends JFrame {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JScrollPane scrollPane1;
-    private JTable table;
     private JScrollPane scrollPane2;
     private JTextArea authorFolder;
     private JLabel label1;
-    private JButton button1;
-    private JButton button2;
+    private JButton like;
+    private JButton withdrawLike;
     private JButton noteText;
     private JButton searchByTitle;
     private JButton searchByAuthorId;

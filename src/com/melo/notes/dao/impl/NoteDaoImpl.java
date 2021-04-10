@@ -67,11 +67,10 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
     /**
      * 列出笔记所有信息(内容另外分页展示)
      * @param obj 根据的对象
-     * @return
+     * @return linkedList 链表
      */
     @Override
     public LinkedList showNoteAll(Object obj) {
-        //String sql = "select "+ALL_FIELD_NAME+" from "+TABLE_NAME+" where title=? ";
         StringBuilder sql = new StringBuilder( "select "+ALL_FIELD_NAME+" from "+TABLE_NAME);
         /**
          * 将对象映射成属性和值(属性会映射为数据库字段名)
@@ -94,7 +93,6 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
         /**
          * 完成sql注入和执行
          */
-        System.out.println(sql.toString());
         return queryAll(sql.toString(),obj,Note.class);
     }
 
@@ -107,5 +105,9 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
     public boolean addNote(Note note){
         note.setId(getMaxId(note));
         return super.insert(note)==1;
+    }
+
+    public int update(Note note) {
+        return super.update(note);
     }
 }

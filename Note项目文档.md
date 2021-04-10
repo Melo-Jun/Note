@@ -1,4 +1,4 @@
-备份
+ 备份
 
 queryAll
 
@@ -83,7 +83,7 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 # 疑问
 
--   父类的方法是最早获取到的??那那个是怎么实现的,access那个![image-20210406165842766](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406165842766.png)
+已解决: 父类方法和属性是最晚获取到的
 
 # 经验
 
@@ -131,6 +131,12 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 # 待办
 
+- 不用用到listNoteTitle界面了以及相关string数组(还未删除)
+
+- 修改其他表id为string
+
+    > ![image-20210410084703581](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210410084703581.png)
+
 - 写根据id和folderid列出相关名称
 
     >![image-20210407183049724](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210407183049724.png)
@@ -140,8 +146,6 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 - 修改了id没有自增了,以及likecount为string了
 
     >   likeCount:将getMaxId中的方法弄到StringUtils中即可
-
-
 
 -   此处注释掉的应该不用用到吧![image-20210406205640002](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406205640002.png)
 
@@ -168,6 +172,12 @@ delete一定得根据主键吧,才不会误删
 - ~~根据id的话,那还是传对象进来吗,传对象进来的话主要是getId得有一个属性,有id之后又有属性了,填充参数会不会顺序反了,试一下吧先,试一下是哪个先获取到~~
 
   > id会比较晚获取到,因为是在父类
+
+  - 修改成: (要根据主键id就在对象里边设置id就可以了其实)
+
+    > 主要是获取id这个方法,要是标题一样就GG了
+
+    > ![image-20210410115614602](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210410115614602.png)
 
 > 不行,属性值的话会多于?
 

@@ -4,11 +4,11 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.dao.impl.NoteDaoImpl;
 import com.melo.notes.entity.Group;
 import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
+import com.melo.notes.service.impl.NoteServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
@@ -26,7 +26,7 @@ public class UpdateNoteView extends JFrame {
         /**
          * 创建相关操作类对象
          */
-        NoteDaoImpl noteDao = (NoteDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.NoteDao);
+        NoteServiceImpl noteService=(NoteServiceImpl)BeanFactory.getBean(BeanFactory.ServiceType.NoteService);
         FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
 
         Note note=null;
@@ -37,15 +37,11 @@ public class UpdateNoteView extends JFrame {
             this.setTitle("查看并修改笔记");
             setSize(450, 700);
             setLocation(800,120);
-            /*titleField.setText("11111111");
-            textArea.setText("1111");
-            idText.setText("16");*/
             note = new Note();
             note.setTitle(FolderView.selectedName);
-            LinkedList<Note> notes = noteDao.showNoteAll(note);
+            LinkedList<Note> notes = noteService.showNoteAll(note);
 
             titleField.setText(notes.getFirst().getTitle());
-            //System.out.println(notes.getFirst().getText());
 
             textArea.setText(notes.getFirst().getText());
             idText.setText(notes.getFirst().getId());
@@ -68,7 +64,7 @@ public class UpdateNoteView extends JFrame {
             String access = (String) this.accessSelect.getSelectedItem();
             Note note = new Note( title, LoginView.USER.getId(), text, access ,TreeView.selectedId);
             note.setId(idText.getText());
-            if(noteDao.update(note)!=0){
+            if(noteService.update(note)!=0){
                 JOptionPane.showMessageDialog(null,"修改笔记成功");
                 this.dispose();
             }
@@ -109,6 +105,10 @@ public class UpdateNoteView extends JFrame {
 
         //======== scrollPane ========
         {
+
+            //---- textArea ----
+            textArea.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, textArea.getFont().getSize() + 6));
+            textArea.setLineWrap(true);
             scrollPane.setViewportView(textArea);
         }
 

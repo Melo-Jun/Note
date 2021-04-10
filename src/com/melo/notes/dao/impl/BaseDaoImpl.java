@@ -14,8 +14,7 @@ import java.util.LinkedList;
 import static com.melo.notes.util.JdbcUtils.*;
 import static com.melo.notes.util.ReflectUtils.getFields;
 import static com.melo.notes.util.ReflectUtils.getMethods;
-import static com.melo.notes.util.StringUtils.toColumnName;
-import static com.melo.notes.util.StringUtils.toEntityField;
+import static com.melo.notes.util.StringUtils.*;
 
 
 /**
@@ -30,7 +29,7 @@ public class BaseDaoImpl implements BaseDao {
      * 封装数据库更新操作
      *
      * @param obj
-     * @param sql
+     * @param sql sql语句
      * @return int 影响的行数
      */
     @Override
@@ -123,8 +122,29 @@ public class BaseDaoImpl implements BaseDao {
      */
     @Override
     public int delete(Object obj) {
-        String sql = "delete from " + getTableName(obj) + " where id =?";
-        return executeUpdate(obj, sql);
+        StringBuilder sql = new StringBuilder( "delete from "+getTableName(obj));
+        /**
+         * 将对象映射成属性和值(属性会映射为数据库字段名)
+         */
+        LinkedList<Object> fieldNames = new LinkedList<>();
+        LinkedList<Object> fieldValues = new LinkedList<>();
+        fieldMapper(obj,fieldNames,fieldValues);
+        /**
+         * 将字段名填入sql语句
+         * 没有where条件则不添加
+         */
+        if(fieldValues.size()!=0) {
+            sql.append(" where ");
+            for (Object fieldName : fieldNames) {
+                sql.append(fieldName + "=? AND ");
+            }
+        }
+        //删除最后一个AND
+        sql.delete(sql.length()-4,sql.length());
+        /**
+         * 完成sql注入和执行
+         */
+        return executeUpdate(obj, sql.toString());
     }
 
     /**
@@ -330,9 +350,7 @@ public class BaseDaoImpl implements BaseDao {
                 /**
                  * 获取最大后+1
                  */
-                char[] chars = rs.getString(1).toCharArray();
-                int i = (int)chars[0] + 1;
-                return String.valueOf((char)i);
+                return increaseOne(rs.getString(1));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

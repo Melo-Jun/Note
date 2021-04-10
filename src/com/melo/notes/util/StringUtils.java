@@ -13,7 +13,7 @@ public class StringUtils {
 
     /**
      * 将属性名转化为数据库字段名
-     * @param fieldName
+     * @param fieldName 属性名
      * @return
      */
     public static StringBuilder toColumnName(String fieldName){
@@ -27,6 +27,11 @@ public class StringUtils {
         }return columnName;
     }
 
+    /**
+     * 将数据库字段名转化为属性名
+     * @param columnName 数据库字段名
+     * @return
+     */
     public static String toEntityField(String columnName){
 
         StringBuilder filedName=new StringBuilder(columnName);
@@ -37,5 +42,27 @@ public class StringUtils {
             }
         }
         return filedName.toString();
+    }
+
+    /**
+     * 将字符串+1
+     * @param temp 待修改字符串
+     * @return
+     */
+    public static String increaseOne(String temp) {
+        char[] chars = temp.toCharArray();
+        int i = (int)chars[0] + 1;
+        return String.valueOf((char)i);
+    }
+
+    /**
+     * 将字符串-1
+     * @param temp 待修改字符串
+     * @return 修改后的字符串
+     */
+    public static String decreaseOne(String temp) {
+        char[] chars = temp.toCharArray();
+        int i = (int)chars[0] - 1;
+        return temp.equals("0")?temp: String.valueOf((char)i);
     }
 }

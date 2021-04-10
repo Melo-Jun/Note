@@ -4,23 +4,17 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.entity.Note;
-import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
-import com.melo.notes.service.impl.ListNoteTitleServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.*;
 import javax.swing.GroupLayout;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;

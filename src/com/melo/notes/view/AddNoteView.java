@@ -30,7 +30,7 @@ public class AddNoteView extends JFrame {
     public AddNoteView(User user) {
         this.setTitle("¼ÇÂ¼daily");
         initComponents(user);
-        setSize(1300, 800);
+        setSize(550, 650);
         setLocation(330,120);
     }
 
@@ -88,12 +88,23 @@ public class AddNoteView extends JFrame {
         setResizable(false);
         Container contentPane = getContentPane();
 
+        //---- titleField ----
+        titleField.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
+
         //---- title ----
         title.setText("\u6807\u9898");
         title.setFont(title.getFont().deriveFont(title.getFont().getSize() + 3f));
 
         //======== scrollPane ========
         {
+            scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+            scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+            //---- textArea ----
+            textArea.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, textArea.getFont().getSize() + 6));
+            textArea.setRows(5);
+            textArea.setTabSize(0);
+            textArea.setLineWrap(true);
             scrollPane.setViewportView(textArea);
         }
 
@@ -119,7 +130,7 @@ public class AddNoteView extends JFrame {
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(contentPaneLayout.createSequentialGroup()
-                    .addGroup(contentPaneLayout.createParallelGroup()
+                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                         .addGroup(contentPaneLayout.createSequentialGroup()
                             .addGap(15, 15, 15)
                             .addComponent(title)
@@ -132,13 +143,11 @@ public class AddNoteView extends JFrame {
                             .addComponent(access, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(accessSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addGap(107, 107, 107)
-                            .addGroup(contentPaneLayout.createParallelGroup()
-                                .addComponent(selectGroup)
-                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addGap(132, 132, 132)
-                                    .addComponent(summit)))))
-                    .addContainerGap(55, Short.MAX_VALUE))
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(selectGroup)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(summit)))
+                    .addGap(55, 55, 55))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
@@ -151,12 +160,11 @@ public class AddNoteView extends JFrame {
                     .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 443, GroupLayout.PREFERRED_SIZE)
                     .addGap(25, 25, 25)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(summit)
                         .addComponent(accessSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(access, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGap(18, 18, 18)
-                    .addComponent(selectGroup)
-                    .addContainerGap(419, Short.MAX_VALUE))
+                        .addComponent(access, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(selectGroup)
+                        .addComponent(summit))
+                    .addContainerGap(10, Short.MAX_VALUE))
         );
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
