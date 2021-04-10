@@ -14,6 +14,7 @@ import java.util.LinkedList;
  * @date 2021-3-20 9:00
  */
 public interface GroupDao {
+
     /**
      * 根据知识库id列出分组界面
      * @param folder 知识库对象
@@ -23,10 +24,10 @@ public interface GroupDao {
 
     /**
      * 删除分组
-     * @param groupId 笔记分组id
+     * @param group 笔记分组对象
      * @return int 影响的行数
      */
-    int deleteGroup(String groupId);
+    int deleteGroup(Group group);
 
     /**
      * 增加笔记分组
@@ -38,7 +39,7 @@ public interface GroupDao {
     /**
      * 更改知识库名称
      * @param group 在service完成封装后的对象
-     * @return
+     * @return int 影响的行数
      */
     int updateGroupName(Group group);
 

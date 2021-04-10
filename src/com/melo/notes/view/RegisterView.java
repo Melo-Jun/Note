@@ -4,6 +4,7 @@
 
 package com.melo.notes.view;
 
+import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.service.impl.RegisterServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
@@ -18,6 +19,8 @@ import javax.swing.GroupLayout;
  */
 public class RegisterView extends JFrame {
 
+
+
     /**
      * 注册成功状态码
      */
@@ -27,7 +30,7 @@ public class RegisterView extends JFrame {
      * 创建相关操作类对象
      */
     RegisterServiceImpl registerService = (RegisterServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.RegisterService);
-
+    FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
     public RegisterView() {
         initComponents();
         setSize(1300, 800);
@@ -45,6 +48,7 @@ public class RegisterView extends JFrame {
         String message = registerService.isValid(userName, firstPass, secondPass);
         JOptionPane.showMessageDialog(null,message);
         if(message.equals(SUCCESS)){
+            registerService.addUser(userName,secondPass);
             this.dispose();
         }
 
@@ -63,7 +67,7 @@ public class RegisterView extends JFrame {
         //======== this ========
         setMinimumSize(new Dimension(950, 650));
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
-        setTitle("???");
+        setTitle("\u6ce8\u518c");
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationByPlatform(true);
         setResizable(false);

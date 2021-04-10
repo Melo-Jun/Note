@@ -39,4 +39,18 @@ public interface NoteDao {
      * @return
      */
      boolean addNote(Note note);
+
+    /**
+     * 删除笔记
+     * @param note 笔记实体类
+     * @return int 影响的行数
+     */
+     int deleteNote(Note note);
+
+    /**
+     * 修改笔记
+     * @param note 笔记实体类
+     * @return int 影响的行数
+     */
+     int updateNote(Note note);
 }

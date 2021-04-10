@@ -107,7 +107,23 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
         return super.insert(note)==1;
     }
 
-    public int update(Note note) {
+    /**
+     * 删除笔记
+     * @param note 笔记实体类
+     * @return int 影响的行数
+     */
+    @Override
+    public int deleteNote(Note note){
+        return super.delete(note);
+    }
+
+    /**
+     * 修改笔记
+     * @param note 笔记实体类
+     * @return int 影响的行数
+     */
+    @Override
+    public int updateNote(Note note) {
         return super.update(note);
     }
 }

@@ -41,13 +41,11 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
 
     /**
      * 删除分组
-     * @param groupId 笔记分组id
+     * @param group 笔记分组对象
      * @return int 影响的行数
      */
     @Override
-    public int deleteGroup(String groupId) {
-        Group group = new Group();
-        group.setId(groupId);
+    public int deleteGroup(Group group) {
         return delete(group);
     }
 

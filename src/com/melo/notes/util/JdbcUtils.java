@@ -13,7 +13,7 @@ import java.util.Properties;
  */
 public class JdbcUtils {
 
-    private static BaseDaoImpl baseDao=(BaseDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.BaseDao);
+    private static final BaseDaoImpl baseDao=(BaseDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.BaseDao);
 
     private final static String PROP_PATH = "db.properties";
     /**

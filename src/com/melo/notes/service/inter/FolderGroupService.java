@@ -46,9 +46,10 @@ public interface FolderGroupService {
      * 新增知识库
      * @param name
      * @param access
+     * @param authorId
      * @return
      */
-     boolean addFolder(String name, String access);
+     boolean addFolder(String name, String access,String authorId);
 
     /**
      * 新增笔记分组

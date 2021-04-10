@@ -70,7 +70,7 @@ public class TableServiceImpl implements TableService {
         Note note = new Note();
         note.setId(noteId);
         note.setLikeCount(updateLikeCount);
-        return noteDao.update(note)==1;
+        return noteDao.updateNote(note)==1;
     }
 
     /**

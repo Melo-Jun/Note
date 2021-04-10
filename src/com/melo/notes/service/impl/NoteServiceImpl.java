@@ -81,6 +81,6 @@ public class NoteServiceImpl implements NoteService {
      */
     @Override
     public int update(Note note) {
-        return noteDao.update(note);
+        return noteDao.updateNote(note);
     }
 }

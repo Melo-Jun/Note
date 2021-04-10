@@ -259,10 +259,8 @@ public class BaseDaoImpl implements BaseDao {
                     }
                     values.add(newInstance);
                 }
-            } catch (SQLException | InstantiationException | IllegalAccessException throwables) {
-                throwables.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
+            } catch (SQLException | InstantiationException | IllegalAccessException | InvocationTargetException throwables) {
+                throw new DaoException("映射对象出现异常");
             }
             return values;
     });

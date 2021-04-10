@@ -29,7 +29,7 @@ public class AddFolderView extends JFrame {
     private void submitActionPerformed(ActionEvent e) {
         String name = nameText.getText();
         String access = (String)selectedAccess.getSelectedItem();
-        if(folderGroupService.addFolder(name,access)&&!name.isEmpty()){
+        if(folderGroupService.addFolder(name,access,LoginView.USER.getId())&&!name.isEmpty()){
             JOptionPane.showMessageDialog(null,"增加成功");
             this.dispose();
         }else {

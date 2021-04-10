@@ -50,12 +50,14 @@ public class TableView extends JFrame {
      */
     private void table1MouseClicked(MouseEvent e) {
         Integer row=table.getSelectedRow();
-        String authorId= (String) model.getValueAt(row, 2);
-        String authorName = tableService.showNoteAuthor(authorId);
-        String groupId=(String)model.getValueAt(row,5);
-        System.out.println(groupId+"笔记id");
-        String groupName=tableService.showGroupName(groupId);
-        authorFolder.setText("作者名称:"+authorName+"\n"+"笔记分组名称:"+groupName);
+        if(row!=-1) {
+            String authorId = (String) model.getValueAt(row, 2);
+            String authorName = tableService.showNoteAuthor(authorId);
+            String groupId = (String) model.getValueAt(row, 5);
+            System.out.println(groupId + "笔记id");
+            String groupName = tableService.showGroupName(groupId);
+            authorFolder.setText("作者名称:" + authorName + "\n" + "笔记分组名称:" + groupName);
+        }
     }
 
     /**
@@ -119,14 +121,16 @@ public class TableView extends JFrame {
      */
     private void likeActionPerformed(ActionEvent e) {
         Integer row=table.getSelectedRow();
-        String id=(String)model.getValueAt(row,0);
-        String likeCount = (String)model.getValueAt(row, 4);
-        String updateLikeCount = StringUtils.increaseOne(likeCount);
-        if(tableService.increaseLikeCount(updateLikeCount,id)) {
-            JOptionPane.showMessageDialog(null,"操作成功");
-            fillTable(allNote);
-        }else {
-            JOptionPane.showMessageDialog(null,"操作失败");
+        if(row!=-1) {
+            String id = (String) model.getValueAt(row, 0);
+            String likeCount = (String) model.getValueAt(row, 4);
+            String updateLikeCount = StringUtils.increaseOne(likeCount);
+            if (tableService.increaseLikeCount(updateLikeCount, id)) {
+                JOptionPane.showMessageDialog(null, "操作成功");
+                fillTable(allNote);
+            } else {
+                JOptionPane.showMessageDialog(null, "操作失败");
+            }
         }
     }
 
@@ -136,14 +140,16 @@ public class TableView extends JFrame {
      */
     private void withdrawLikeActionPerformed(ActionEvent e) {
         Integer row=table.getSelectedRow();
-        String id=(String)model.getValueAt(row,0);
-        String likeCount = (String)model.getValueAt(row, 4);
-        String updateLikeCount = StringUtils.decreaseOne(likeCount);
-        if(tableService.decreaseLikeCount(updateLikeCount,id)) {
-            JOptionPane.showMessageDialog(null,"操作成功");
-            fillTable(allNote);
-        }else {
-            JOptionPane.showMessageDialog(null,"操作失败");
+        if(row!=-1) {
+            String id = (String) model.getValueAt(row, 0);
+            String likeCount = (String) model.getValueAt(row, 4);
+            String updateLikeCount = StringUtils.decreaseOne(likeCount);
+            if (tableService.decreaseLikeCount(updateLikeCount, id)) {
+                JOptionPane.showMessageDialog(null, "操作成功");
+                fillTable(allNote);
+            } else {
+                JOptionPane.showMessageDialog(null, "操作失败");
+            }
         }
     }
 

@@ -62,6 +62,8 @@ public class FolderView extends JFrame {
 
     public FolderView(User user) {
 
+            //初始化知识库
+            folderGroupService.initFolderGroup();
 
             jf.setSize(800, 600);
             jf.setLocation(330, 120);

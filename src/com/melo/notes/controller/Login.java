@@ -10,6 +10,6 @@ import com.melo.notes.view.LoginView;
  */
 public class Login {
     public static void main(String[] args) {
-        new LoginView().setVisible(true);
+        new LoginView();
     }
 }

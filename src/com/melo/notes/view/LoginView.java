@@ -40,6 +40,7 @@ public class LoginView extends JFrame {
 
     public LoginView() {
         initComponents();
+        setVisible(true);
         setSize(250, 400);
         setLocation(800,300);
     }
