@@ -5,7 +5,8 @@
 package com.melo.notes.view;
 
 import java.awt.event.*;
-import com.melo.notes.service.impl.RegisterServiceImpl;
+
+import com.melo.notes.service.impl.PersonalUserServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
@@ -23,9 +24,13 @@ public class PersonalUserView extends JFrame {
     private final String SUCCESS="操作成功";
 
     /**
+     * 修改后的用户名称
+     */
+    public static String userName="";
+    /**
      * 创建相关操作类对象
      */
-    RegisterServiceImpl registerService = (RegisterServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.RegisterService);
+    PersonalUserServiceImpl personalUserService = (PersonalUserServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.PersonalUserService);
     public PersonalUserView() {
         initComponents();
         setVisible(true);
@@ -34,13 +39,22 @@ public class PersonalUserView extends JFrame {
     }
 
     private void submitActionPerformed(ActionEvent e) {
-        String userName = nameText.getText();
+        userName = nameText.getText();
+        String oldPass=String.valueOf(oldPassword.getPassword());
         String firstPass = String.valueOf(newPassword.getPassword());
         String secondPass = String.valueOf(newPassword2.getPassword());
-        String message= registerService.isValid(userName,firstPass,secondPass);
-        JOptionPane.showMessageDialog(null,message);
+        String message= personalUserService.isValid(userName,firstPass,secondPass);
         if(message.equals(SUCCESS)){
-            this.dispose();
+            if(personalUserService.judgePass(userName,oldPass)){
+                System.out.println("密码验证成功");
+                personalUserService.updateUser(userName,secondPass);
+                JOptionPane.showMessageDialog(null,"修改成功,需要手动重启");
+                System.exit(-1);
+            }else {
+                JOptionPane.showMessageDialog(null,"原密码输入有误");
+            }
+        }else {
+            JOptionPane.showMessageDialog(null,message);
         }
     }
 

@@ -12,6 +12,7 @@ public class User extends BaseEntity {
 
     private String userName;
     private String password;
+    private String validity;
 
 
     public User() {
@@ -31,6 +32,9 @@ public class User extends BaseEntity {
         return password;
     }
 
+    public String getValidity() {
+        return validity;
+    }
 
     public void setUserName(String userName) {
         this.userName = userName;
@@ -40,5 +44,7 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-
+    public void setValidity(String validity) {
+        this.validity = validity;
+    }
 }

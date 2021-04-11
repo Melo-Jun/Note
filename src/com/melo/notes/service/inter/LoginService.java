@@ -17,14 +17,6 @@ public interface LoginService {
     void setId(User user);
 
     /**
-     * 密码验证
-     * @param user
-     * @notice 需要将输入进来的密码Md5解码看对不对应数据库中的字段
-     * @return
-     */
-     boolean login(User user);
-
-    /**
      * 判断输入是否有效
      *
      * @param userName

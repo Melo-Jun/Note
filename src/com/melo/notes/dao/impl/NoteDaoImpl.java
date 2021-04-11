@@ -109,11 +109,13 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
 
     /**
      * 删除笔记
-     * @param note 笔记实体类
+     * @param noteId 笔记id
      * @return int 影响的行数
      */
     @Override
-    public int deleteNote(Note note){
+    public int deleteNote(String noteId){
+        Note note = new Note();
+        note.setId(noteId);
         return super.delete(note);
     }
 

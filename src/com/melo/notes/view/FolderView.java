@@ -18,6 +18,7 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 /**
  * @author Jun
@@ -38,6 +39,7 @@ public class FolderView extends JFrame {
      */
     public static String selectedType ="";
     private final String NOTE="笔记";
+    private final String GROUP="笔记分组";
 
     JFrame jf = new JFrame("设置笔记分组");
     private Listener l = new Listener();
@@ -48,6 +50,7 @@ public class FolderView extends JFrame {
     private JButton update = new JButton("修改名称");
     private JButton setGroup = new JButton("设置笔记分组");
     private JButton updateNote = new JButton("设置笔记");
+    private JButton addNote=new JButton("新增笔记");
 
     /**
      * 创建相关操作对象
@@ -75,6 +78,7 @@ public class FolderView extends JFrame {
             update.setBounds(100,5,100,40);
             setGroup.setBounds(200,5,120,40);
             updateNote.setBounds(300,5,120,40);
+            addNote.setBounds(400,5,120,40);
 
             flush.setBounds(600,200,120,50);
 
@@ -82,8 +86,8 @@ public class FolderView extends JFrame {
             addFolder.setBounds(600,350,120,50);
             addGroup.setBounds(600,400,120,50);
 
-        /**
-         * 增加监听器
+        /*
+          增加监听器
          */
         delete.addMouseListener(l);
         update.addMouseListener(l);
@@ -92,9 +96,10 @@ public class FolderView extends JFrame {
         setGroup.addMouseListener(l);
         flush.addMouseListener(l);
         updateNote.addMouseListener(l);
+        addNote.addMouseListener(l);
 
-        /**
-         * 加入面板中
+        /*
+          加入面板中
          */
             panel.add(flush);
             panel.add(delete);
@@ -103,18 +108,19 @@ public class FolderView extends JFrame {
             panel.add(addFolder);
             panel.add(addGroup);
             panel.add(updateNote);
+            panel.add(addNote);
 
-        /**
-         * 创建根节点
+        /*
+          创建根节点
          */
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("知识库");
 
-        /**
-         * 根据知识库名生成相应笔记分组
+        /*
+          根据知识库名生成相应笔记分组
          */
         HashMap<Object, Object> Folder = folderGroupService.showFolderName();
-                /**
-                 * 遍历获取folderId和folderName
+                /*
+                  遍历获取folderId和folderName
                  */
                 Set<Map.Entry<Object, Object>> folderSet =  Folder.entrySet();
                 for(Map.Entry tempFolder:folderSet) {
@@ -143,7 +149,7 @@ public class FolderView extends JFrame {
                          */
                         Note note = new Note();
                         note.setLocatedGroup(groupId.toString());
-                        LinkedList<Object> titles = noteService.showNoteTitle(note);
+                        LinkedList titles = noteService.showNoteTitle(note);
                         if(!titles.isEmpty()){
                             for(Object title:titles){
                                 DefaultMutableTreeNode noteTree = new DefaultMutableTreeNode(title);
@@ -160,7 +166,7 @@ public class FolderView extends JFrame {
                     }
                 }
 
-            // 使用根节点创建树组件
+            //使用根节点创建树组件
             JTree tree = new JTree(rootNode);
 
             // 设置树显示根节点句柄
@@ -170,9 +176,8 @@ public class FolderView extends JFrame {
             tree.setEditable(true);
 
 
-        /**
-         * 设置节点选中监听器(将选中的节点名称和对象类型保存起来)
-         *
+        /*
+          设置节点选中监听器(将选中的节点名称和对象类型保存起来)
          */
         tree.addTreeSelectionListener(new TreeSelectionListener() {
                 @Override
@@ -201,28 +206,30 @@ public class FolderView extends JFrame {
     public class Listener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
-            /**
-             * 刷新操作
-             */
+            //刷新操作
             if(e.getSource()==flush){
                 jf.dispose();
                 new FolderView(LoginView.USER);
             }
-            /**
-             * 删除操作
-             */
-            if(e.getSource()==delete){
-                if(folderGroupService.delete(selectedName, selectedType)!=0) {
-                    JOptionPane.showConfirmDialog(null,"确定删除吗");
-                    jf.dispose();
-                    new FolderView(LoginView.USER);
-                }else {
-                    JOptionPane.showMessageDialog(null,"请确认已正确选择节点");
+            //删除操作
+            if(e.getSource()==delete) {
+                if (JOptionPane.showConfirmDialog(null,
+                        "确认删除请按是", "确认删除", JOptionPane.YES_NO_OPTION)==0) {
+                    if (folderGroupService.delete(selectedName, selectedType) != 0) {
+                        jf.dispose();
+                        new FolderView(LoginView.USER);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "请确认已正确选择节点");
+                    }
                 }
             }
-            /**
-             * 修改操作
+
+            /*
+             **************************************************************
+             *              修改操作
+             **************************************************************
              */
+
             //修改名称
             if(e.getSource()==update){
                 String updateName = JOptionPane.showInputDialog("请输入修改名称");
@@ -242,41 +249,39 @@ public class FolderView extends JFrame {
                     JOptionPane.showMessageDialog(null,"请确认你选中的是笔记");
                 }
             }
-            /**
-             * 设置笔记分组
-             */
+            //新增笔记
+            if(e.getSource()==addNote){
+                if(selectedType.equals(GROUP)){
+                    new AddNoteView(LoginView.USER).setVisible(true);
+                }else {
+                    JOptionPane.showMessageDialog(null,"请确认你选中的是待加入笔记的笔记分组");
+                }
+            }
+            //设置笔记分组
             if(e.getSource()==setGroup){
                 new SetGroupView().setVisible(true);
             }
-            /**
-             * 增加知识库操作
-             */
+            //增加知识库操作
             if(e.getSource()== addFolder){
                new AddFolderView().setVisible(true);
             }
-            /**
-             * 增加笔记分组操作
-             */
+            //增加笔记分组操作
             if(e.getSource()==addGroup) {
                 new AddGroupView().setVisible(true);
             }
         }
-
         @Override
         public void mousePressed(MouseEvent e) {
 
         }
-
         @Override
         public void mouseReleased(MouseEvent e) {
 
         }
-
         @Override
         public void mouseEntered(MouseEvent e) {
 
         }
-
         @Override
         public void mouseExited(MouseEvent e) {
 

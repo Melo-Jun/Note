@@ -40,9 +40,7 @@ public class UpdateNoteView extends JFrame {
             note = new Note();
             note.setTitle(FolderView.selectedName);
             LinkedList<Note> notes = noteService.showNoteAll(note);
-
             titleField.setText(notes.getFirst().getTitle());
-
             textArea.setText(notes.getFirst().getText());
             idText.setText(notes.getFirst().getId());
 

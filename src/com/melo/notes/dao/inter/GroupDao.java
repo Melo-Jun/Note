@@ -23,11 +23,18 @@ public interface GroupDao {
     HashMap<Object, Object> showNoteGroup(Folder folder);
 
     /**
-     * 删除分组
+     * 展示笔记分组名
      * @param group 笔记分组对象
+     * @return String 笔记分组名
+     */
+     String showGroupName(Group group);
+
+    /**
+     * 删除分组
+     * @param groupId 笔记分组id
      * @return int 影响的行数
      */
-    int deleteGroup(Group group);
+    int deleteGroup(String groupId);
 
     /**
      * 增加笔记分组
@@ -41,6 +48,6 @@ public interface GroupDao {
      * @param group 在service完成封装后的对象
      * @return int 影响的行数
      */
-    int updateGroupName(Group group);
+    int updateGroup(Group group);
 
 }

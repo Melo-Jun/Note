@@ -12,7 +12,7 @@ public interface UserDao {
 
     /**
      * 验证是否已存在该用户
-     * @param user
+     * @param user 用户实体类
      * @return
      */
     boolean isExist(User user);
@@ -20,7 +20,7 @@ public interface UserDao {
 
     /**
      * 密码验证
-     * @param user
+     * @param user 用户实体类
      * @notice 需要将输入进来的密码Md5解码看对不对应数据库中的字段
      * @return
      */
@@ -28,10 +28,17 @@ public interface UserDao {
 
     /**
      * 增加用户
-     * @param user
+     * @param user 用户实体类
      * @return boolean 是否增加成功
      */
-     boolean add(User user);
+     boolean addUser(User user);
+
+    /**
+     * 修改用户
+     * @param user 用户实体类
+     * @return int 影响的行数
+     */
+    int updateUser(User user);
 
     /**
      * 为登录进来的用户设置Id以便后续查询
@@ -39,4 +46,11 @@ public interface UserDao {
      * @return void
      */
      void setId(User user);
+
+    /**
+     * 根据id展示用户名
+     * @param user 用户实体类
+     * @return
+     */
+     String showUserName(User user);
 }

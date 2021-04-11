@@ -102,7 +102,7 @@ public interface BaseDao {
      * @param obj xxx
      * @return String id
      */
-    String getId(Object obj);
+    LinkedList getId(Object obj);
 
     /**
      *  用于插入一条记录时使用

@@ -21,52 +21,30 @@ public class NoteServiceImpl implements NoteService {
     private final NoteDaoImpl noteDao = (NoteDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.NoteDao);
 
     /**
-     * 将LinkedList转化为String数组返回给List作为填充数据
      * 填充标题
-     * @param obj 对象
-     * @return String[]标题大全
+     * @param obj 相关对象
+     * @return LinkedList 标题大全
      */
     @Override
     public LinkedList showNoteTitle(Object obj) {
         return noteDao.showNoteTitle(obj);
-        /*String[] strings = new String[100];
-        int i=0;
-        for(Object temp:objects){
-            strings[i]=(String) temp;
-            i++;
-        }
-        return strings;*/
     }
 
     /**
      *展示笔记详情内容(Text另外单独分页)
-     * @param note 笔记对象
+     * @param obj 相关对象
      * @return String[] 笔记所有值链表
      */
    @Override
-   public LinkedList showNoteAll(Note note) {
-       return noteDao.showNoteAll(note);
+   public LinkedList<Note> showNoteAll(Object obj) {
+       return noteDao.showNoteAll(obj);
    }
 
-
-
-
-    /* @Override
-    public String[] listNoteAll(Object obj) {
-        LinkedList<Object> objects = noteDao.showNoteAll(obj);
-        String[] strings = new String[100];
-        int i=0;
-        for(Object temp:objects){
-            strings[i]=(String) temp;
-            i++;
-        }
-        return strings;
-    }*/
 
     /**
      * 展示笔记文本内容
      *
-     * @param obj
+     * @param obj 相关对象
      * @return
      */
     @Override
@@ -76,7 +54,7 @@ public class NoteServiceImpl implements NoteService {
 
     /**
      * 更改笔记内容
-     * @param note
+     * @param note 相关对象
      * @return
      */
     @Override

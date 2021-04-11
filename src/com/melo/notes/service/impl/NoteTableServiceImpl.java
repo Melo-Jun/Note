@@ -8,7 +8,7 @@ import com.melo.notes.entity.Group;
 import com.melo.notes.entity.LikeList;
 import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
-import com.melo.notes.service.inter.TableService;
+import com.melo.notes.service.inter.NoteTableService;
 import com.melo.notes.util.BeanFactory;
 import com.melo.notes.view.LoginView;
 
@@ -22,7 +22,7 @@ import java.util.Vector;
  * @description 表格页面相关逻辑实现类
  * @date 2021-4-8 16:16
  */
-public class TableServiceImpl implements TableService {
+public class NoteTableServiceImpl implements NoteTableService {
     /**
      * 创建相关操作类对象
      */
@@ -117,12 +117,19 @@ public class TableServiceImpl implements TableService {
      * @param authorId 作者id
      * @return 作者名
      */
+    @Override
     public String showNoteAuthor(String authorId){
         User user = new User();
         user.setId(authorId);
         return userDao.showUserName(user);
     }
 
+    /**
+     * 展示笔记分组名
+     * @param groupId 笔记id
+     * @return String 笔记分组名
+     */
+    @Override
     public String showGroupName(String groupId){
         Group group = new Group();
         group.setId(groupId);

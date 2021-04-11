@@ -90,4 +90,11 @@ public interface FolderGroupService {
      * @return String id
      */
     String getId(Object obj);
+
+    /**
+     * 根据xxx获取其下所有id
+     * @param obj xxx
+     * @return LinkedList id链表
+     */
+    LinkedList getIds(Object obj);
 }

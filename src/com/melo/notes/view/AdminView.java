@@ -5,11 +5,12 @@
 package com.melo.notes.view;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 
 /**
- * @author 1
+ * @author Jun
  */
 public class AdminView extends JFrame {
     public AdminView() {
@@ -17,21 +18,36 @@ public class AdminView extends JFrame {
         setVisible(true);
     }
 
+    private void userInformationActionPerformed(ActionEvent e) {
+        new UserTableView();
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+        userInformation = new JButton();
 
         //======== this ========
         Container contentPane = getContentPane();
+
+        //---- userInformation ----
+        userInformation.setText("\u67e5\u770b\u7528\u6237\u4fe1\u606f");
+        userInformation.addActionListener(e -> userInformationActionPerformed(e));
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup()
-                .addGap(0, 433, Short.MAX_VALUE)
+                .addGroup(contentPaneLayout.createSequentialGroup()
+                    .addGap(150, 150, 150)
+                    .addComponent(userInformation)
+                    .addContainerGap(166, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
-                .addGap(0, 268, Short.MAX_VALUE)
+                .addGroup(contentPaneLayout.createSequentialGroup()
+                    .addGap(54, 54, 54)
+                    .addComponent(userInformation)
+                    .addContainerGap(184, Short.MAX_VALUE))
         );
         pack();
         setLocationRelativeTo(getOwner());
@@ -39,5 +55,6 @@ public class AdminView extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    private JButton userInformation;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

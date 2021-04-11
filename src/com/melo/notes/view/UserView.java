@@ -4,13 +4,11 @@
 
 package com.melo.notes.view;
 
-import javax.swing.event.*;
 import com.melo.notes.entity.User;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.GroupLayout;
 
 /**
  * @author Jun
@@ -40,7 +38,7 @@ public class UserView extends JFrame {
     }
 
     private void showNoteActionPerformed(ActionEvent e) {
-        new TableView();
+        new NoteTableView();
     }
 
     private void updateActionPerformed(ActionEvent e) {

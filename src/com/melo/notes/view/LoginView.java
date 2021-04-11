@@ -52,7 +52,7 @@ public class LoginView extends JFrame {
         String userName = userNameText.getText();
         String password = String.valueOf(passwordField.getPassword());
         String access = (String) this.access.getSelectedItem();
-        String message = loginViewService.isValid(userName, password, access);
+        String message = loginViewService.login(userName, password, access);
         JOptionPane.showMessageDialog(null,message);
         if(message.equals(USERVIEW)) {
             USER = new User(userName, password);

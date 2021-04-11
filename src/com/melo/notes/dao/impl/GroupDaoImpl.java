@@ -34,6 +34,12 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
         return queryMap(sql,folder);
     }
 
+    /**
+     * 展示笔记分组名
+     * @param group
+     * @return
+     */
+    @Override
     public String showGroupName(Group group){
         String sql="select group_name from " +TABLE_NAME+" where id=?";
         return queryList(sql,group).getFirst().toString();
@@ -41,11 +47,13 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
 
     /**
      * 删除分组
-     * @param group 笔记分组对象
+     * @param groupId 笔记分组id
      * @return int 影响的行数
      */
     @Override
-    public int deleteGroup(Group group) {
+    public int deleteGroup(String groupId) {
+        Group group = new Group();
+        group.setId(groupId);
         return delete(group);
     }
 
@@ -67,8 +75,13 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
      * @return
      */
     @Override
-    public int updateGroupName(Group group) {
-        return update(group);
+    public int updateGroup(Group group) {
+        return super.update(group);
+    }
+
+    public String countGroup(Group group){
+        String sql="select count(*) from " +TABLE_NAME+" where author_id=?";
+        return queryList(sql,group).getFirst().toString();
     }
 
 

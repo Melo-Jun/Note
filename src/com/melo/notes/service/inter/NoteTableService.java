@@ -11,7 +11,7 @@ import java.util.Vector;
  * @description 表格页面相关逻辑接口
  * @date 2021-4-8 16:16
  */
-public interface TableService {
+public interface NoteTableService {
 
     /**
      * 提取笔记属性填充表格
@@ -50,4 +50,18 @@ public interface TableService {
      * @return 操作是否成功
      */
      boolean decreaseLikeCount(String updateLikeCount, String noteId);
+
+    /**
+     * 展示笔记作者名
+     * @param authorId 作者id
+     * @return 作者名
+     */
+     String showNoteAuthor(String authorId);
+
+    /**
+     * 展示笔记分组名
+     * @param groupId
+     * @return
+     */
+     String showGroupName(String groupId);
 }

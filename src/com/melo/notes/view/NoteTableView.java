@@ -8,10 +8,9 @@ import java.awt.event.*;
 
 import com.melo.notes.bean.AuthorBean;
 import com.melo.notes.bean.NoteBean;
-import com.melo.notes.dao.impl.NoteDaoImpl;
 import com.melo.notes.entity.Note;
 import com.melo.notes.service.impl.NoteServiceImpl;
-import com.melo.notes.service.impl.TableServiceImpl;
+import com.melo.notes.service.impl.NoteTableServiceImpl;
 import com.melo.notes.util.BeanFactory;
 import com.melo.notes.util.StringUtils;
 
@@ -24,20 +23,19 @@ import javax.swing.table.*;
 /**
  * @author Jun
  */
-public class TableView extends JFrame {
+public class NoteTableView extends JFrame {
 
     private final String PUBLIC="公开";
     private Note allNote=new Note();
     /**
      * 创建相关操作对象
-     * @return
      */
     private final NoteServiceImpl noteService =(NoteServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.NoteService);
-    private final TableServiceImpl tableService =(TableServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.TableViewService);
+    private final NoteTableServiceImpl noteTableService =(NoteTableServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.NoteTableViewService);
     private DefaultTableModel model= null;
     private JTable table=null;
 
-    public TableView() {
+    public NoteTableView() {
         initComponents();
         setVisible(true);
         allNote.setAccess("公开");
@@ -52,10 +50,9 @@ public class TableView extends JFrame {
         Integer row=table.getSelectedRow();
         if(row!=-1) {
             String authorId = (String) model.getValueAt(row, 2);
-            String authorName = tableService.showNoteAuthor(authorId);
+            String authorName = noteTableService.showNoteAuthor(authorId);
             String groupId = (String) model.getValueAt(row, 5);
-            System.out.println(groupId + "笔记id");
-            String groupName = tableService.showGroupName(groupId);
+            String groupName = noteTableService.showGroupName(groupId);
             authorFolder.setText("作者名称:" + authorName + "\n" + "笔记分组名称:" + groupName);
         }
     }
@@ -104,14 +101,14 @@ public class TableView extends JFrame {
 
     /**
      * 填充表格
-     * @param obj 笔记对象
+     * @param obj 相关对象
      */
     private void fillTable(Object obj){
         model= (DefaultTableModel)table.getModel();
         model.setRowCount(0);
-        LinkedList<Note> notes = new NoteDaoImpl().showNoteAll(obj);
+        LinkedList<Note> notes = noteService.showNoteAll((Note)obj);
         for(Note tempNote:notes) {
-            model.addRow(tableService.fillTable(tempNote));
+            model.addRow(noteTableService.fillTable(tempNote));
         }
     }
 
@@ -125,7 +122,11 @@ public class TableView extends JFrame {
             String id = (String) model.getValueAt(row, 0);
             String likeCount = (String) model.getValueAt(row, 4);
             String updateLikeCount = StringUtils.increaseOne(likeCount);
-            if (tableService.increaseLikeCount(updateLikeCount, id)) {
+            String authorId=(String) model.getValueAt(row,2);
+            if(LoginView.USER.getId().equals(authorId)){
+                JOptionPane.showMessageDialog(null, "不可以点赞自己的笔记");
+            }
+            else if (noteTableService.increaseLikeCount(updateLikeCount, id)) {
                 JOptionPane.showMessageDialog(null, "操作成功");
                 fillTable(allNote);
             } else {
@@ -144,7 +145,7 @@ public class TableView extends JFrame {
             String id = (String) model.getValueAt(row, 0);
             String likeCount = (String) model.getValueAt(row, 4);
             String updateLikeCount = StringUtils.decreaseOne(likeCount);
-            if (tableService.decreaseLikeCount(updateLikeCount, id)) {
+            if (noteTableService.decreaseLikeCount(updateLikeCount, id)) {
                 JOptionPane.showMessageDialog(null, "操作成功");
                 fillTable(allNote);
             } else {

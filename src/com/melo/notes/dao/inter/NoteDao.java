@@ -42,10 +42,10 @@ public interface NoteDao {
 
     /**
      * 删除笔记
-     * @param note 笔记实体类
+     * @param noteId 笔记id
      * @return int 影响的行数
      */
-     int deleteNote(Note note);
+     int deleteNote(String noteId);
 
     /**
      * 修改笔记

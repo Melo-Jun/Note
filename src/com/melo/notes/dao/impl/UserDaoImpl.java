@@ -2,76 +2,72 @@ package com.melo.notes.dao.impl;
 
 import com.melo.notes.dao.inter.UserDao;
 import com.melo.notes.entity.User;
-import com.melo.notes.exception.DaoException;
 import com.melo.notes.view.LoginView;
+import com.sun.corba.se.impl.ior.OldJIDLObjectKeyTemplate;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.LinkedList;
 
-import static com.melo.notes.util.JdbcUtils.*;
 import static com.melo.notes.util.Md5Utils.getDigest;
 
 /**
  * @author Jun
  * @program Note
- * @description ç”¨æˆ·ç±»æ•°æ®åº“æ“ä½œå®ç°ç±»
+ * @description ÓÃ»§ÀàÊı¾İ¿â²Ù×÷ÊµÏÖÀà
  * @date 2021-3-28 20:45
  */
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     private final String TABLE_NAME="user";
+    private final String ALL_FIELD_NAME="id,user_name,password,validity";
 
     /**
-     * éªŒè¯æ˜¯å¦å·²å­˜åœ¨è¯¥ç”¨æˆ·
+     * ÑéÖ¤ÊÇ·ñÒÑ´æÔÚ¸ÃÓÃ»§
      *
-     * @param user
-     * @return
+     * @param user ÓÃ»§ÊµÌåÀà
+     * @return boolean ÊÇ·ñ´æÔÚ¸ÃÓÃ»§
      */
     @Override
     public boolean isExist(User user) {
         String sql="select user_name from "+ TABLE_NAME +" where user_name=? ";
-        User obj = new User();
-        obj.setUserName(user.getUserName());
-        LinkedList<Object> objects = queryList(sql, obj);
-        if(objects.isEmpty()){
-            return false;
-        }
-        return true;
+        User temp = new User();
+        temp.setUserName(user.getUserName());
+        LinkedList<Object> objects = queryList(sql, temp);
+        return !objects.isEmpty();
+    }
+
+    public boolean isValidUser(User user){
+        String sql="select validity from "+TABLE_NAME +" where user_name=? ";
+        LinkedList<Object> validity = queryList(sql, user);
+        return "ÓĞĞ§".equals(validity.getFirst().toString());
     }
 
     /**
-     * éªŒè¯å¯†ç æ˜¯å¦æ­£ç¡®
-     * @param user
-     * @notice éœ€è¦å°†è¾“å…¥è¿›æ¥çš„å¯†ç Md5è§£ç çœ‹å¯¹ä¸å¯¹åº”æ•°æ®åº“ä¸­çš„å­—æ®µ
-     * @return
+     * ÑéÖ¤ÃÜÂëÊÇ·ñÕıÈ·
+     * @param user ÓÃ»§ÊµÌåÀà
+     * @notice ĞèÒª½«ÊäÈë½øÀ´µÄÃÜÂëMd5½âÂë¿´¶Ô²»¶ÔÓ¦Êı¾İ¿âÖĞµÄ×Ö¶Î
+     * @return boolean ÃÜÂëÊÇ·ñÕıÈ·
      */
     @Override
     public boolean judgePass(User user){
         String sql="select password from "+TABLE_NAME+" where user_name=? ";
-        User obj = new User();
-        obj.setUserName(user.getUserName());
-        LinkedList<Object> objects = queryList(sql, obj);
-        if(objects.isEmpty()){
+        User temp = new User();
+        temp.setUserName(user.getUserName());
+        LinkedList password = queryList(sql, temp);
+        if(password.isEmpty()){
             return false;
         }
-        if(objects.getFirst().equals(getDigest(user.getPassword()))){
-            return true;
-        }
-        return false;
+        return password.getFirst().equals(getDigest(user.getPassword()));
     }
 
     /**
-     * å¢åŠ ç”¨æˆ·
-     * @param user
-     * @return boolean æ˜¯å¦å¢åŠ æˆåŠŸ
+     * Ôö¼ÓÓÃ»§
+     * @param user ÓÃ»§ÊµÌåÀà
+     * @return boolean ÊÇ·ñÔö¼Ó³É¹¦
      */
     @Override
-    public boolean add(User user) {
-        /**
-         * å‘ç°ç”¨æˆ·åä¸ºç©ºä¹Ÿä¼šè¢«å¢åŠ è¿›å»æ‰ä¿®æ”¹
+    public boolean addUser(User user) {
+        /*
+          ·¢ÏÖÓÃ»§ÃûÎª¿ÕÒ²»á±»Ôö¼Ó½øÈ¥²ÅĞŞ¸Ä
          */
         if(user==null||user.getUserName().isEmpty()){
             return false;
@@ -80,9 +76,18 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     /**
-     * ä¸ºç™»å½•è¿›æ¥çš„ç”¨æˆ·è®¾ç½®Idä»¥ä¾¿åç»­æŸ¥è¯¢
-     * @param user
-     * @return boolean æ˜¯å¦å¢åŠ æˆåŠŸ
+     * ĞŞ¸ÄÓÃ»§
+     * @param user ÓÃ»§ÊµÌåÀà
+     * @return int Ó°ÏìµÄĞĞÊı
+     */
+    @Override
+    public int updateUser(User user){
+        return super.update(user);
+    }
+
+    /**
+     * ÎªµÇÂ¼½øÀ´µÄÓÃ»§ÉèÖÃIdÒÔ±ãºóĞø²éÑ¯
+     * @param user ÓÃ»§ÊµÌåÀà
      */
     @Override
     public void setId(User user) {
@@ -93,8 +98,19 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
     }
 
+    /**
+     * ¸ù¾İidÕ¹Ê¾ÓÃ»§Ãû
+     * @param user ÓÃ»§ÊµÌåÀà
+     * @return String ÓÃ»§Ãû
+     */
+    @Override
     public String showUserName(User user){
         String sql="select user_name from "+TABLE_NAME+" where id=?";
         return queryList(sql,user).getFirst().toString();
+    }
+
+    public LinkedList showUserAll(User user){
+        String sql="select "+ALL_FIELD_NAME+" from "+TABLE_NAME;
+        return queryAll(sql,user,User.class);
     }
 }

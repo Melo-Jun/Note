@@ -1,4 +1,6 @@
- 备份
+~~~~ 备份
+
+~~~~
 
 queryAll
 
@@ -85,6 +87,12 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 已解决: 父类方法和属性是最晚获取到的
 
+- 这样方便了,但是可扩展性不强了(只能根据folderId),还是说各个Dao里边没关系
+
+  > 可在service中进行对象封装的其实
+
+  ![image-20210411110944294](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210411110944294.png)
+
 # 经验
 
 - 如果sql语句是在Base里边写的，就没有办法通过TableName来解决，得根据传进来的对象去获取表名，就不能用业务对象了，所以业务对象就用在select而已吗,这种情况除了sql在各自类中写还有什么解决方法吗
@@ -95,7 +103,27 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 - 解决资源关闭问题,return放在try里边就可以了阿,做完map再return![image-20210406202817792](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406202817792.png)
 
+- 仍然会rs.next,还得再次判空![image-20210411171519048](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210411171519048.png)
+
+    
+
 # 优化
+
+- 展示笔记内容分页,以及显示字数
+
+- 修改笔记封装和增加笔记封装![image-20210411112338118](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210411112338118.png)
+
+- ![image-20210406164454733](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406164454733.png)
+
+- 泛型没优化
+
+    > service中就加泛型,Dao中就不加?因为Dao得return Base的,不能泛型
+    >
+    > 可写个toxxx,在Dao中就泛型,先获取Base,再return toxxx之后的结果(小麻烦)
+
+- select语句到底要不要动态拼接,还是说要分成不同职能的函数,在特定Dao里边不同职能,只是Base通用即可?
+
+    ![image-20210411105009044](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210411105009044.png)
 
 - 写判空不执行按钮![image-20210410153556119](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210410153556119.png)
 
@@ -115,18 +143,6 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 - 此处的生成对象有没有必要封装成service,**都弄成service中即可吧**![image-20210406093435527](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406093435527.png)
 
-- 此处点击author_id可以查看用户详情信息会好一点,等完成设置用户信息了再
-
-    点击点赞like_count会++,然后不可再点赞了,下次也不可以了得设置一个来源,那会把那个也查出来
-
-    用配置文件优化,显示出来是中文?
-
-    ![image-20210406144733124](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406144733124.png)
-    
-    -   此处将信息封装还待优化
-    
-    ![image-20210406164454733](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406164454733.png)
-
 - 都还未进行判空验证
 
 - 选择笔记分组时加个提示当前选中的是?
@@ -135,17 +151,19 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 - 不用用到listNoteTitle界面了以及相关string数组(还未删除)
 
-- 修改其他表id为string
+- addNoteView可删掉设置分组了,以及UserView中的增加笔记功能可删除
+
+- 修改其他表id为string,**只修改了User**
 
     > ![image-20210410084703581](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210410084703581.png)
 
-- 写根据id和folderid列出相关名称
+- ~~写根据id和folderid列出相关名称~~
 
     >![image-20210407183049724](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210407183049724.png)
 
     
 
-- 修改了id没有自增了,以及likecount为string了
+- ~~修改了id没有自增了,以及likecount为string了~~
 
     >   likeCount:将getMaxId中的方法弄到StringUtils中即可
 
@@ -177,7 +195,9 @@ delete一定得根据主键吧,才不会误删
 
   - 修改成: (要根据主键id就在对象里边设置id就可以了其实)
 
-    > 主要是获取id这个方法,要是标题一样就GG了
+    > ~~主要是获取id这个方法,要是标题一样就GG了~~
+>
+    > > 设置了标题不可重复
 
     > ![image-20210410115614602](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210410115614602.png)
 
@@ -212,7 +232,7 @@ delete一定得根据主键吧,才不会误删
 
   > 
   >
-  > new:打算直接传id和类来获取表名,但是sql注入问题又..,所以还是obj吧,
+  > new:
   >
   > **最终:前台传最直接的元素过来,service获取id,将id传给Dao,Dao再构造对象传给BaseDao**
   >

@@ -7,18 +7,16 @@ import com.melo.notes.entity.User;
 import com.melo.notes.service.inter.LoginService;
 import com.melo.notes.util.BeanFactory;
 
-import javax.swing.*;
-
 /**
  * @author Jun
  * @program Note
  * @description 登录页面相关逻辑实现类
  * @date 2021-4-1 18:26
  */
-public class LoginServiceImpl implements LoginService {
+public class LoginServiceImpl extends BaseServiceImpl implements LoginService {
 
 
-    private String ADMIN = "管理员";
+    private final String ADMIN = "管理员";
     /**
      * 相关操作类对象
      */
@@ -32,7 +30,7 @@ public class LoginServiceImpl implements LoginService {
     /**
      * 设置Id
      *
-     * @param user
+     * @param user 用户实体类
      */
     @Override
     public void setId(User user) {
@@ -42,27 +40,13 @@ public class LoginServiceImpl implements LoginService {
     }
 
     /**
-     * 密码验证
-     *
-     * @param user
-     * @return
-     * @notice 需要将输入进来的密码Md5解码看对不对应数据库中的字段
-     */
-    @Override
-    public boolean login(User user) {
-        return userDao.judgePass(user);
-    }
-
-
-    /**
-     * 判断输入是否有效
+     * 判断登录是否成功
      * @param userName
      * @param password
      * @param access
      * @return String 呈现给页面的信息
      */
-    @Override
-    public String isValid(String userName, String password, String access) {
+    public String login(String userName, String password, String access) {
         if (userName.isEmpty()||userName.contains(SPACE)) {
             return "用户名不合格";
         }
@@ -76,15 +60,24 @@ public class LoginServiceImpl implements LoginService {
             }else{
                 return "想啥呢宝贝";
             }
-
         } else {
             User user = new User(userName, password);
-            if (this.login(user)) {
-                return "登录成功";
+            if (super.judgePass(user)) {
+                if(isValidUser(userName)) {
+                    return "登录成功";
+                }else {
+                    return "该用户已被拉黑";
+                }
             } else {
                 return "用户或密码有误";
             }
         }
+    }
+
+    public boolean isValidUser(String userName){
+        User user = new User();
+        user.setUserName(userName);
+        return userDao.isValidUser(user);
     }
 
 }

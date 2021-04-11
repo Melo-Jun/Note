@@ -123,26 +123,26 @@ public class BaseDaoImpl implements BaseDao {
     @Override
     public int delete(Object obj) {
         StringBuilder sql = new StringBuilder( "delete from "+getTableName(obj));
-        /**
-         * 将对象映射成属性和值(属性会映射为数据库字段名)
+        /*
+          将对象映射成属性和值(属性会映射为数据库字段名)
          */
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
         fieldMapper(obj,fieldNames,fieldValues);
-        /**
-         * 将字段名填入sql语句
-         * 没有where条件则不添加
+        /*
+          将字段名填入sql语句
+          没有where条件则不添加
          */
         if(fieldValues.size()!=0) {
             sql.append(" where ");
             for (Object fieldName : fieldNames) {
-                sql.append(fieldName + "=? AND ");
+                sql.append(fieldName).append("=? AND ");
             }
         }
         //删除最后一个AND
         sql.delete(sql.length()-4,sql.length());
-        /**
-         * 完成sql注入和执行
+        /*
+          完成sql注入和执行
          */
         return executeUpdate(obj, sql.toString());
     }
@@ -317,21 +317,23 @@ public class BaseDaoImpl implements BaseDao {
      * @return String id
      */
     @Override
-    public String getId(Object obj) {
-        /**
-         * 根据前台所选中的信息构造对象，取出对应数据库字段名和值
+    public LinkedList getId(Object obj) {
+        /*
+          根据前台所选中的信息构造对象，取出对应数据库字段名和值
          */
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
         fieldMapper(obj,fieldNames,fieldValues);
         String sql = "select id from " + getTableName(obj) + " where "+fieldNames.getFirst()+" =?";
-        return queryList(sql,obj).getFirst().toString();
+        return queryList(sql,obj);
     }
 
 
     /**
+     * 获取最大Id
      * 用于插入一条记录时使用
      * @description 数据库id设置为String无法自增(设置int映射时无法转化为object)
+     * @notice 无最大时则返回1
      * @param obj 对象
      * @return String  该对象表中最大id
      */
@@ -345,10 +347,10 @@ public class BaseDaoImpl implements BaseDao {
             stmt=conn.createStatement();
             rs=stmt.executeQuery(sql);
             if(rs.next()){
-                /**
-                 * 获取最大后+1
+                /*
+                  获取最大后+1
                  */
-                return increaseOne(rs.getString(1));
+                return rs.getString(1)==null?"1":increaseOne(rs.getString(1));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -356,8 +358,6 @@ public class BaseDaoImpl implements BaseDao {
             freeConnection(conn);
             close(stmt,rs);
         }
-        //查不到则说明是第一条记录
         return "1";
     }
-
 }

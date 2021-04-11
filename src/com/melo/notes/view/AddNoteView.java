@@ -40,12 +40,12 @@ public class AddNoteView extends JFrame {
      */
     private void summitActionPerformed(ActionEvent e) {
         Group group = new Group();
-        group.setGroupName(TreeView.selectedName);
-        TreeView.selectedId= folderGroupService.getId(group);
+        group.setGroupName(FolderView.selectedName);
+        String groupId = folderGroupService.getId(group);
         String title = titleField.getText();
         String text = textArea.getText();
         String access = (String) this.accessSelect.getSelectedItem();
-        Note note = new Note( title, LoginView.USER.getId(), text, access ,"0",TreeView.selectedId );
+        Note note = new Note( title, LoginView.USER.getId(), text, access ,"0",groupId );
         if(noteDao.addNote(note)){
             JOptionPane.showMessageDialog(null,"增加笔记成功");
             this.dispose();

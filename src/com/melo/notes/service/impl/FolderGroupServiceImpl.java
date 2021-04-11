@@ -15,6 +15,7 @@ import com.melo.notes.view.LoginView;
 import com.melo.notes.view.UpdateNoteView;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * @author Jun
@@ -88,51 +89,68 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     /**
      * 根据传入类名删除对应类对象
      *
-     * @param selectedName      对象名称
+     * @param selectedName  选中名称
      * @param selectedType 对应类型
      * @return int 影响的行数
      */
     @Override
     public int delete(String selectedName, String selectedType) {
-        /**
-         * 没有正常选择要删除的节点
+        /*
+          没有正常选择要删除的节点或选中的为默认
          */
         if(selectedType.isEmpty()||selectedName.isEmpty()||DEFAULT.equals(selectedName)){
             return 0;
         }
+        //删除知识库
         if(selectedType.equals(FOLDER)){
-            //删除知识库
             Folder folder = new Folder();
             folder.setFolderName(selectedName);
             String folderId =getId(folder);
             folderDao.deleteFolder(folderId);
-            //删除对应笔记分组
-            /*Group group = new Group();
+            /*
+            将其下的笔记分组移至默认知识库
+             */
+            Group group = new Group();
             group.setLocatedFolder(folderId);
-            groupDao.deleteGroup(group);*/
-            //删除对应笔记
-            /*Note note = new Note();
-            String groupId=getId(group);
-            /*note.setLocatedGroup(groupId);
-            noteDao.deleteNote()*/
+            //获取其下所有id
+            LinkedList groupIds = getIds(group);
+            if(!groupIds.isEmpty()) {
+                //根据id遍历删除
+                for (Object groupId : groupIds) {
+                    Group temp = new Group();
+                    temp.setId(groupId.toString());
+                    groupDao.delete(temp);
+                }
+            }
         }
         if(selectedType.equals(GROUP)){
             Group tempGroup = new Group();
             tempGroup.setGroupName(selectedName);
             String groupId=getId(tempGroup);
-            Group group = new Group();
-            group.setId(groupId);
-            return groupDao.deleteGroup(group);
+            groupDao.deleteGroup(groupId);
+            /*
+            将其下的笔记移至默认分组
+             */
+            Note note = new Note();
+            note.setLocatedGroup(groupId);
+            //获取其下所有id
+            LinkedList noteIds = getIds(note);
+            if(!noteIds.isEmpty()) {
+                //根据id遍历删除
+                for (Object noteId : noteIds) {
+                    Note temp = new Note();
+                    temp.setId(noteId.toString());
+                    noteDao.delete(temp);
+                }
+            }
         }
         if(selectedType.equals(NOTE)){
             Note tempNote = new Note();
             tempNote.setTitle(selectedName);
             String noteId=getId(tempNote);
-            Note note = new Note();
-            note.setId(noteId);
-            return noteDao.deleteNote(note);
+            noteDao.deleteNote(noteId);
         }
-        return 0;
+        return 1;
     }
 
     public void initFolderGroup(){
@@ -188,8 +206,8 @@ public class FolderGroupServiceImpl implements FolderGroupService {
      */
     @Override
     public int update(String selectedName,String updateName, String selectedType) {
-        /**
-         * 没有正常选择要修改的节点
+        /*
+          没有正常选择要修改的节点
          */
         if(selectedType.isEmpty()||selectedName.isEmpty()){
             return 0;
@@ -208,7 +226,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
             String groupId = getId(group);
             group.setId(groupId);
                 group.setGroupName(updateName);
-                return groupDao.updateGroupName(group);
+                return groupDao.updateGroup(group);
             }
         if(selectedType.equals(NOTE)){
             new UpdateNoteView(LoginView.USER);
@@ -275,16 +293,24 @@ public class FolderGroupServiceImpl implements FolderGroupService {
         return false;
     }
 
-
-
     /**
-     * 根据xxx获取id
+     * 根据xxx获取单一id
      * @param obj xxx
      * @return String id
      */
     @Override
     public String getId(Object obj ) {
-        return groupDao.getId(obj);
+        return groupDao.getId(obj).getFirst().toString();
+    }
+
+    /**
+     * 根据xxx获取其下所有id
+     * @param obj xxx
+     * @return LinkedList id链表
+     */
+    @Override
+    public LinkedList getIds(Object obj){
+        return  groupDao.getId(obj);
     }
 
 }

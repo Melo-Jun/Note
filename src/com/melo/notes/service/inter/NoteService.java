@@ -23,17 +23,17 @@ public interface NoteService {
 
     /**
      *展示笔记详情内容(Text另外单独分页)
-     * @param note 笔记对象
+     * @param obj 相关对象
      * @return String[] 笔记所有值链表
      */
-    LinkedList showNoteAll(Note note);
+    LinkedList showNoteAll(Object obj);
 
 
     //String[] listNoteAll(Object obj);
 
     /**
      * 展示笔记文本内容
-     * @param obj
+     * @param obj 相关对象
      * @return
      */
     String showNoteText(Object obj);
