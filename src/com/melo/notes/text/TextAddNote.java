@@ -15,6 +15,6 @@ public class TextAddNote {
     public static void main(String[] args) {
         LoginView.USER=new User();
         LoginView.USER.setId("1");
-        new AddNoteView(LoginView.USER).setVisible(true);
+        new AddNoteView(LoginView.USER);
     }
 }

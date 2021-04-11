@@ -4,7 +4,7 @@
 
 package com.melo.notes.view;
 
-import javax.swing.plaf.*;
+import com.melo.notes.controller.LoginController;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.LoginServiceImpl;
 import com.melo.notes.util.BeanFactory;
@@ -45,11 +45,28 @@ public class LoginView extends JFrame {
         setLocation(800,300);
     }
 
+    public String getUserName(){
+        return userNameText.getText();
+    }
+    public String getPass() {
+        return String.valueOf(passwordField.getPassword());
+    }
+    public String getAccess() {
+        return (String) this.access.getSelectedItem();
+    }
+
+    /**
+     * 登录按钮事件
+     * @param e
+     */
     private void loginActionPerformed(ActionEvent e) {
+        new LoginController().login(this);
+
+
         /**
          * 获取文本框内容和下拉权限值
          */
-        String userName = userNameText.getText();
+        /*String userName = userNameText.getText();
         String password = String.valueOf(passwordField.getPassword());
         String access = (String) this.access.getSelectedItem();
         String message = loginViewService.login(userName, password, access);
@@ -59,13 +76,13 @@ public class LoginView extends JFrame {
             /**
              * 销毁当前窗口并存储user设置id，跳转到用户界面
              */
-            loginViewService.setId(USER);
+            /*loginViewService.setId(USER);
             this.dispose();
             new UserView(USER).setVisible(true);
         }
         if(message.equals(ADMINVIEW)){
             new AdminView();
-        }
+        }*/
     }
     /**
      * 注册按钮事件
@@ -185,7 +202,7 @@ public class LoginView extends JFrame {
     private JLabel password;
     private JPasswordField passwordField;
     private JComboBox<String> access;
-    private JButton login;
-    private JButton register;
+    public JButton login;
+    public JButton register;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

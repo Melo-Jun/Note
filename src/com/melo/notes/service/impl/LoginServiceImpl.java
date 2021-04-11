@@ -4,8 +4,13 @@ import com.melo.notes.dao.impl.AdminDaoImpl;
 import com.melo.notes.dao.impl.UserDaoImpl;
 import com.melo.notes.entity.Admin;
 import com.melo.notes.entity.User;
+import com.melo.notes.service.Result;
 import com.melo.notes.service.inter.LoginService;
 import com.melo.notes.util.BeanFactory;
+import com.melo.notes.service.constant.Status;
+import com.melo.notes.util.ServiceUtils;
+
+import static com.melo.notes.util.ServiceUtils.setResult;
 
 /**
  * @author Jun
@@ -41,35 +46,36 @@ public class LoginServiceImpl extends BaseServiceImpl implements LoginService {
 
     /**
      * 判断登录是否成功
-     * @param userName
-     * @param password
-     * @param access
+     * @param userName 用户名
+     * @param password 密码
+     * @param access 身份
      * @return String 呈现给页面的信息
      */
-    public String login(String userName, String password, String access) {
+    public Result login(String userName, String password, String access) {
+        Result result = new Result();
         if (userName.isEmpty()||userName.contains(SPACE)) {
-            return "用户名不合格";
+            return setResult(Status.NOT_USERNAME);
         }
         if (password.isEmpty()||password.contains(SPACE)) {
-            return "密码不合格";
+            return setResult(Status.NOT_PASSWORD);
         }
         if (access.equals(ADMIN)) {
             Admin admin = new Admin(userName,password);
             if(new AdminDaoImpl().isAdmin(admin)){
-                return "欢迎管理员";
+                return setResult(Status.WELCOME_ADMIN);
             }else{
-                return "想啥呢宝贝";
+                return setResult(Status.NOT_ADMIN);
             }
         } else {
             User user = new User(userName, password);
             if (super.judgePass(user)) {
                 if(isValidUser(userName)) {
-                    return "登录成功";
+                    return setResult(Status.LOGIN_SUCCESS);
                 }else {
-                    return "该用户已被拉黑";
+                   return setResult(Status.NOT_VALID_USER);
                 }
             } else {
-                return "用户或密码有误";
+                return setResult(Status.ERROR_USERPASS);
             }
         }
     }

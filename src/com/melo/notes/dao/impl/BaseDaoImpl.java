@@ -149,7 +149,6 @@ public class BaseDaoImpl implements BaseDao {
 
     /**
      * 更新记录
-     *
      * @param obj 与更新有关的对象
      * @return int 影响的数据库记录数
      */

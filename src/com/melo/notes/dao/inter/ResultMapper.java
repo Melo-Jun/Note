@@ -1,7 +1,4 @@
-
-
 package com.melo.notes.dao.inter;
-
 
 import java.sql.ResultSet;
 

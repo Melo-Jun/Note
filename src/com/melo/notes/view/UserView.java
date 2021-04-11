@@ -18,6 +18,7 @@ public class UserView extends JFrame {
 
     public UserView(User user) {
         initComponents();
+        setVisible(true);
         welcome.setText("ª∂”≠ªÿ¿¥, "+LoginView.USER.getUserName());
         welcome.setBounds(650,100,150,20);
         setSize(1300, 800);
@@ -30,7 +31,7 @@ public class UserView extends JFrame {
      * @param e
      */
     private void addNoteActionPerformed(ActionEvent e) {
-        new AddNoteView(LoginView.USER).setVisible(true);
+        new AddNoteView(LoginView.USER);
     }
 
     private void setNoteActionPerformed(ActionEvent e) {

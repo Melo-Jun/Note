@@ -30,6 +30,7 @@ public class AddNoteView extends JFrame {
     public AddNoteView(User user) {
         this.setTitle("¼ÇÂ¼daily");
         initComponents(user);
+        setVisible(true);
         setSize(550, 650);
         setLocation(330,120);
     }

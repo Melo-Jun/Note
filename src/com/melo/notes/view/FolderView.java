@@ -18,7 +18,6 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
 
 /**
  * @author Jun
@@ -252,7 +251,7 @@ public class FolderView extends JFrame {
             //新增笔记
             if(e.getSource()==addNote){
                 if(selectedType.equals(GROUP)){
-                    new AddNoteView(LoginView.USER).setVisible(true);
+                    new AddNoteView(LoginView.USER);
                 }else {
                     JOptionPane.showMessageDialog(null,"请确认你选中的是待加入笔记的笔记分组");
                 }
