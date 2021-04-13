@@ -7,6 +7,7 @@ package com.melo.notes.view;
 import com.melo.notes.entity.Group;
 import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
+import com.melo.notes.service.constant.Status;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.service.impl.NoteServiceImpl;
 import com.melo.notes.util.BeanFactory;
@@ -63,9 +64,15 @@ public class UpdateNoteView extends JFrame {
             Note note = new Note( title, LoginView.USER.getId(), text, access ,TreeView.selectedId);
             note.setId(idText.getText());
             if(noteService.update(note)!=0){
-                JOptionPane.showMessageDialog(null,"修改笔记成功");
+                JOptionPane.showMessageDialog(null,Status.SUCCESS.getMessage());
                 this.dispose();
+            }else {
+                JOptionPane.showMessageDialog(null, Status.FAILED.getMessage());
             }
+        }
+
+        private void selectGroupActionPerformed(ActionEvent e) {
+            new TreeView();
         }
 
 
@@ -81,12 +88,14 @@ public class UpdateNoteView extends JFrame {
         access = new JLabel();
         label1 = new JLabel();
         idText = new JLabel();
+        selectGroup = new JButton();
 
         //======== this ========
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
         setMinimumSize(new Dimension(950, 650));
         setTitle("\u67e5\u770b\u5e76\u8bbe\u7f6e\u7b14\u8bb0");
         setResizable(false);
+        setIconImage(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")).getImage());
         Container contentPane = getContentPane();
 
         //---- titleField ----
@@ -127,6 +136,10 @@ public class UpdateNoteView extends JFrame {
         idText.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
         idText.setForeground(new Color(0, 153, 153));
 
+        //---- selectGroup ----
+        selectGroup.setText("\u8bbe\u7f6e\u5206\u7ec4");
+        selectGroup.addActionListener(e -> selectGroupActionPerformed(e));
+
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
@@ -149,7 +162,9 @@ public class UpdateNoteView extends JFrame {
                     .addComponent(access, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(accessSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addGap(251, 251, 251)
+                    .addGap(97, 97, 97)
+                    .addComponent(selectGroup)
+                    .addGap(61, 61, 61)
                     .addComponent(summit)
                     .addGap(47, 281, Short.MAX_VALUE))
         );
@@ -169,7 +184,8 @@ public class UpdateNoteView extends JFrame {
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(summit)
                         .addComponent(accessSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(access, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(access, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(selectGroup))
                     .addContainerGap(451, Short.MAX_VALUE))
         );
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
@@ -185,5 +201,6 @@ public class UpdateNoteView extends JFrame {
     private JLabel access;
     private JLabel label1;
     private JLabel idText;
+    private JButton selectGroup;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

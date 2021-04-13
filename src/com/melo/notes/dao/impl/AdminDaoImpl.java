@@ -24,13 +24,16 @@ public class AdminDaoImpl  extends BaseDaoImpl implements AdminDao{
     @Override
     public boolean isAdmin(Admin admin){
         String sql="select password from "+ getTableName(admin)+" where admin_name=? ";
+        /*
+        构造临时对象来执行sql(根据管理员名称)
+         */
         Admin tempAdmin = new Admin();
         tempAdmin.setAdminName(admin.getAdminName());
-        LinkedList<Object> objects = queryList(sql, tempAdmin);
-        if(objects.isEmpty()){
+        LinkedList passwords = queryList(sql, tempAdmin);
+        if(passwords.isEmpty()){
             return false;
         }
-        return objects.getFirst().equals(getDigest(admin.getPassword()));
+        return passwords.getFirst().equals(getDigest(admin.getPassword()));
     }
 }
 

@@ -23,7 +23,7 @@ public interface LoginService {
      * @param userName 用户名
      * @param password 密码
      * @param access 身份
-     * @return String 呈现给页面的信息
+     * @return Result 返回结果封装类
      */
      Result login(String userName, String password, String access);
 

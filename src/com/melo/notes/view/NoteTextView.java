@@ -84,6 +84,7 @@ public class NoteTextView extends JFrame {
         toPage = new JButton();
 
         //======== this ========
+        setIconImage(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")).getImage());
         Container contentPane = getContentPane();
 
         //======== scrollPane1 ========
@@ -119,7 +120,7 @@ public class NoteTextView extends JFrame {
                                 .addComponent(page, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(toPage))
                             .addGap(0, 0, Short.MAX_VALUE)))
-                    .addContainerGap(27, Short.MAX_VALUE))
+                    .addContainerGap(30, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
@@ -133,7 +134,7 @@ public class NoteTextView extends JFrame {
                             .addComponent(selectedPage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(toPage)
-                            .addGap(0, 80, Short.MAX_VALUE))
+                            .addGap(0, 84, Short.MAX_VALUE))
                         .addComponent(scrollPane1, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
                     .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );

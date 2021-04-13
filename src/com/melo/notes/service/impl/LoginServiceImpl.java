@@ -1,14 +1,12 @@
 package com.melo.notes.service.impl;
 
-import com.melo.notes.dao.impl.AdminDaoImpl;
 import com.melo.notes.dao.impl.UserDaoImpl;
-import com.melo.notes.entity.Admin;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.Result;
+import com.melo.notes.service.constant.TypeName;
 import com.melo.notes.service.inter.LoginService;
 import com.melo.notes.util.BeanFactory;
 import com.melo.notes.service.constant.Status;
-import com.melo.notes.util.ServiceUtils;
 
 import static com.melo.notes.util.ServiceUtils.setResult;
 
@@ -20,11 +18,11 @@ import static com.melo.notes.util.ServiceUtils.setResult;
  */
 public class LoginServiceImpl extends BaseServiceImpl implements LoginService {
 
-    private final String ADMIN = "管理员";
     /**
      * 相关操作类对象
      */
     UserDaoImpl userDao = (UserDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.UserDao);
+    AdminServiceImpl adminService=(AdminServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.AdminServiceImpl);
 
 
     /**
@@ -44,20 +42,18 @@ public class LoginServiceImpl extends BaseServiceImpl implements LoginService {
      * @param userName 用户名
      * @param password 密码
      * @param access 身份
-     * @return String 呈现给页面的信息
+     * @return Result 返回结果封装类
      */
     @Override
     public Result login(String userName, String password, String access) {
-        Result result = new Result();
         if (userName.isEmpty()||userName.contains(Status.SPACE.getMessage())) {
             return setResult(Status.NOT_USERNAME);
         }
         if (password.isEmpty()||password.contains(Status.SPACE.getMessage())) {
             return setResult(Status.NOT_PASSWORD);
         }
-        if (access.equals(ADMIN)) {
-            Admin admin = new Admin(userName,password);
-            if(new AdminDaoImpl().isAdmin(admin)){
+        if (access.equals(TypeName.ADMIN.getMessage())) {
+            if(adminService.isAdmin(userName,password)){
                 return setResult(Status.WELCOME_ADMIN);
             }else{
                 return setResult(Status.NOT_ADMIN);
@@ -70,7 +66,7 @@ public class LoginServiceImpl extends BaseServiceImpl implements LoginService {
                    return setResult(Status.NOT_VALID_USER);
                 }
             } else {
-                return setResult(Status.ERROR_USERPASS);
+                return setResult(Status.ERROR_PASS);
             }
         }
     }

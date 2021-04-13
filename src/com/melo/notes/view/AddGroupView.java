@@ -29,6 +29,7 @@ public class AddGroupView extends JFrame {
 
     public AddGroupView() {
         initComponents();
+        setVisible(true);
         /*
           初始化下拉框
          */
@@ -60,6 +61,7 @@ public class AddGroupView extends JFrame {
         label1 = new JLabel();
 
         //======== this ========
+        setIconImage(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")).getImage());
         Container contentPane = getContentPane();
 
         //---- label3 ----
@@ -103,7 +105,7 @@ public class AddGroupView extends JFrame {
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                    .addContainerGap(12, Short.MAX_VALUE)
+                    .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(label1)
                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(contentPaneLayout.createParallelGroup()

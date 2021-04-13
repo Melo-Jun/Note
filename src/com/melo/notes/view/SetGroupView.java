@@ -29,8 +29,9 @@ public class SetGroupView extends JFrame {
     FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
     public SetGroupView() {
         initComponents();
-        /**
-         * 初始化下拉框
+        setVisible(true);
+        /*
+          初始化下拉框
          */
         HashMap<Object, Object> folderName = folderGroupService.showFolderName();
         Collection<Object> values = folderName.values();
@@ -59,6 +60,7 @@ public class SetGroupView extends JFrame {
         label1 = new JLabel();
 
         //======== this ========
+        setIconImage(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")).getImage());
         Container contentPane = getContentPane();
 
         //---- label3 ----
@@ -102,7 +104,7 @@ public class SetGroupView extends JFrame {
                         .addComponent(selectedLocatedFolder, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(submit)
-                    .addContainerGap(1, Short.MAX_VALUE))
+                    .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pack();
         setLocationRelativeTo(getOwner());

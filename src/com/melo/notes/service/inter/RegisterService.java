@@ -1,5 +1,7 @@
 package com.melo.notes.service.inter;
 
+import com.melo.notes.service.Result;
+
 /**
  * @author Jun
  * @program Note
@@ -14,9 +16,9 @@ public interface RegisterService {
      * @param userName 用户名
      * @param firstPass 第一次密码
      * @param secondPass 第二次密码
-     * @return String 状态码
+     * @return Result 返回结果集封装类
      */
-    String isValid(String userName,String firstPass,String secondPass);
+    Result isValid(String userName, String firstPass, String secondPass);
 
     /**
      * 注册用户后新增用户到数据库中

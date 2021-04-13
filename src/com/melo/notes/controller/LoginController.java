@@ -1,10 +1,10 @@
 package com.melo.notes.controller;
 
-import com.melo.notes.entity.User;
 import com.melo.notes.service.Result;
 import com.melo.notes.service.constant.Status;
 import com.melo.notes.service.impl.LoginServiceImpl;
 import com.melo.notes.util.BeanFactory;
+import com.melo.notes.util.ViewUtils;
 import com.melo.notes.view.AdminView;
 import com.melo.notes.view.LoginView;
 import com.melo.notes.view.UserView;
@@ -14,8 +14,8 @@ import javax.swing.*;
 /**
  * @author Jun
  * @program Note
- * @description 控制页面跳转
- * @date 2021-3-27 19:12
+ * @description 登录页面控制器
+ * @date 2021-4-10
  */
 public class LoginController {
     /**
@@ -23,7 +23,7 @@ public class LoginController {
      */
     LoginServiceImpl loginViewService = (LoginServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.LoginService);
 
-    public  void login(LoginView loginView) {
+    public void login(LoginView loginView) {
         String userName = loginView.getUserName();
         String pass = loginView.getPass();
         String access = loginView.getAccess();
@@ -33,7 +33,7 @@ public class LoginController {
             case LOGIN_SUCCESS:
                 LoginView.USER.setUserName(userName);
                 LoginView.USER.setPassword(pass);
-                new LoginServiceImpl().setId(LoginView.USER);
+                loginViewService.setId(LoginView.USER);
                 JOptionPane.showMessageDialog(null,status.getMessage());
                 loginView.dispose();
                 new UserView(LoginView.USER);
@@ -47,13 +47,16 @@ public class LoginController {
             case NOT_USERNAME:
             case NOT_VALID_USER:
             case NOT_ADMIN:
-            case ERROR_USERPASS:
+            case ERROR_PASS:
                 JOptionPane.showMessageDialog(null,status.getMessage());
             default:
         }
     }
 
+
     public static void main(String[] args) {
+        //初始化字体
+        ViewUtils.setUiFont();
        new LoginView();
     }
 }

@@ -22,7 +22,6 @@ public class UserView extends JFrame {
         initComponents();
         setVisible(true);
         welcome.setText("ª∂”≠ªÿ¿¥, "+LoginView.USER.getUserName());
-        //welcome.setBounds(650,100,150,20);
         setSize(650, 650);
         setLocation(600, 260);
     }
@@ -59,13 +58,15 @@ public class UserView extends JFrame {
         user = new JMenu();
         update = new JMenuItem();
         welcome = new JLabel();
+        photo = new JLabel();
 
         //======== this ========
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
         setMinimumSize(new Dimension(950, 650));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
         setTitle("\u7528\u6237\u754c\u9762");
+        setResizable(false);
+        setIconImage(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")).getImage());
         Container contentPane = getContentPane();
         contentPane.setLayout(null);
 
@@ -123,6 +124,11 @@ public class UserView extends JFrame {
         contentPane.add(welcome);
         welcome.setBounds(135, 85, 283, 116);
 
+        //---- photo ----
+        photo.setIcon(new ImageIcon(getClass().getResource("/img/UserView.jpg")));
+        contentPane.add(photo);
+        photo.setBounds(0, 15, 945, 575);
+
         {
             // compute preferred size
             Dimension preferredSize = new Dimension();
@@ -150,5 +156,6 @@ public class UserView extends JFrame {
     private JMenu user;
     private JMenuItem update;
     private JLabel welcome;
+    private JLabel photo;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

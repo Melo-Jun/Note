@@ -147,7 +147,11 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 # 待办
 
-- personalservice中的isValid还没改成状态码
+- FolderGroupService修改一下,看一下需不需要Controller(其他似乎都不用了)
+
+- 删除掉那些注释掉的Controller View
+
+- ~~personalservice中的isValid还没改成状态码~~
 
 - 设置默认笔记分组和知识库不可修改
 
@@ -491,5 +495,5 @@ public int update(Object obj) {
 
 ## 管理员View
 
-- 可以设置用户信息,同时拉黑用户,用户得加个字段,该用户是否有效的字段
+- ~~可以设置用户信息,同时拉黑用户,用户得加个字段,该用户是否有效的字段~~
 - 可以查看笔记信息等,然后物理删除(也用表格实现)

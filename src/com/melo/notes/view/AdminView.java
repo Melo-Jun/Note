@@ -30,6 +30,7 @@ public class AdminView extends JFrame {
         userInformation = new JButton();
 
         //======== this ========
+        setIconImage(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")).getImage());
         Container contentPane = getContentPane();
 
         //---- userInformation ----

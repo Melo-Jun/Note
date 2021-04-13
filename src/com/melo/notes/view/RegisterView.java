@@ -4,9 +4,8 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.service.impl.FolderGroupServiceImpl;
-import com.melo.notes.service.impl.RegisterServiceImpl;
-import com.melo.notes.util.BeanFactory;
+import com.melo.notes.controller.RegisterController;
+
 
 import java.awt.*;
 import java.awt.event.*;
@@ -21,36 +20,39 @@ import javax.swing.GroupLayout;
  */
 public class RegisterView extends JFrame {
 
-    /**
-     * 注册成功状态码
-     */
-    private final String SUCCESS="操作成功";
-
-    /**
-     * 创建相关操作类对象
-     */
-    RegisterServiceImpl registerService = (RegisterServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.RegisterService);
-    FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
     public RegisterView() {
         initComponents();
-        setSize(1300, 800);
-        setLocation(330,120);
+        setSize(350, 500);
+        setLocation(800,300);
+    }
+
+    public String getUserNameText() {
+        return userNameText.getText();
+    }
+
+    public String getFirstPass() {
+        return String.valueOf(passwordField1.getPassword());
+    }
+
+    public String getSecondPass() {
+        return String.valueOf(passwordField2.getPassword());
     }
 
     private void registerActionPerformed(ActionEvent e) {
-        /*
-          获取文本框内容
-         */
-        String userName = userNameText.getText();
-        String firstPass = String.valueOf(passwordField1.getPassword());
-        String secondPass = String.valueOf(passwordField2.getPassword());
-
-        String message = registerService.isValid(userName, firstPass, secondPass);
-        JOptionPane.showMessageDialog(null,message);
-        if(message.equals(SUCCESS)){
-            registerService.addUser(userName,secondPass);
-            this.dispose();
-        }
+        new RegisterController().register(this);
+//        /*
+//          获取文本框内容
+//         */
+//        String userName = userNameText.getText();
+//        String firstPass = String.valueOf(passwordField1.getPassword());
+//        String secondPass = String.valueOf(passwordField2.getPassword());
+//
+//        String message = registerService.isValid(userName, firstPass, secondPass);
+//        JOptionPane.showMessageDialog(null,message);
+//        if(message.equals(SUCCESS)){
+//            registerService.addUser(userName,secondPass);
+//            this.dispose();
+//        }
 
     }
 
@@ -63,14 +65,16 @@ public class RegisterView extends JFrame {
         passwordField2 = new JPasswordField();
         password2 = new JLabel();
         register = new JButton();
+        photo = new JLabel();
 
         //======== this ========
-        setMinimumSize(new Dimension(950, 650));
+        setMinimumSize(new Dimension(450, 300));
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
         setTitle("\u6ce8\u518c");
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationByPlatform(true);
         setResizable(false);
+        setIconImage(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")).getImage());
         Container contentPane = getContentPane();
 
         //---- userName ----
@@ -96,6 +100,9 @@ public class RegisterView extends JFrame {
         register.setText("\u6ce8\u518c");
         register.addActionListener(e -> registerActionPerformed(e));
 
+        //---- photo ----
+        photo.setIcon(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")));
+
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
@@ -118,12 +125,17 @@ public class RegisterView extends JFrame {
                         .addGroup(contentPaneLayout.createSequentialGroup()
                             .addGap(217, 217, 217)
                             .addComponent(register, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)))
-                    .addGap(284, 284, 284))
+                    .addGap(154, 154, 154))
+                .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                    .addComponent(photo, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+                    .addGap(187, 187, 187))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(contentPaneLayout.createSequentialGroup()
-                    .addGap(116, 116, 116)
+                    .addContainerGap()
+                    .addComponent(photo, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                         .addGroup(contentPaneLayout.createSequentialGroup()
                             .addGap(3, 3, 3)
@@ -153,5 +165,6 @@ public class RegisterView extends JFrame {
     private JPasswordField passwordField2;
     private JLabel password2;
     private JButton register;
+    private JLabel photo;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

@@ -1,6 +1,5 @@
 package com.melo.notes.service.impl;
 
-import com.melo.notes.dao.impl.BaseDaoImpl;
 import com.melo.notes.dao.impl.FolderDaoImpl;
 import com.melo.notes.dao.impl.GroupDaoImpl;
 import com.melo.notes.dao.impl.NoteDaoImpl;
@@ -8,11 +7,11 @@ import com.melo.notes.entity.Folder;
 import com.melo.notes.entity.Group;
 import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
+import com.melo.notes.service.constant.TypeName;
 import com.melo.notes.service.inter.FolderGroupService;
 import com.melo.notes.util.BeanFactory;
 import com.melo.notes.view.FolderView;
 import com.melo.notes.view.LoginView;
-import com.melo.notes.view.UpdateNoteView;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -40,11 +39,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     /**
      * 相应对象名称
      */
-    private final String FOLDER="知识库";
-    private final String GROUP="笔记分组";
-    private final String NOTE="笔记";
     private final String DEFAULT=LoginView.USER.getUserName();
-    private final String PUBLIC="公开";
 
     /**
      * 根据节点数判断是什么类
@@ -55,9 +50,9 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     @Override
     public String judgeType(int treePathCount) {
         switch (treePathCount){
-            case FOLDER_TYPE: return FOLDER;
-            case GROUP_TYPE: return GROUP;
-            case NOTE_TYPE: return NOTE;
+            case FOLDER_TYPE: return TypeName.FOLDER.getMessage();
+            case GROUP_TYPE: return TypeName.GROUP.getMessage();
+            case NOTE_TYPE: return TypeName.NOTE.getMessage();
             default:return " ";
         }
     }
@@ -102,7 +97,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
             return 0;
         }
         //删除知识库
-        if(selectedType.equals(FOLDER)){
+        if(selectedType.equals(TypeName.FOLDER.getMessage())){
             Folder folder = new Folder();
             folder.setFolderName(selectedName);
             String folderId =getId(folder);
@@ -123,7 +118,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
                 }
             }
         }
-        if(selectedType.equals(GROUP)){
+        if(selectedType.equals(TypeName.GROUP.getMessage())){
             Group tempGroup = new Group();
             tempGroup.setGroupName(selectedName);
             String groupId=getId(tempGroup);
@@ -144,7 +139,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
                 }
             }
         }
-        if(selectedType.equals(NOTE)){
+        if(selectedType.equals(TypeName.NOTE.getMessage())){
             Note tempNote = new Note();
             tempNote.setTitle(selectedName);
             String noteId=getId(tempNote);
@@ -161,7 +156,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     public void initFolderGroup(){
         //该用户没有知识库
         if(showFolderName().isEmpty()) {
-            addFolder(DEFAULT, PUBLIC, LoginView.USER.getId());
+            addFolder(DEFAULT, TypeName.PUBLIC.getMessage(), LoginView.USER.getId());
             addGroup(DEFAULT, DEFAULT);
         }
     }
@@ -210,13 +205,16 @@ public class FolderGroupServiceImpl implements FolderGroupService {
      */
     @Override
     public int update(String selectedName, String updateName, String selectedType) {
+        if(updateName.isEmpty()){
+            return 0;
+        }
         /*
           没有正常选择要修改的节点
          */
         if(selectedType.isEmpty()||selectedName.isEmpty()||DEFAULT.equals(selectedName)){
             return 0;
         }
-        if(selectedType.equals(FOLDER)){
+        if(selectedType.equals(TypeName.FOLDER.getMessage())){
             Folder folder = new Folder();
             folder.setFolderName(selectedName);
             String folderId =getId(folder);
@@ -224,7 +222,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
             folder.setFolderName(updateName);
             return folderDao.updateFolderName(folder);
         }
-        if(selectedType.equals(GROUP)){
+        if(selectedType.equals(TypeName.GROUP.getMessage())){
             Group group = new Group();
             group.setGroupName(selectedName);
             String groupId = getId(group);
@@ -232,11 +230,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
                 group.setGroupName(updateName);
                 return groupDao.updateGroup(group);
             }
-        if(selectedType.equals(NOTE)){
-            new UpdateNoteView(LoginView.USER);
-            return 0;
-        }
-        return -1;
+        return 0;
     }
 
     /**
@@ -269,11 +263,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
      */
     @Override
     public boolean isGroup(String selectedClassName) {
-        return selectedClassName.equals(GROUP);
-    }
-
-    public boolean isNote(String selectedClassName) {
-        return selectedClassName.equals(NOTE);
+        return selectedClassName.equals(TypeName.GROUP.getMessage());
     }
 
     /**

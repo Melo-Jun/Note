@@ -3,10 +3,13 @@
 package com.melo.notes.view;
 
 import com.melo.notes.entity.User;
+import com.melo.notes.service.constant.Status;
+import com.melo.notes.service.constant.TypeName;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.service.impl.NoteServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
@@ -39,30 +42,23 @@ public class FolderView extends JFrame {
      * 选中的类型
      */
     public static String selectedType ="";
-    private final String NOTE="笔记";
-    private final String GROUP="笔记分组";
 
     JFrame jf = new JFrame("设置笔记分组");
     private Listener l = new Listener();
     private JButton delete = new JButton("删除");
     private JButton flush = new JButton("刷新");
     private JButton addFolder = new JButton("新增知识库");
-    private JButton addGroup = new JButton("新增笔记分组");
-    private JButton update = new JButton("修改名称");
-    private JButton setGroup = new JButton("设置笔记分组");
-    private JButton updateNote = new JButton("设置笔记");
+    private JButton addGroup = new JButton("新增分组");
+    private JButton update = new JButton("修改");
+    private JButton setGroup = new JButton("迁移分组");
     private JButton addNote=new JButton("新增笔记");
+    private TextArea textArea=new TextArea();
 
     /**
      * 创建相关操作对象
      */
     FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
     NoteServiceImpl noteService =(NoteServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.NoteService);
-
-
-    public String getLocatedGroup() {
-        return selectedName;
-    }
 
     public FolderView(User user) {
 
@@ -76,9 +72,10 @@ public class FolderView extends JFrame {
             JPanel panel = new JPanel(null);
             panel.setLocation(950, 400);
 
+            textArea.setBounds(600,5,300,100);
+
             update.setBounds(100,5,100,40);
             setGroup.setBounds(200,5,120,40);
-            updateNote.setBounds(300,5,120,40);
             addNote.setBounds(400,5,120,40);
 
             flush.setBounds(600,200,120,50);
@@ -96,7 +93,6 @@ public class FolderView extends JFrame {
         addGroup.addMouseListener(l);
         setGroup.addMouseListener(l);
         flush.addMouseListener(l);
-        updateNote.addMouseListener(l);
         addNote.addMouseListener(l);
 
         /*
@@ -108,8 +104,8 @@ public class FolderView extends JFrame {
             panel.add(setGroup);
             panel.add(addFolder);
             panel.add(addGroup);
-            panel.add(updateNote);
             panel.add(addNote);
+            panel.add(textArea);
 
         /*
           创建根节点
@@ -127,17 +123,17 @@ public class FolderView extends JFrame {
                 for(Map.Entry tempFolder:folderSet) {
                     Object folderId = tempFolder.getKey();
                     Object folderName = tempFolder.getValue();
-                    /**
-                     * 根据folderName生成知识库
+                    /*
+                      根据folderName生成知识库
                      */
                     DefaultMutableTreeNode folder = new DefaultMutableTreeNode(folderName);
                     rootNode.add(folder);
-                    /**
-                     * 再根据folderId生成相应笔记分组
+                    /*
+                      再根据folderId生成相应笔记分组
                      */
                     HashMap<Object, Object> Group = folderGroupService.showNoteGroup(folderId.toString());
-                    /**
-                     * 遍历获取groupId和groupName
+                    /*
+                      遍历获取groupId和groupName
                      */
                     Set<Map.Entry<Object, Object>> groupSet =  Group.entrySet();
                     for(Map.Entry tempGroup:groupSet) {
@@ -145,8 +141,8 @@ public class FolderView extends JFrame {
                         Object groupName = tempGroup.getValue();
                         DefaultMutableTreeNode group = new DefaultMutableTreeNode(groupName);
                         folder.add(group);
-                        /**
-                         * 最后根据groupId生成相应笔记
+                        /*
+                          最后根据groupId生成相应笔记
                          */
                         LinkedList titles = noteService.showNoteTitle(groupId.toString());
                         if(!titles.isEmpty()){
@@ -155,13 +151,6 @@ public class FolderView extends JFrame {
                                 group.add(noteTree);
                             }
                         }
-                        //判空
-                       /* if(notes[0]!=null) {
-                            for (int i = 0; i < notes.length&&notes[i]!=null; i++) {
-                                DefaultMutableTreeNode noteTree = new DefaultMutableTreeNode(notes[i]);
-                                group.add(noteTree);
-                            }
-                        }*/
                     }
                 }
 
@@ -183,6 +172,7 @@ public class FolderView extends JFrame {
                 public void valueChanged(TreeSelectionEvent e) {
                     selectedName = e.getPath().getLastPathComponent().toString();
                     selectedType = folderGroupService.judgeType(e.getPath().getPathCount());
+                    textArea.setText("你选中的类型为:"+selectedType);
                 }
             });
 
@@ -230,19 +220,16 @@ public class FolderView extends JFrame {
 
             //修改名称
             if(e.getSource()==update){
-                if(selectedType.equals(NOTE)){
-                    JOptionPane.showMessageDialog(null,"笔记修改请选中笔记并设置笔记");
-                }
-                String updateName = JOptionPane.showInputDialog("请输入修改名称");
-                switch (folderGroupService.update(selectedName,updateName,selectedType)){
-                    case 0:
-                        JOptionPane.showMessageDialog(null,"笔记修改请选中笔记并设置笔记");
-                    break;
-                    case 1: JOptionPane.showMessageDialog(null,"修改成功");
-                        jf.dispose();
-                        new FolderView(LoginView.USER);
-                        break;
-                    default:JOptionPane.showMessageDialog(null,"修改失败");
+                if(selectedType.equals(TypeName.NOTE.getMessage())){
+                    new UpdateNoteView(LoginView.USER);
+                }else {
+                    String updateName = JOptionPane.showInputDialog("请输入修改名称");
+                    if(folderGroupService.update(selectedName, updateName, selectedType)!=0) {
+                            JOptionPane.showMessageDialog(null, Status.SUCCESS.getMessage());
+                            jf.dispose();
+                    }else {
+                        JOptionPane.showMessageDialog(null, Status.FAILED.getMessage());
+                    }
                 }
                 /*if(folderGroupService.update(selectedName,updateName,selectedType)!=0){
                     JOptionPane.showMessageDialog(null,"修改成功");
@@ -253,16 +240,16 @@ public class FolderView extends JFrame {
                 }*/
             }
             //修改笔记内容
-            if(e.getSource()==updateNote){
-                if(selectedType.equals(NOTE)) {
+            /*if(e.getSource()==updateNote){
+                if(selectedType.equals(TypeName.NOTE.getMessage())) {
                     new UpdateNoteView(LoginView.USER);
                 }else {
                     JOptionPane.showMessageDialog(null,"请确认你选中的是笔记");
                 }
-            }
+            }*/
             //新增笔记
             if(e.getSource()==addNote){
-                if(selectedType.equals(GROUP)){
+                if(selectedType.equals(TypeName.GROUP.getMessage())){
                     new AddNoteView(LoginView.USER);
                 }else {
                     JOptionPane.showMessageDialog(null,"请确认你选中的是待加入笔记的笔记分组");
@@ -270,15 +257,15 @@ public class FolderView extends JFrame {
             }
             //设置笔记分组
             if(e.getSource()==setGroup){
-                new SetGroupView().setVisible(true);
+                new SetGroupView();
             }
             //增加知识库操作
             if(e.getSource()== addFolder){
-               new AddFolderView().setVisible(true);
+               new AddFolderView();
             }
             //增加笔记分组操作
             if(e.getSource()==addGroup) {
-                new AddGroupView().setVisible(true);
+                new AddGroupView();
             }
         }
         @Override

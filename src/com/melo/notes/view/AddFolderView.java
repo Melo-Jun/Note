@@ -27,6 +27,7 @@ public class AddFolderView extends JFrame {
 
     public AddFolderView() {
         initComponents();
+        setVisible(true);
     }
 
     private void submitActionPerformed(ActionEvent e) {
@@ -52,6 +53,7 @@ public class AddFolderView extends JFrame {
         label1 = new JLabel();
 
         //======== this ========
+        setIconImage(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")).getImage());
         Container contentPane = getContentPane();
 
         //---- selectedAccess ----
@@ -96,7 +98,7 @@ public class AddFolderView extends JFrame {
                         .addGroup(contentPaneLayout.createSequentialGroup()
                             .addGap(100, 100, 100)
                             .addComponent(label1, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)))
-                    .addGap(0, 86, Short.MAX_VALUE))
+                    .addGap(0, 74, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()

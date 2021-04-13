@@ -25,7 +25,7 @@ import java.util.Properties;
             /**
              * Dao实现类
              */
-            BaseDao("BaseDao"),UserDao("UserDao"), NoteDao("NoteDao"),LoginDao("LoginDao"),
+            BaseDao("BaseDao"),UserDao("UserDao"), AdminDao("AdminDao"),NoteDao("NoteDao"),LoginDao("LoginDao"),
             FolderDao("FolderDao"),GroupDao("GroupDao"),LikeListDao("LikeListDao");
 
             private String name;
@@ -45,7 +45,7 @@ import java.util.Properties;
         FolderGroupService("FolderGroupService"), LoginService("LoginService"),
         RegisterService("RegisterService"), NoteService("NoteService"),
         NoteTableViewService("NoteTableViewService"),PersonalUserService("PersonalUserService"),
-        UserNoteService("UserNoteService"),UserTableService("UserTableService");
+        UserNoteService("UserNoteService"),UserTableService("UserTableService"),AdminServiceImpl("AdminServiceImpl");
         private String name;
         /**
          * 构造方法

@@ -171,6 +171,7 @@ public class NoteTableView extends JFrame {
 
         //======== this ========
         setTitle("\u67e5\u770b\u7b14\u8bb0");
+        setIconImage(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")).getImage());
         Container contentPane = getContentPane();
 
         //======== scrollPane1 ========
@@ -305,7 +306,6 @@ public class NoteTableView extends JFrame {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JScrollPane scrollPane1;
-    //private JTable table;
     private JScrollPane scrollPane2;
     private JTextArea authorFolder;
     private JLabel label1;
