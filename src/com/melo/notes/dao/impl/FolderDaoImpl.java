@@ -17,7 +17,6 @@ public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
     /**
      * 本表查询所用到所有字段以及表名
      */
-    private final String ALLCOLUMNNAME="id,folder_name,author_id,access";
     private final String TABLE_NAME="located_folder";
 
     /**
@@ -28,7 +27,6 @@ public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
     @Override
     public HashMap showFolderName(User user) {
         String sql="select id,folder_name from "+TABLE_NAME+" where author_id=?";
-        System.out.println(user.getId());
         return queryMap(sql,user);
     }
 

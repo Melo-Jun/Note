@@ -1,6 +1,5 @@
 package com.melo.notes.service.inter;
 
-import com.melo.notes.entity.User;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -43,44 +42,50 @@ public interface FolderGroupService {
      int delete(String selectedName,String selectedType);
 
     /**
+     * 为新用户初始化知识库和笔记分组
+     * @notice 会生成默认知识库和默认笔记分组,且不允许修改和删除
+     */
+     void initFolderGroup();
+
+    /**
      * 新增知识库
-     * @param name
-     * @param access
-     * @param authorId
-     * @return
+     * @param name 知识库名称
+     * @param access 知识库权限
+     * @param authorId 作者id
+     * @return boolean 是否增加成功
      */
      boolean addFolder(String name, String access,String authorId);
 
     /**
      * 新增笔记分组
-     * @param name
-     * @param locatedFolder
-     * @return
+     * @param groupName 笔记分组名称
+     * @param locatedFolder 所在知识库
+     * @return boolean 操作是否成功
      */
-     boolean addGroup(String name,String locatedFolder);
+     boolean addGroup(String groupName,String locatedFolder);
 
     /**
-     * 根据前台传入参数更新相应对象名称
+     * 根据前台传入参数更新相应对象
      *
      * @param selectedName  oldName
      * @param updateName  newName
      * @param selectedType 对应类型
      * @return int 影响的行数
      */
-     int update(String selectedName,String updateName, String selectedType);
+     int update(String selectedName, String updateName, String selectedType);
 
     /**
      * 设置笔记分组
      * @param selectedGroup 选中的笔记分组
      * @param locatedFolder 目标知识库
-     * @return
+     * @return int 影响的行数
      */
      int setGroup(String selectedGroup,String locatedFolder);
 
     /**
      * 选择分组时判断是否为分组
      * @param selectedClassName 选中的对应类
-     * @return
+     * @return boolean 是否为笔记分组
      */
      boolean isGroup(String selectedClassName);
 

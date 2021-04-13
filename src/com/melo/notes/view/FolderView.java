@@ -2,7 +2,6 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.service.impl.NoteServiceImpl;
@@ -21,6 +20,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * @author Jun
+ * @program Note
+ * @description 设置笔记分组界面
+ * @date 2021-4
  */
 public class FolderView extends JFrame {
 
@@ -68,7 +70,7 @@ public class FolderView extends JFrame {
             folderGroupService.initFolderGroup();
 
             jf.setSize(800, 600);
-            jf.setLocation(330, 120);
+            jf.setLocation(600, 260);
             jf.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
             JPanel panel = new JPanel(null);
@@ -146,9 +148,7 @@ public class FolderView extends JFrame {
                         /**
                          * 最后根据groupId生成相应笔记
                          */
-                        Note note = new Note();
-                        note.setLocatedGroup(groupId.toString());
-                        LinkedList titles = noteService.showNoteTitle(note);
+                        LinkedList titles = noteService.showNoteTitle(groupId.toString());
                         if(!titles.isEmpty()){
                             for(Object title:titles){
                                 DefaultMutableTreeNode noteTree = new DefaultMutableTreeNode(title);
@@ -183,7 +183,6 @@ public class FolderView extends JFrame {
                 public void valueChanged(TreeSelectionEvent e) {
                     selectedName = e.getPath().getLastPathComponent().toString();
                     selectedType = folderGroupService.judgeType(e.getPath().getPathCount());
-                    System.out.println(selectedName+selectedType);
                 }
             });
 
@@ -231,14 +230,27 @@ public class FolderView extends JFrame {
 
             //修改名称
             if(e.getSource()==update){
+                if(selectedType.equals(NOTE)){
+                    JOptionPane.showMessageDialog(null,"笔记修改请选中笔记并设置笔记");
+                }
                 String updateName = JOptionPane.showInputDialog("请输入修改名称");
-                if(folderGroupService.update(selectedName,updateName,selectedType)!=0){
+                switch (folderGroupService.update(selectedName,updateName,selectedType)){
+                    case 0:
+                        JOptionPane.showMessageDialog(null,"笔记修改请选中笔记并设置笔记");
+                    break;
+                    case 1: JOptionPane.showMessageDialog(null,"修改成功");
+                        jf.dispose();
+                        new FolderView(LoginView.USER);
+                        break;
+                    default:JOptionPane.showMessageDialog(null,"修改失败");
+                }
+                /*if(folderGroupService.update(selectedName,updateName,selectedType)!=0){
                     JOptionPane.showMessageDialog(null,"修改成功");
                     jf.dispose();
                     new FolderView(LoginView.USER);
                 }else {
                     JOptionPane.showMessageDialog(null,"修改失败");
-                }
+                }*/
             }
             //修改笔记内容
             if(e.getSource()==updateNote){

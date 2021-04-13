@@ -18,8 +18,8 @@ public class JdbcUtils {
     private final static String PROP_PATH = "db.properties";
     /**
      * 释放资源
-     * @param ps
-     * @param rs
+     * @param ps PreparedStatement
+     * @param rs ResultSet
      */
     public static void close(PreparedStatement ps, ResultSet rs) {
         if (ps != null) {
@@ -41,8 +41,8 @@ public class JdbcUtils {
 
     /**
      * 释放资源
-     * @param stmt
-     * @param rs
+     * @param stmt Statement
+     * @param rs ResultSet
      */
     public static void close(Statement stmt, ResultSet rs) {
         if (stmt != null) {
@@ -67,7 +67,7 @@ public class JdbcUtils {
 
     /**
      * 获取数据库连接
-     * @return
+     * @return Connection
      */
     public synchronized static Connection getConnection(){
         try {
@@ -80,7 +80,7 @@ public class JdbcUtils {
 
     /**
      * 获取当前连接数
-     * @return
+     * @return  int 当前连接数
      */
     public synchronized static int getCurrentConnection() {
         return dataSrc.getCurrentConnection();
@@ -88,7 +88,7 @@ public class JdbcUtils {
 
     /**
      * 获取空闲连接数
-     * @return
+     * @return int 空闲连接数
      */
     public static int getFreeCount() {
         return dataSrc.getfreeCount();
@@ -97,7 +97,7 @@ public class JdbcUtils {
 
     /**
      * 将连接放回数据库连接池中
-     * @param coon
+     * @param coon Connection
      */
     public static void freeConnection(Connection coon){
         dataSrc.freeConnection(coon);
@@ -105,7 +105,7 @@ public class JdbcUtils {
 
     /**
      * 根据实际情况配置相应的PreparedStatement参数
-     * @param ps
+     * @param ps PreparedStatement
      * @param obj 传入的对象
      */
     public static void setParams(PreparedStatement ps, Object obj) {
@@ -114,7 +114,6 @@ public class JdbcUtils {
         LinkedList fieldValues = new LinkedList<>();
         baseDao.fieldMapper(obj, fieldNames, fieldValues);
         Object[] params = fieldValues.toArray();
-        System.out.println(fieldValues);
         for (int i = 0; i < params.length; i++) {
             try {
                 ps.setObject(i + 1, params[i]);
@@ -142,7 +141,7 @@ public class JdbcUtils {
 
     /**
      * 根据类名获取对应的表名
-     * @param clazz
+     * @param clazz Class
      * @return java.lang.String
      */
     public static String getTableName(Class clazz){

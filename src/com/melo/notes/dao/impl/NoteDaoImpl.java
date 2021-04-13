@@ -22,20 +22,20 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
      * 根据xxx列出笔记标题
      * @param obj 根据的对象
      * @notice 无根据时则传null
-     * @return
+     * @return LinkedList 笔记标题链表
      */
     @Override
     public LinkedList<Object> showNoteTitle(Object obj) {
         StringBuilder sql = new StringBuilder( "select title from "+TABLE_NAME);
-        /**
-         * 将对象映射成属性和值(属性会映射为数据库字段名)
+        /*
+          将对象映射成属性和值(属性会映射为数据库字段名)
          */
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
         fieldMapper(obj,fieldNames,fieldValues);
-        /**
-         * 将字段名填入sql语句
-         * 没有where条件则不添加
+        /*
+          将字段名填入sql语句
+          没有where条件则不添加
          */
         if(fieldValues.size()!=0) {
             sql.append(" where ");
@@ -45,16 +45,15 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
         }
         //删除最后一个AND
         sql.delete(sql.length()-4,sql.length());
-        System.out.println(sql.toString());
-        /**
-         * 完成sql注入和执行
+        /*
+          完成sql注入和执行
          */
         return queryList(sql.toString(),obj);
     }
 
     /**
      *分页查询文本
-     * @param obj 根据对象id
+     * @param obj 根据对象
      * @return String 笔记内容
      */
     @Override
@@ -67,20 +66,20 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
     /**
      * 列出笔记所有信息(内容另外分页展示)
      * @param obj 根据的对象
-     * @return linkedList 链表
+     * @return linkedList 笔记信息链表
      */
     @Override
     public LinkedList showNoteAll(Object obj) {
         StringBuilder sql = new StringBuilder( "select "+ALL_FIELD_NAME+" from "+TABLE_NAME);
-        /**
-         * 将对象映射成属性和值(属性会映射为数据库字段名)
+        /*
+          将对象映射成属性和值(属性会映射为数据库字段名)
          */
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
         fieldMapper(obj,fieldNames,fieldValues);
-        /**
-         * 将字段名填入sql语句
-         * 没有where条件则不添加
+        /*
+          将字段名填入sql语句
+          没有where条件则不添加
          */
         if(fieldValues.size()!=0) {
             sql.append(" where ");
@@ -90,8 +89,8 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
         }
         //删除最后一个AND
         sql.delete(sql.length()-4,sql.length());
-        /**
-         * 完成sql注入和执行
+        /*
+          完成sql注入和执行
          */
         return queryAll(sql.toString(),obj,Note.class);
     }

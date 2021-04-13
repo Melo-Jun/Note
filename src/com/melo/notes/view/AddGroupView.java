@@ -4,7 +4,6 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
@@ -17,6 +16,9 @@ import javax.swing.GroupLayout;
 
 /**
  * @author Jun
+ * @program Note
+ * @description 增加笔记界面
+ * @date 2021-4
  */
 public class AddGroupView extends JFrame {
 
@@ -27,8 +29,8 @@ public class AddGroupView extends JFrame {
 
     public AddGroupView() {
         initComponents();
-        /**
-         * 初始化下拉框
+        /*
+          初始化下拉框
          */
         HashMap<Object, Object> folderName = folderGroupService.showFolderName();
         Collection<Object> values = folderName.values();

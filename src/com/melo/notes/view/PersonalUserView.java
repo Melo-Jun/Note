@@ -15,6 +15,9 @@ import javax.swing.GroupLayout;
 
 /**
  * @author Jun
+ * @program Note
+ * @description 设置个人信息界面
+ * @date 2021-4
  */
 public class PersonalUserView extends JFrame {
 
@@ -35,7 +38,7 @@ public class PersonalUserView extends JFrame {
         initComponents();
         setVisible(true);
         nameText.setText(LoginView.USER.getUserName());
-        setSize(300,350);
+        setSize(350,350);
     }
 
     private void submitActionPerformed(ActionEvent e) {
@@ -46,7 +49,6 @@ public class PersonalUserView extends JFrame {
         String message= personalUserService.isValid(userName,firstPass,secondPass);
         if(message.equals(SUCCESS)){
             if(personalUserService.judgePass(userName,oldPass)){
-                System.out.println("密码验证成功");
                 personalUserService.updateUser(userName,secondPass);
                 JOptionPane.showMessageDialog(null,"修改成功,需要手动重启");
                 System.exit(-1);

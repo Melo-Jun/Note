@@ -1,6 +1,7 @@
 package com.melo.notes.dao.inter;
 
 import java.sql.ResultSet;
+import java.util.LinkedList;
 
 /**
  * @author Jun
@@ -12,7 +13,6 @@ import java.sql.ResultSet;
 public interface ResultMapper {
     /**
      * 负责提供一个映射数据库查询结果集的方法
-     * @name doMap
      * @param rs 需要映射的结果集
      * @return java.lang.Object
      */

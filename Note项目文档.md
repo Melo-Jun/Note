@@ -1,7 +1,3 @@
-~~~~ 备份
-
-~~~~
-
 queryAll
 
 ```java
@@ -99,7 +95,9 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 - **最终:前台传最直接的元素过来,service获取id,将id传给Dao,Dao再构造对象传给BaseDao**
 
-    >   要在service去构造对象还是Dao里边构造对象呢,Dao里边吧
+    >   要在service去构造对象还是Dao里边构造对象呢,Dao里边吧?
+    >
+    >   几乎都在service中构造对象,除了fillTable需要一些业务对象的没办法避免
 
 - 解决资源关闭问题,return放在try里边就可以了阿,做完map再return![image-20210406202817792](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406202817792.png)
 
@@ -149,11 +147,17 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 # 待办
 
-- 不用用到listNoteTitle界面了以及相关string数组(还未删除)
+- personalservice中的isValid还没改成状态码
+
+- 设置默认笔记分组和知识库不可修改
+
+    > 设置笔记不能修改名称,只调到那个页面即可
 
 - addNoteView可删掉设置分组了,以及UserView中的增加笔记功能可删除
 
 - 修改其他表id为string,**只修改了User**
+
+    > ~~其他应该不用改了~~
 
     > ![image-20210410084703581](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210410084703581.png)
 
@@ -167,7 +171,7 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
     >   likeCount:将getMaxId中的方法弄到StringUtils中即可
 
--   此处注释掉的应该不用用到吧![image-20210406205640002](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406205640002.png)
+-   ~~此处注释掉的应该不用用到吧~~![image-20210406205640002](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406205640002.png)
 
 # BaseDao
 
@@ -177,33 +181,94 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 ## select
 
-### 封装
+- **queryAll**
 
----
+  ```java
+  /**
+   * 查找所有属性
+   * @param sql 查询语句
+   * @param obj 用以填充的语句
+   * @return LinkedList<Object> values 所有值
+   */
+  @Override
+  public LinkedList queryAll(String sql, Object obj,Class clazz) {
+      return (LinkedList) executeQuery(obj,sql,rs -> {
+          LinkedList<Object> values = new LinkedList<>();
+          ResultSetMetaData rsmd = null;
+          try {
+              rsmd = rs.getMetaData();
+              LinkedList<Method> methods = getMethods(clazz.newInstance());
+              //存储set方法
+              LinkedList<Method> setMethods = new LinkedList<>();
+              for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                  /**
+                   * 将列名转化为实体类属性名
+                   */
+                  String columnName = rsmd.getColumnName(i);
+                  String fieldName = toEntityField(columnName);
+                  /**
+                   * 获取与列名有关的set方法,且会一一对应保证顺序
+                   */
+                  for (Method method : methods) {
+                      if (method.getName().startsWith("set") && method.getName().substring(3).equalsIgnoreCase(fieldName)) {
+                          setMethods.add(method);
+                      }
+                  }
+              }
+              /**
+               * 调用invoke执行set方法,映射成对象加入链表中
+               */
+              while (rs.next()) {
+                  Object newInstance = clazz.newInstance();
+                  for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                      setMethods.get(i - 1).invoke(newInstance, rs.getObject(i));
+                  }
+                  values.add(newInstance);
+              }
+          } catch (SQLException | InstantiationException | IllegalAccessException | InvocationTargetException throwables) {
+              throw new DaoException("映射对象出现异常");
+          }
+          return values;
+  });
+  ```
 
-#### 思路
+- **executeQuery**
 
-先遍历一次列名,将列名转化为属性名?然后就取出所有方法看setxxx中的xxx跟属性名一不一样
+  ```java
+  /**
+   * 执行一条查询语句,并对结果集进行封装
+   *
+   * @param obj          对象
+   * @param sql          sql语句
+   * @param resultMapper 实现不同功能映射的实现类
+   * @return 映射结果
+   */
+  @Override
+  public Object executeQuery(Object obj, String sql, ResultMapper resultMapper) {
+      Connection conn = getConnection();
+      ResultSet rs = null;
+      PreparedStatement ps = null;
+      try {
+          ps = conn.prepareStatement(sql);
+          //根据obj注入Sql填充参数
+          if (obj != null) {
+              setParams(ps, obj);
+          }
+          rs = ps.executeQuery();
+          return resultMapper.doMap(rs);
+      } catch (SQLException throwables) {
+          throwables.printStackTrace();
+          throw new DaoException("预编译查询语句异常：");
+      } finally {
+          freeConnection(conn);
+          close(ps, rs);
+      }
+  }
+  ```
 
 ## getId和delete(类似)
 
-delete一定得根据主键吧,才不会误删
-
-- ~~根据id的话,那还是传对象进来吗,传对象进来的话主要是getId得有一个属性,有id之后又有属性了,填充参数会不会顺序反了,试一下吧先,试一下是哪个先获取到~~
-
-  > id会比较晚获取到,因为是在父类
-
-  - 修改成: (要根据主键id就在对象里边设置id就可以了其实)
-
-    > ~~主要是获取id这个方法,要是标题一样就GG了~~
->
-    > > 设置了标题不可重复
-
-    > ![image-20210410115614602](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210410115614602.png)
-
-> 不行,属性值的话会多于?
-
-> ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210405091855726.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NDA1Nzgy,size_16,color_FFFFFF,t_70)
+> ![在这里插入图片描述](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210412152857130.png)
 > ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210405091922857.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1NDA1Nzgy,size_16,color_FFFFFF,t_70)
 > 都需要去取出属性名和属性值然后作为根据条件和根据值
 - 打算修改delete,不传对象进来了,直接传id和类

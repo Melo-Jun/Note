@@ -4,14 +4,8 @@ import com.melo.notes.dao.inter.GroupDao;
 import com.melo.notes.entity.Folder;
 import com.melo.notes.entity.Group;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.LinkedList;
 
-import static com.melo.notes.util.JdbcUtils.*;
 
 /**
  * @author Jun
@@ -36,8 +30,8 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
 
     /**
      * 展示笔记分组名
-     * @param group
-     * @return
+     * @param group 笔记分组对象
+     * @return String 笔记分组名
      */
     @Override
     public String showGroupName(Group group){
@@ -72,17 +66,22 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
      * 更改笔记分组名称
      *
      * @param group 在service完成封装后的对象
-     * @return
+     * @return int 影响的行数
      */
     @Override
     public int updateGroup(Group group) {
         return super.update(group);
     }
 
+    /**
+     * 计算笔记分组数量
+     * @param group 笔记分组对象
+     * @return String 笔记分组数量
+     */
+    @Override
     public String countGroup(Group group){
         String sql="select count(*) from " +TABLE_NAME+" where author_id=?";
         return queryList(sql,group).getFirst().toString();
     }
-
 
 }

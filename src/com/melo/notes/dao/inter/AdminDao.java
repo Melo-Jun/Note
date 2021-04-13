@@ -13,7 +13,7 @@ public interface AdminDao {
     /**
      * 验证是否为管理员
      * @param admin 管理员对象
-     * @return
+     * @return boolean 是否为管理员
      */
      boolean isAdmin(Admin admin);
 }

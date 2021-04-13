@@ -22,6 +22,9 @@ import javax.swing.table.*;
 
 /**
  * @author Jun
+ * @program Note
+ * @description 笔记表格界面
+ * @date 2021-4
  */
 public class NoteTableView extends JFrame {
 
@@ -47,7 +50,7 @@ public class NoteTableView extends JFrame {
      * @param e
      */
     private void table1MouseClicked(MouseEvent e) {
-        Integer row=table.getSelectedRow();
+        int row=table.getSelectedRow();
         if(row!=-1) {
             String authorId = (String) model.getValueAt(row, 2);
             String authorName = noteTableService.showNoteAuthor(authorId);
@@ -62,12 +65,10 @@ public class NoteTableView extends JFrame {
      * @param e
      */
     private void noteTextActionPerformed(ActionEvent e) {
-        Integer row=table.getSelectedRow();
+        int row=table.getSelectedRow();
         if(row!=-1) {
             Object noteId = model.getValueAt(row, 0);
-            Note note = new Note();
-            note.setId(noteId.toString());
-            new NoteTextView(noteService.showNoteText(note));
+            new NoteTextView(noteService.showNoteText(noteId.toString()));
         }
     }
 
@@ -106,7 +107,7 @@ public class NoteTableView extends JFrame {
     private void fillTable(Object obj){
         model= (DefaultTableModel)table.getModel();
         model.setRowCount(0);
-        LinkedList<Note> notes = noteService.showNoteAll((Note)obj);
+        LinkedList<Note> notes = noteService.showNoteAll(obj);
         for(Note tempNote:notes) {
             model.addRow(noteTableService.fillTable(tempNote));
         }
@@ -117,7 +118,7 @@ public class NoteTableView extends JFrame {
      * @param e
      */
     private void likeActionPerformed(ActionEvent e) {
-        Integer row=table.getSelectedRow();
+        int row=table.getSelectedRow();
         if(row!=-1) {
             String id = (String) model.getValueAt(row, 0);
             String likeCount = (String) model.getValueAt(row, 4);
@@ -140,7 +141,7 @@ public class NoteTableView extends JFrame {
      * @param e
      */
     private void withdrawLikeActionPerformed(ActionEvent e) {
-        Integer row=table.getSelectedRow();
+        int row=table.getSelectedRow();
         if(row!=-1) {
             String id = (String) model.getValueAt(row, 0);
             String likeCount = (String) model.getValueAt(row, 4);

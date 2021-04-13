@@ -12,7 +12,9 @@ import javax.swing.*;
 
 /**
  * @author Jun
+ * @program Note
  * @description 用户界面
+ * @date 2021-4
  */
 public class UserView extends JFrame {
 
@@ -20,9 +22,9 @@ public class UserView extends JFrame {
         initComponents();
         setVisible(true);
         welcome.setText("欢迎回来, "+LoginView.USER.getUserName());
-        welcome.setBounds(650,100,150,20);
-        setSize(1300, 800);
-        setLocation(330, 120);
+        //welcome.setBounds(650,100,150,20);
+        setSize(650, 650);
+        setLocation(600, 260);
     }
 
     /**
@@ -105,6 +107,7 @@ public class UserView extends JFrame {
 
                 //---- update ----
                 update.setText("\u4fee\u6539\u7528\u6237\u540d\u5bc6\u7801");
+                update.setFont(update.getFont().deriveFont(update.getFont().getSize() + 4f));
                 update.addActionListener(e -> updateActionPerformed(e));
                 user.add(update);
             }
@@ -118,7 +121,7 @@ public class UserView extends JFrame {
         welcome.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
         welcome.setForeground(new Color(51, 153, 255));
         contentPane.add(welcome);
-        welcome.setBounds(332, 110, 283, 116);
+        welcome.setBounds(135, 85, 283, 116);
 
         {
             // compute preferred size

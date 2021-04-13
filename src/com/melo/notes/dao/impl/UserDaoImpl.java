@@ -3,7 +3,6 @@ package com.melo.notes.dao.impl;
 import com.melo.notes.dao.inter.UserDao;
 import com.melo.notes.entity.User;
 import com.melo.notes.view.LoginView;
-import com.sun.corba.se.impl.ior.OldJIDLObjectKeyTemplate;
 
 import java.util.LinkedList;
 
@@ -35,6 +34,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return !objects.isEmpty();
     }
 
+    /**
+     * 验证是否为有效用户
+     * @param user 用户实体类
+     * @return boolean 是否有效
+     */
+    @Override
     public boolean isValidUser(User user){
         String sql="select validity from "+TABLE_NAME +" where user_name=? ";
         LinkedList<Object> validity = queryList(sql, user);
@@ -52,7 +57,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         String sql="select password from "+TABLE_NAME+" where user_name=? ";
         User temp = new User();
         temp.setUserName(user.getUserName());
-        LinkedList password = queryList(sql, temp);
+        LinkedList<Object> password = queryList(sql, temp);
         if(password.isEmpty()){
             return false;
         }
@@ -86,6 +91,28 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     /**
+     * 根据id展示用户名
+     * @param user 用户实体类
+     * @return String 用户名
+     */
+    @Override
+    public String showUserName(User user){
+        String sql="select user_name from "+TABLE_NAME+" where id=?";
+        return queryList(sql,user).getFirst().toString();
+    }
+
+    /**
+     * 展示用户所有信息
+     * @param user 用户实体类
+     * @return 用户信息链表
+     */
+    @Override
+    public LinkedList showUserAll(User user){
+        String sql="select "+ALL_FIELD_NAME+" from "+TABLE_NAME;
+        return queryAll(sql,user,User.class);
+    }
+
+    /**
      * 为登录进来的用户设置Id以便后续查询
      * @param user 用户实体类
      */
@@ -98,19 +125,4 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             }
     }
 
-    /**
-     * 根据id展示用户名
-     * @param user 用户实体类
-     * @return String 用户名
-     */
-    @Override
-    public String showUserName(User user){
-        String sql="select user_name from "+TABLE_NAME+" where id=?";
-        return queryList(sql,user).getFirst().toString();
-    }
-
-    public LinkedList showUserAll(User user){
-        String sql="select "+ALL_FIELD_NAME+" from "+TABLE_NAME;
-        return queryAll(sql,user,User.class);
-    }
 }

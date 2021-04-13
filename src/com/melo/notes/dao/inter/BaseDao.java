@@ -1,14 +1,10 @@
 package com.melo.notes.dao.inter;
 
-import com.melo.notes.entity.User;
 import com.melo.notes.exception.DaoException;
 
-import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import static com.melo.notes.util.JdbcUtils.getTableName;
-import static com.melo.notes.util.Md5Utils.getDigest;
 
 /**
  * @author Jun
@@ -20,8 +16,9 @@ public interface BaseDao {
 
     /**
      * 封装数据库更新操作
-     * @param obj
-     * @param sql
+     *
+     * @param obj 对象
+     * @param sql sql语句
      * @return int 影响的行数
      */
      int executeUpdate(Object obj, String sql);
@@ -38,8 +35,8 @@ public interface BaseDao {
     /**
      * 增加一条记录进入数据库
      *
-     * @param obj 要插入的对象
-     * @return int 更新的数据库记录数
+     * @param obj 与增加有关的对象
+     * @return int 影响的数据库行数
      */
     int insert(Object obj);
 
@@ -61,13 +58,13 @@ public interface BaseDao {
 
 
     /**
-     * 查找记录(需要键值对类型)
+     * 查找记录封装成Map键值对
      *
      * @param sql 特定查询语句
-     * @param obj 特定查询语句
+     * @param obj 根据的对象(用来填充参数)
      * @return HashMap 结果集封装Map
      */
-     HashMap<Object, Object> queryMap(String sql, Object obj);
+     HashMap queryMap(String sql, Object obj);
 
     /**
      * 查找记录(只查找单一值)
@@ -79,11 +76,11 @@ public interface BaseDao {
      LinkedList queryList(String sql,Object obj);
 
     /**
-     * 查询所有
-     * @param sql
-     * @param obj
-     * @param clazz 用来创建实例的类
-     * @return
+     * 查找所有属性
+     * @param sql 查询语句
+     * @param obj 用以填充的语句
+     * @param clazz 相关类名(决定映射为什么对象)
+     * @return LinkedList<Object> values 所有值
      */
     LinkedList queryAll(String sql,Object obj,Class clazz);
 
@@ -93,7 +90,7 @@ public interface BaseDao {
      * @param obj 对象
      * @param fieldNames 属性名
      * @param fieldValues 属性值
-     * @throws DaoException
+     * @throws DaoException 数据库类异常
      */
     void fieldMapper(Object obj, LinkedList fieldNames, LinkedList fieldValues) throws DaoException;
 
@@ -105,8 +102,10 @@ public interface BaseDao {
     LinkedList getId(Object obj);
 
     /**
-     *  用于插入一条记录时使用
+     * 获取最大Id
+     * 用于插入一条记录时使用
      * @description 数据库id设置为String无法自增(设置int映射时无法转化为object)
+     * @notice 无最大时则返回1
      * @param obj 对象
      * @return String  该对象表中最大id
      */

@@ -20,6 +20,9 @@ import javax.swing.LayoutStyle;
 
 /**
  * @author Jun
+ * @program Note
+ * @description 设置个人信息界面
+ * @date 2021-4
  */
 public class UpdateNoteView extends JFrame {
 
@@ -44,7 +47,6 @@ public class UpdateNoteView extends JFrame {
             textArea.setText(notes.getFirst().getText());
             idText.setText(notes.getFirst().getId());
 
-
         }
 
         /**
@@ -54,9 +56,7 @@ public class UpdateNoteView extends JFrame {
         private void summitActionPerformed(ActionEvent e) {
             Group group = new Group();
             group.setGroupName(TreeView.selectedName);
-            System.out.println(TreeView.selectedName+"hhh");
             TreeView.selectedId= folderGroupService.getId(group);
-            System.out.println(TreeView.selectedId+"xxx");
             String title = titleField.getText();
             String text = textArea.getText();
             String access = (String) this.accessSelect.getSelectedItem();
@@ -68,13 +68,6 @@ public class UpdateNoteView extends JFrame {
             }
         }
 
-        /**
-         * 设置笔记分组
-         * @param e
-         */
-        private void selectGroupActionPerformed(ActionEvent e) {
-            new TreeView();
-        }
 
 
         private void initComponents(User user) {
@@ -86,7 +79,6 @@ public class UpdateNoteView extends JFrame {
         summit = new JButton();
         accessSelect = new JComboBox<>();
         access = new JLabel();
-        selectGroup = new JButton();
         label1 = new JLabel();
         idText = new JLabel();
 
@@ -96,6 +88,9 @@ public class UpdateNoteView extends JFrame {
         setTitle("\u67e5\u770b\u5e76\u8bbe\u7f6e\u7b14\u8bb0");
         setResizable(false);
         Container contentPane = getContentPane();
+
+        //---- titleField ----
+        titleField.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, titleField.getFont().getSize() + 6));
 
         //---- title ----
         title.setText("\u6807\u9898");
@@ -123,10 +118,6 @@ public class UpdateNoteView extends JFrame {
         //---- access ----
         access.setText("\u6743\u9650");
 
-        //---- selectGroup ----
-        selectGroup.setText("\u8bbe\u7f6e\u5206\u7ec4");
-        selectGroup.addActionListener(e -> selectGroupActionPerformed(e));
-
         //---- label1 ----
         label1.setText("id :");
         label1.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
@@ -148,7 +139,7 @@ public class UpdateNoteView extends JFrame {
                         .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 694, GroupLayout.PREFERRED_SIZE)
                         .addGroup(contentPaneLayout.createSequentialGroup()
                             .addComponent(titleField, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 473, Short.MAX_VALUE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 474, Short.MAX_VALUE)
                             .addComponent(label1)
                             .addGap(18, 18, 18)
                             .addComponent(idText)
@@ -158,11 +149,9 @@ public class UpdateNoteView extends JFrame {
                     .addComponent(access, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(accessSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addGap(115, 115, 115)
-                    .addComponent(selectGroup)
-                    .addGap(43, 43, 43)
+                    .addGap(251, 251, 251)
                     .addComponent(summit)
-                    .addGap(47, 336, Short.MAX_VALUE))
+                    .addGap(47, 281, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
@@ -180,9 +169,8 @@ public class UpdateNoteView extends JFrame {
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(summit)
                         .addComponent(accessSelect, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(access, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(selectGroup))
-                    .addContainerGap(465, Short.MAX_VALUE))
+                        .addComponent(access, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addContainerGap(451, Short.MAX_VALUE))
         );
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
@@ -195,7 +183,6 @@ public class UpdateNoteView extends JFrame {
     private JButton summit;
     private JComboBox<String> accessSelect;
     private JLabel access;
-    private JButton selectGroup;
     private JLabel label1;
     private JLabel idText;
     // JFormDesigner - End of variables declaration  //GEN-END:variables

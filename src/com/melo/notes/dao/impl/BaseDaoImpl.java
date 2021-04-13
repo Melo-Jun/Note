@@ -25,10 +25,12 @@ import static com.melo.notes.util.StringUtils.*;
  */
 public class BaseDaoImpl implements BaseDao {
 
+    //private Class<?> cls;
+
     /**
      * 封装数据库更新操作
      *
-     * @param obj
+     * @param obj 对象
      * @param sql sql语句
      * @return int 影响的行数
      */
@@ -43,8 +45,6 @@ public class BaseDaoImpl implements BaseDao {
             //注入Sql填充参数
             setParams(ps, obj);
             count = ps.executeUpdate();
-            System.out.println(sql);
-            System.out.println(count);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
@@ -68,6 +68,7 @@ public class BaseDaoImpl implements BaseDao {
         ResultSet rs = null;
         PreparedStatement ps = null;
         try {
+            assert conn != null;
             ps = conn.prepareStatement(sql);
             //根据obj注入Sql填充参数
             if (obj != null) {
@@ -88,7 +89,7 @@ public class BaseDaoImpl implements BaseDao {
     /**
      * 增加一条记录进入数据库
      *
-     * @param obj 对象名
+     * @param obj 与增加有关的对象
      * @return int 影响的数据库行数
      */
     @Override
@@ -96,12 +97,11 @@ public class BaseDaoImpl implements BaseDao {
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
         fieldMapper(obj, fieldNames, fieldValues);
-        /**
-         * 根据属性名生成预编译sql插入语句
+        /*
+          根据属性名生成预编译sql插入语句
          */
         StringBuilder sql = new StringBuilder("insert into " + getTableName(obj) + " (");
         for (Object name : fieldNames) {
-            System.out.println(name.toString());
             sql.append(name.toString() + ",");
         }
         //将最后一个","改为")"，省去判断是否为最后一个")"
@@ -154,8 +154,8 @@ public class BaseDaoImpl implements BaseDao {
      */
     @Override
     public int update(Object obj) {
-        /**
-         * 根据更新依据的字段名构造对象，取出对应数据库字段名和值
+        /*
+          根据更新依据的字段名构造对象，取出对应数据库字段名和值
          */
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
@@ -182,7 +182,7 @@ public class BaseDaoImpl implements BaseDao {
     @Override
     public HashMap queryMap(String sql, Object obj) {
         return (HashMap) executeQuery(obj, sql, rs -> {
-            HashMap<Object, Object> resultMap = new HashMap<>();
+            HashMap resultMap = new HashMap<>();
             try {
                 while (rs.next()) {
                     resultMap.put(rs.getObject(1), rs.getObject(2));
@@ -221,6 +221,7 @@ public class BaseDaoImpl implements BaseDao {
      * 查找所有属性
      * @param sql 查询语句
      * @param obj 用以填充的语句
+     * @param clazz 相关类名(决定映射为什么对象)
      * @return LinkedList<Object> values 所有值
      */
     @Override
@@ -234,13 +235,13 @@ public class BaseDaoImpl implements BaseDao {
                 //存储set方法
                 LinkedList<Method> setMethods = new LinkedList<>();
                 for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                    /**
-                     * 将列名转化为实体类属性名
+                    /*
+                      将列名转化为实体类属性名
                      */
                     String columnName = rsmd.getColumnName(i);
                     String fieldName = toEntityField(columnName);
-                    /**
-                     * 获取与列名有关的set方法,且会一一对应保证顺序
+                    /*
+                      获取与列名有关的set方法,且会一一对应保证顺序
                      */
                     for (Method method : methods) {
                         if (method.getName().startsWith("set") && method.getName().substring(3).equalsIgnoreCase(fieldName)) {
@@ -248,8 +249,8 @@ public class BaseDaoImpl implements BaseDao {
                         }
                     }
                 }
-                /**
-                 * 调用invoke执行set方法,映射成对象加入链表中
+                /*
+                  调用invoke执行set方法,映射成对象加入链表中
                  */
                 while (rs.next()) {
                     Object newInstance = clazz.newInstance();
@@ -270,20 +271,21 @@ public class BaseDaoImpl implements BaseDao {
      * @param obj 对象
      * @param fieldNames 属性名
      * @param fieldValues 属性值
+     * @throws DaoException 数据库类异常
      */
     @Override
     public void fieldMapper(Object obj, LinkedList fieldNames, LinkedList fieldValues) throws DaoException {
         if (obj == null) {
             return;
         }
-        /**
-         * 取出包括父类在内的所有方法和属性
+        /*
+          取出包括父类在内的所有方法和属性
          */
         LinkedList<Method> methods = getMethods(obj);
         LinkedList<Field> fields = getFields(obj);
         for (Field field : fields) {
-            /**
-             * 获取get方法并invoke执行取得属性值
+            /*
+              获取get方法并invoke执行取得属性值
              */
             for (Method method : methods) {
                 if (method.getName().startsWith("get") && method.getName().substring(3).equalsIgnoreCase(field.getName())) {
@@ -294,13 +296,13 @@ public class BaseDaoImpl implements BaseDao {
                         e.printStackTrace();
                         throw new DaoException("反射执行get方法异常：" + method.getName(), e);
                     }
-                    /**
-                     * 只添加不为null值的字段
+                    /*
+                      只添加不为null值的字段
                      */
                     if (value != null) {
                         fieldValues.add(value);
-                        /**
-                         * 取出该属性的名称，映射成数据库字段名
+                        /*
+                          取出该属性的名称，映射成数据库字段名
                          */
                          fieldNames.add(toColumnName(field.getName()));
                     }
@@ -343,6 +345,7 @@ public class BaseDaoImpl implements BaseDao {
         Statement stmt=null;
         ResultSet rs=null;
         try {
+            assert conn != null;
             stmt=conn.createStatement();
             rs=stmt.executeQuery(sql);
             if(rs.next()){

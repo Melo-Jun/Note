@@ -19,7 +19,7 @@ public class AdminDaoImpl  extends BaseDaoImpl implements AdminDao{
     /**
      * 验证是否为管理员
      * @param admin 管理员对象
-     * @return
+     * @return boolean 是否为管理员
      */
     @Override
     public boolean isAdmin(Admin admin){
@@ -30,10 +30,7 @@ public class AdminDaoImpl  extends BaseDaoImpl implements AdminDao{
         if(objects.isEmpty()){
             return false;
         }
-        if(objects.getFirst().equals(getDigest(admin.getPassword()))){
-            return true;
-        }
-        return false;
+        return objects.getFirst().equals(getDigest(admin.getPassword()));
     }
 }
 

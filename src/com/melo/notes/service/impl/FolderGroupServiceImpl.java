@@ -77,7 +77,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     /**
      * 根据知识库列出分组界面
      * @param folderId 知识库Id
-     * @return
+     * @return HashMap 笔记分组id-笔记分组名称
      */
     @Override
     public HashMap<Object, Object> showNoteGroup(String folderId) {
@@ -153,21 +153,25 @@ public class FolderGroupServiceImpl implements FolderGroupService {
         return 1;
     }
 
+    /**
+     * 为新用户初始化知识库和笔记分组
+     * @notice 会生成默认知识库和默认笔记分组,且不允许修改和删除
+     */
+    @Override
     public void initFolderGroup(){
         //该用户没有知识库
         if(showFolderName().isEmpty()) {
             addFolder(DEFAULT, PUBLIC, LoginView.USER.getId());
-            System.out.println(LoginView.USER.getId());
             addGroup(DEFAULT, DEFAULT);
         }
     }
 
     /**
      * 新增知识库
-     * @param name
-     * @param access
-     * @param authorId
-     * @return
+     * @param name 知识库名称
+     * @param access 知识库权限
+     * @param authorId 作者id
+     * @return boolean 是否增加成功
      */
     @Override
     public boolean addFolder(String name, String access,String authorId){
@@ -197,7 +201,7 @@ public class FolderGroupServiceImpl implements FolderGroupService {
     }
 
     /**
-     * 根据前台传入参数更新相应对象名称
+     * 根据前台传入参数更新相应对象
      *
      * @param selectedName  oldName
      * @param updateName  newName
@@ -205,11 +209,11 @@ public class FolderGroupServiceImpl implements FolderGroupService {
      * @return int 影响的行数
      */
     @Override
-    public int update(String selectedName,String updateName, String selectedType) {
+    public int update(String selectedName, String updateName, String selectedType) {
         /*
           没有正常选择要修改的节点
          */
-        if(selectedType.isEmpty()||selectedName.isEmpty()){
+        if(selectedType.isEmpty()||selectedName.isEmpty()||DEFAULT.equals(selectedName)){
             return 0;
         }
         if(selectedType.equals(FOLDER)){
@@ -230,16 +234,16 @@ public class FolderGroupServiceImpl implements FolderGroupService {
             }
         if(selectedType.equals(NOTE)){
             new UpdateNoteView(LoginView.USER);
-            return 1;
+            return 0;
         }
-        return 0;
+        return -1;
     }
 
     /**
      * 设置笔记分组
      * @param selectedGroup 选中的笔记分组
      * @param locatedFolder 目标知识库
-     * @return
+     * @return int 影响的行数
      */
     @Override
     public int setGroup(String selectedGroup,String locatedFolder){
@@ -257,40 +261,19 @@ public class FolderGroupServiceImpl implements FolderGroupService {
         return 0;
     }
 
-    public int setNote(String selectedNote,String locatedGroup){
-        if(isNote(FolderView.selectedType)){
-            Group group = new Group();
-            group.setGroupName(locatedGroup);
-            Note note = new Note();
-            note.setTitle(selectedNote);
-            String id = getId(note);
-            note.setId(id);
-            note.setLocatedGroup(getId(group));
-            note.setTitle(null);
-            return new BaseDaoImpl().update(note);
-        }
-        return 0;
-    }
-
 
     /**
      * 选择分组时判断是否为分组
      * @param selectedClassName 选中的对应类
-     * @return
+     * @return boolean 是否为笔记分组
      */
     @Override
     public boolean isGroup(String selectedClassName) {
-        if(selectedClassName.equals(GROUP)){
-            return true;
-        }
-        return false;
+        return selectedClassName.equals(GROUP);
     }
 
     public boolean isNote(String selectedClassName) {
-        if(selectedClassName.equals(NOTE)){
-            return true;
-        }
-        return false;
+        return selectedClassName.equals(NOTE);
     }
 
     /**

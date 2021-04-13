@@ -60,8 +60,8 @@ public interface NoteTableService {
 
     /**
      * 展示笔记分组名
-     * @param groupId
-     * @return
+     * @param groupId 笔记id
+     * @return String 笔记分组名
      */
      String showGroupName(String groupId);
 }

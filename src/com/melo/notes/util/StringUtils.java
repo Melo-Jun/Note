@@ -14,9 +14,9 @@ public class StringUtils {
     /**
      * 将属性名转化为数据库字段名
      * @param fieldName 属性名
-     * @return
+     * @return String  数据库字段名
      */
-    public static StringBuilder toColumnName(String fieldName){
+    public static String toColumnName(String fieldName){
 
         StringBuilder columnName=new StringBuilder(fieldName);
         for(int i=0;i<columnName.length();i++){
@@ -24,13 +24,13 @@ public class StringUtils {
                 columnName.insert(i,'_');
                 columnName.setCharAt(i+1, (char) (columnName.charAt(i+1)+32));
             }
-        }return columnName;
+        }return columnName.toString();
     }
 
     /**
      * 将数据库字段名转化为属性名
      * @param columnName 数据库字段名
-     * @return
+     * @return String 属性名
      */
     public static String toEntityField(String columnName){
 
@@ -47,7 +47,7 @@ public class StringUtils {
     /**
      * 将字符串+1
      * @param temp 待修改字符串
-     * @return
+     * @return String 修改后的字符串
      */
     public static String increaseOne(String temp) {
         char[] chars = temp.toCharArray();
@@ -58,7 +58,7 @@ public class StringUtils {
     /**
      * 将字符串-1
      * @param temp 待修改字符串
-     * @return 修改后的字符串
+     * @return String 修改后的字符串
      */
     public static String decreaseOne(String temp) {
         char[] chars = temp.toCharArray();

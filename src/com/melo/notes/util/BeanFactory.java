@@ -45,7 +45,7 @@ import java.util.Properties;
         FolderGroupService("FolderGroupService"), LoginService("LoginService"),
         RegisterService("RegisterService"), NoteService("NoteService"),
         NoteTableViewService("NoteTableViewService"),PersonalUserService("PersonalUserService"),
-        UserNoteService("UserNoteService");
+        UserNoteService("UserNoteService"),UserTableService("UserTableService");
         private String name;
         /**
          * 构造方法

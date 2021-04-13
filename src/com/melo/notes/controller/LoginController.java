@@ -31,7 +31,8 @@ public class LoginController {
         Status status=login.getStatus();
         switch (status){
             case LOGIN_SUCCESS:
-                LoginView.USER=new User(userName,pass);
+                LoginView.USER.setUserName(userName);
+                LoginView.USER.setPassword(pass);
                 new LoginServiceImpl().setId(LoginView.USER);
                 JOptionPane.showMessageDialog(null,status.getMessage());
                 loginView.dispose();
@@ -51,40 +52,6 @@ public class LoginController {
             default:
         }
     }
-
-    /**
-     * 为各操作添加监听器
-     */
-    /*public static class Listener implements MouseListener {
-
-        @Override
-        public  void mouseClicked(MouseEvent e) {
-            if(e.getSource()==loginView.login){
-                System.out.println("你在登录");
-                login();
-            }
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
-    }*/
 
     public static void main(String[] args) {
        new LoginView();

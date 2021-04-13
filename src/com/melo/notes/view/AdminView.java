@@ -11,6 +11,9 @@ import javax.swing.GroupLayout;
 
 /**
  * @author Jun
+ * @program Note
+ * @description 管理员界面
+ * @date 2021-4
  */
 public class AdminView extends JFrame {
     public AdminView() {

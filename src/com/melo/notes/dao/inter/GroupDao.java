@@ -18,7 +18,7 @@ public interface GroupDao {
     /**
      * 根据知识库id列出分组界面
      * @param folder 知识库对象
-     * @return LinkedList<Object> 结果集链表
+     * @return HashMap 笔记分组id-笔记分组名称
      */
     HashMap<Object, Object> showNoteGroup(Folder folder);
 
@@ -44,10 +44,18 @@ public interface GroupDao {
     boolean addFolder(Group group);
 
     /**
-     * 更改知识库名称
+     * 更改笔记分组名称
+     *
      * @param group 在service完成封装后的对象
      * @return int 影响的行数
      */
     int updateGroup(Group group);
+
+    /**
+     * 计算笔记分组数量
+     * @param group 笔记分组对象
+     * @return String 笔记分组数量
+     */
+     String countGroup(Group group);
 
 }

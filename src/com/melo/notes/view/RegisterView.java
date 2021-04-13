@@ -15,11 +15,11 @@ import javax.swing.GroupLayout;
 
 /**
  * @author Jun
+ * @program Note
  * @description 注册界面
+ * @date 2021-4
  */
 public class RegisterView extends JFrame {
-
-
 
     /**
      * 注册成功状态码
@@ -38,8 +38,8 @@ public class RegisterView extends JFrame {
     }
 
     private void registerActionPerformed(ActionEvent e) {
-        /**
-         * 获取文本框内容
+        /*
+          获取文本框内容
          */
         String userName = userNameText.getText();
         String firstPass = String.valueOf(passwordField1.getPassword());

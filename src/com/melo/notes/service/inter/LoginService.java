@@ -1,6 +1,7 @@
 package com.melo.notes.service.inter;
 
 import com.melo.notes.entity.User;
+import com.melo.notes.service.Result;
 
 /**
  * @author Jun
@@ -11,18 +12,25 @@ import com.melo.notes.entity.User;
 public interface LoginService {
 
     /**
-     * 设置id
-     * @param user
+     * 设置Id
+     *
+     * @param user 用户实体类
      */
-    void setId(User user);
+     void setId(User user);
 
     /**
-     * 判断输入是否有效
-     *
-     * @param userName
-     * @param password
-     * @param access
+     * 判断登录是否成功
+     * @param userName 用户名
+     * @param password 密码
+     * @param access 身份
      * @return String 呈现给页面的信息
      */
-     String isValid(String userName,String password,String access);
+     Result login(String userName, String password, String access);
+
+    /**
+     * 判断该用户是否为有效用户
+     * @param userName 用户名
+     * @return boolean 是否有效
+     */
+    public boolean isValidUser(String userName);
 }

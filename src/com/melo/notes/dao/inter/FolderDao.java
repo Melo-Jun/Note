@@ -26,7 +26,7 @@ public interface FolderDao {
      * @param folder 知识库对象
      * @return boolean 是否增加成功
      */
-    boolean  addFolder(Folder folder);
+    boolean addFolder(Folder folder);
 
 
     /**
@@ -39,7 +39,7 @@ public interface FolderDao {
     /**
      * 更改知识库名称
      * @param folder 在service完成封装后的对象
-     * @return
+     * @return int 影响的行数
      */
      int updateFolderName(Folder folder);
 }

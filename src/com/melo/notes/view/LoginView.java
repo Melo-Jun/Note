@@ -16,7 +16,9 @@ import javax.swing.GroupLayout;
 
 /**
  * @author Jun
+ * @program Note
  * @description 登录界面
+ * @date 2021-4
  */
 public class LoginView extends JFrame {
     /**
@@ -36,7 +38,7 @@ public class LoginView extends JFrame {
     /**
      * 存储登录进来的用户
      */
-    public static User USER=null;
+    public static User USER=new User();
 
     public LoginView() {
         initComponents();

@@ -10,10 +10,19 @@ public interface RegisterService {
 
     /**
      * 判断输入是否有效
-     * @param userName
-     * @param firstPass
-     * @param secondPass
-     * @return String 呈现给页面的信息
+     *
+     * @param userName 用户名
+     * @param firstPass 第一次密码
+     * @param secondPass 第二次密码
+     * @return String 状态码
      */
     String isValid(String userName,String firstPass,String secondPass);
+
+    /**
+     * 注册用户后新增用户到数据库中
+     * @param userName 用户名
+     * @param password 密码
+     * @return boolean 是否增加成功
+     */
+    boolean addUser(String userName,String password);
 }

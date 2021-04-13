@@ -16,7 +16,10 @@ import javax.swing.*;
 import javax.swing.GroupLayout;
 
 /**
- * @author 1
+ * @author Jun
+ * @program Note
+ * @description 设置笔记分组界面
+ * @date 2021-4
  */
 public class SetGroupView extends JFrame {
 
