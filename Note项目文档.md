@@ -147,6 +147,8 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 # 待办
 
+- FolderView的魔法值还没修改
+
 - FolderGroupService修改一下,看一下需不需要Controller(其他似乎都不用了)
 
 - 删除掉那些注释掉的Controller View

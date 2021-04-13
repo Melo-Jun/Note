@@ -162,6 +162,7 @@ public class BaseDaoImpl implements BaseDao {
         fieldMapper(obj, fieldNames, fieldValues);
         StringBuilder sql = new StringBuilder("update " + getTableName(obj) + " set ");
         for(Object fieldName:fieldNames) {
+            //先过滤id,id要留到最后
             if(!"id".equals(fieldName.toString())) {
                 sql.append(fieldName + "=?, ");
             }

@@ -13,7 +13,7 @@ import java.util.LinkedList;
  * @description 展示标题页面相关逻辑接口
  * @date 2021-4-3 20:24
  */
-public class NoteServiceImpl implements NoteService {
+public class NoteServiceImpl extends BaseServiceImpl implements NoteService {
 
     /**
      * 创建相关操作类对象
@@ -28,9 +28,12 @@ public class NoteServiceImpl implements NoteService {
      */
     @Override
     public LinkedList showNoteTitle(String groupId) {
-        Note note = new Note();
-        note.setLocatedGroup(groupId);
-        return noteDao.showNoteTitle(note);
+        if(super.notNull(groupId)) {
+            Note note = new Note();
+            note.setLocatedGroup(groupId);
+            return noteDao.showNoteTitle(note);
+        }
+        return null;
     }
 
     /**
@@ -52,9 +55,12 @@ public class NoteServiceImpl implements NoteService {
      */
     @Override
     public String showNoteText(String noteId) {
-        Note note = new Note();
-        note.setId(noteId);
-        return noteDao.showNoteText(note);
+        if(super.notNull()) {
+            Note note = new Note();
+            note.setId(noteId);
+            return noteDao.showNoteText(note);
+        }
+        return null;
     }
 
     /**
@@ -74,8 +80,11 @@ public class NoteServiceImpl implements NoteService {
      */
     @Override
     public int delete(String noteId){
-        Note note = new Note();
-        note.setId(noteId);
-        return noteDao.delete(note);
+        if(super.notNull(noteId)) {
+            Note note = new Note();
+            note.setId(noteId);
+            return noteDao.delete(note);
+        }
+        return 0;
     }
 }

@@ -24,7 +24,6 @@ public class NoteTextView extends JFrame {
      * 最大页数
      */
     private int maxPage=0;
-
     /**
      * 文本内容
      */

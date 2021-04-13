@@ -78,9 +78,12 @@ public class LoginServiceImpl extends BaseServiceImpl implements LoginService {
      */
     @Override
     public boolean isValidUser(String userName){
-        User user = new User();
-        user.setUserName(userName);
-        return userDao.isValidUser(user);
+        if(super.notNull(userName)) {
+            User user = new User();
+            user.setUserName(userName);
+            return userDao.isValidUser(user);
+        }
+        return false;
     }
 
 }

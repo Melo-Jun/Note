@@ -35,7 +35,7 @@ public class AddNoteView extends JFrame {
         initComponents(user);
         setVisible(true);
         setSize(550, 650);
-        setLocation(330,120);
+        setLocation(600,260);
     }
 
     /**

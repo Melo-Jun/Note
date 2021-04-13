@@ -13,9 +13,13 @@ import java.util.LinkedList;
  * @date 2021-3-28 20:40
  */
 public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
-
+    /**
+     * 该类对应表名
+     */
     private final String TABLE_NAME="note";
-
+    /**
+     *本表对应所有字段
+     */
     private final String ALL_FIELD_NAME="id,title,author_id,text,access,like_count,located_group";
 
     /**

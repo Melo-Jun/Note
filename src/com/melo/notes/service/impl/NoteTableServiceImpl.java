@@ -22,7 +22,7 @@ import java.util.Vector;
  * @description 表格页面相关逻辑实现类
  * @date 2021-4-8 16:16
  */
-public class NoteTableServiceImpl implements NoteTableService {
+public class NoteTableServiceImpl extends BaseServiceImpl implements NoteTableService {
     /**
      * 创建相关操作类对象
      */
@@ -54,23 +54,30 @@ public class NoteTableServiceImpl implements NoteTableService {
      */
     @Override
     public LinkedList showLikeUser(String noteId){
-        LikeList likeList = new LikeList();
-        likeList.setNoteId(noteId);
-        return likeListDao.showLikeUser(likeList);
+        if(super.notNull(noteId)) {
+            LikeList likeList = new LikeList();
+            likeList.setNoteId(noteId);
+            return likeListDao.showLikeUser(likeList);
+        }
+        return null;
     }
 
     /**
      * 更新点赞数
+     * @description 用于点赞和取消点赞函数
      * @param updateLikeCount 更改后的点赞数
      * @param noteId 笔记id
      * @return 是否操作成功
      */
     @Override
     public boolean updateLikeCount(String updateLikeCount, String noteId){
-        Note note = new Note();
-        note.setId(noteId);
-        note.setLikeCount(updateLikeCount);
-        return noteDao.updateNote(note)==1;
+        if(super.notNull(updateLikeCount,noteId)) {
+            Note note = new Note();
+            note.setId(noteId);
+            note.setLikeCount(updateLikeCount);
+            return noteDao.updateNote(note) == 1;
+        }
+        return false;
     }
 
     /**
@@ -81,15 +88,18 @@ public class NoteTableServiceImpl implements NoteTableService {
      */
     @Override
     public boolean increaseLikeCount(String updateLikeCount, String noteId){
-        LinkedList likeUsers = showLikeUser(noteId);
-        if(!likeUsers.isEmpty()&&likeUsers.contains(LoginView.USER.getId())){
-            return false;
+        if(super.notNull(updateLikeCount,noteId)) {
+            LinkedList likeUsers = showLikeUser(noteId);
+            if (!likeUsers.isEmpty() && likeUsers.contains(LoginView.USER.getId())) {
+                return false;
+            }
+            LikeList likeList = new LikeList();
+            likeList.setNoteId(noteId);
+            likeList.setUserId(LoginView.USER.getId());
+            likeListDao.addLikeList(likeList);
+            return updateLikeCount(updateLikeCount, noteId);
         }
-        LikeList likeList = new LikeList();
-        likeList.setNoteId(noteId);
-        likeList.setUserId(LoginView.USER.getId());
-        likeListDao.addLikeList(likeList);
-        return updateLikeCount(updateLikeCount,noteId);
+        return false;
     }
 
 
@@ -101,15 +111,18 @@ public class NoteTableServiceImpl implements NoteTableService {
      */
     @Override
     public boolean decreaseLikeCount(String updateLikeCount, String noteId){
-        LinkedList likeUsers = showLikeUser(noteId);
-        if(!likeUsers.contains(LoginView.USER.getId())){
-            return false;
+        if(super.notNull(updateLikeCount,noteId)) {
+            LinkedList likeUsers = showLikeUser(noteId);
+            if (!likeUsers.contains(LoginView.USER.getId())) {
+                return false;
+            }
+            LikeList likeList = new LikeList();
+            likeList.setNoteId(noteId);
+            likeList.setUserId(LoginView.USER.getId());
+            likeListDao.deleteLikeList(likeList);
+            return updateLikeCount(updateLikeCount, noteId);
         }
-        LikeList likeList = new LikeList();
-        likeList.setNoteId(noteId);
-        likeList.setUserId(LoginView.USER.getId());
-        likeListDao.deleteLikeList(likeList);
-        return updateLikeCount(updateLikeCount,noteId);
+        return false;
     }
 
     /**
@@ -119,9 +132,12 @@ public class NoteTableServiceImpl implements NoteTableService {
      */
     @Override
     public String showNoteAuthor(String authorId){
-        User user = new User();
-        user.setId(authorId);
-        return userDao.showUserName(user);
+        if(super.notNull(authorId)) {
+            User user = new User();
+            user.setId(authorId);
+            return userDao.showUserName(user);
+        }
+        return null;
     }
 
     /**
@@ -131,8 +147,11 @@ public class NoteTableServiceImpl implements NoteTableService {
      */
     @Override
     public String showGroupName(String groupId){
-        Group group = new Group();
-        group.setId(groupId);
-        return groupDao.showGroupName(group);
+        if(super.notNull(groupId)) {
+            Group group = new Group();
+            group.setId(groupId);
+            return groupDao.showGroupName(group);
+        }
+        return null;
     }
 }

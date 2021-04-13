@@ -5,7 +5,7 @@ import com.melo.notes.entity.abs.BaseEntity;
 /**
  * @author Jun
  * @program Note
- * @description 用户实体类
+ * @description 管理员实体类
  * @date 2021-3-27 9:38
  */
 public class Admin extends BaseEntity {

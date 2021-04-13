@@ -90,15 +90,17 @@ public interface FolderGroupService {
      boolean isGroup(String selectedClassName);
 
     /**
-     * 根据xxx获取id
+     * 根据xxx获取单一id
+     * @description 执行update或delete操作都需要根据id
      * @param obj xxx
      * @return String id
      */
     String getId(Object obj);
 
     /**
-     * 根据xxx获取其下所有id
+     * 根据xxx获取所有id
      * @param obj xxx
+     * @description 删除知识库时需要获取其下所有的笔记分组id
      * @return LinkedList id链表
      */
     LinkedList getIds(Object obj);

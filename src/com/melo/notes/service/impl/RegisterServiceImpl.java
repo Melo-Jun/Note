@@ -43,11 +43,14 @@ UserDaoImpl userDao=(UserDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.UserDa
      */
     @Override
     public boolean addUser(String userName, String password){
-        User user = new User();
-        user.setUserName(userName);
-        user.setPassword(getDigest(password));
-        user.setId(userDao.getMaxId(user));
-        return userDao.addUser(user);
+        if(super.notNull(userName,password)) {
+            User user = new User();
+            user.setUserName(userName);
+            user.setPassword(getDigest(password));
+            user.setId(userDao.getMaxId(user));
+            return userDao.addUser(user);
+        }
+        return false;
     }
 
 

@@ -37,11 +37,11 @@ public class FolderView extends JFrame {
     /**
      * 选中的名称
      */
-    public static String selectedName ="";
+    public static String selectedName =" ";
     /**
      * 选中的类型
      */
-    public static String selectedType ="";
+    public static String selectedType =" ";
 
     JFrame jf = new JFrame("设置笔记分组");
     private Listener l = new Listener();

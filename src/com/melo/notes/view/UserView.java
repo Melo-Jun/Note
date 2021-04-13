@@ -4,10 +4,14 @@
 
 package com.melo.notes.view;
 
+import com.melo.notes.entity.Announcement;
 import com.melo.notes.entity.User;
+import com.melo.notes.service.impl.AdminServiceImpl;
+import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.LinkedList;
 import javax.swing.*;
 
 /**
@@ -18,10 +22,25 @@ import javax.swing.*;
  */
 public class UserView extends JFrame {
 
+    /**
+     * 相关操作类
+     */
+    AdminServiceImpl adminService=(AdminServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.AdminServiceImpl);
+
+    /**
+     * 所有公告对象链表
+     */
+    LinkedList<Announcement> announcements=adminService.showAnnouncementAll();
+
     public UserView(User user) {
         initComponents();
         setVisible(true);
         welcome.setText("欢迎回来, "+LoginView.USER.getUserName());
+        titleText.setText( "欢迎使用本软件");
+        textArea.setText("请注意,本软件仅供学习交流使用,开发者:Melo");
+        for(int i=1;i<=announcements.size();i++){
+            selectedPage.addItem(String.valueOf(i));
+        }
         setSize(650, 650);
         setLocation(600, 260);
     }
@@ -47,6 +66,16 @@ public class UserView extends JFrame {
         new PersonalUserView();
     }
 
+    /**
+     * 公告页面跳转按钮
+     * @param e
+     */
+    private void toPageActionPerformed(ActionEvent e) {
+        int page = Integer.parseInt(selectedPage.getSelectedItem().toString());
+        titleText.setText(announcements.get(page-1).getTitle());
+        textArea.setText(announcements.get(page-1).getText());
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -58,6 +87,12 @@ public class UserView extends JFrame {
         user = new JMenu();
         update = new JMenuItem();
         welcome = new JLabel();
+        titleText = new JLabel();
+        label2 = new JLabel();
+        scrollPane1 = new JScrollPane();
+        textArea = new JTextArea();
+        selectedPage = new JComboBox();
+        toPage = new JButton();
         photo = new JLabel();
 
         //======== this ========
@@ -122,12 +157,41 @@ public class UserView extends JFrame {
         welcome.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
         welcome.setForeground(new Color(51, 153, 255));
         contentPane.add(welcome);
-        welcome.setBounds(135, 85, 283, 116);
+        welcome.setBounds(350, 105, 283, 116);
+        contentPane.add(titleText);
+        titleText.setBounds(780, 65, 150, 30);
+
+        //---- label2 ----
+        label2.setText("\u516c\u544a");
+        label2.setHorizontalAlignment(SwingConstants.CENTER);
+        label2.setForeground(new Color(102, 204, 255));
+        contentPane.add(label2);
+        label2.setBounds(830, 5, 50, 50);
+
+        //======== scrollPane1 ========
+        {
+            scrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+            //---- textArea ----
+            textArea.setLineWrap(true);
+            textArea.setEditable(false);
+            scrollPane1.setViewportView(textArea);
+        }
+        contentPane.add(scrollPane1);
+        scrollPane1.setBounds(775, 105, 170, 135);
+        contentPane.add(selectedPage);
+        selectedPage.setBounds(810, 260, 95, selectedPage.getPreferredSize().height);
+
+        //---- toPage ----
+        toPage.setText("\u8df3\u8f6c");
+        toPage.addActionListener(e -> toPageActionPerformed(e));
+        contentPane.add(toPage);
+        toPage.setBounds(825, 310, 75, toPage.getPreferredSize().height);
 
         //---- photo ----
         photo.setIcon(new ImageIcon(getClass().getResource("/img/UserView.jpg")));
         contentPane.add(photo);
-        photo.setBounds(0, 15, 945, 575);
+        photo.setBounds(0, -30, 945, 620);
 
         {
             // compute preferred size
@@ -156,6 +220,12 @@ public class UserView extends JFrame {
     private JMenu user;
     private JMenuItem update;
     private JLabel welcome;
+    private JLabel titleText;
+    private JLabel label2;
+    private JScrollPane scrollPane1;
+    private JTextArea textArea;
+    private JComboBox selectedPage;
+    private JButton toPage;
     private JLabel photo;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
