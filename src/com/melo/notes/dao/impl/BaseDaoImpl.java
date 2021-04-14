@@ -162,7 +162,7 @@ public class BaseDaoImpl implements BaseDao {
         fieldMapper(obj, fieldNames, fieldValues);
         StringBuilder sql = new StringBuilder("update " + getTableName(obj) + " set ");
         for(Object fieldName:fieldNames) {
-            //先过滤id,id要留到最后
+            //先过滤id,id要留到最后作为根据
             if(!"id".equals(fieldName.toString())) {
                 sql.append(fieldName + "=?, ");
             }
@@ -256,7 +256,12 @@ public class BaseDaoImpl implements BaseDao {
                 while (rs.next()) {
                     Object newInstance = clazz.newInstance();
                     for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                        setMethods.get(i - 1).invoke(newInstance, rs.getObject(i));
+                        if(rsmd.getColumnName(i).equals(("id"))){
+                            Integer temp = rs.getInt(i);
+                            setMethods.get(i-1).invoke(newInstance,temp.toString());
+                        }else {
+                            setMethods.get(i - 1).invoke(newInstance, rs.getObject(i));
+                        }
                     }
                     values.add(newInstance);
                 }
@@ -331,36 +336,5 @@ public class BaseDaoImpl implements BaseDao {
     }
 
 
-    /**
-     * 获取最大Id
-     * 用于插入一条记录时使用
-     * @description 数据库id设置为String无法自增(设置int映射时无法转化为object)
-     * @notice 无最大时则返回1
-     * @param obj 对象
-     * @return String  该对象表中最大id
-     */
-    @Override
-    public String getMaxId(Object obj) {
-        String sql = "select MAX(id) from " + getTableName(obj);
-        Connection conn=getConnection();
-        Statement stmt=null;
-        ResultSet rs=null;
-        try {
-            assert conn != null;
-            stmt=conn.createStatement();
-            rs=stmt.executeQuery(sql);
-            if(rs.next()){
-                /*
-                  获取最大后+1
-                 */
-                return rs.getString(1)==null?"1":increaseOne(rs.getString(1));
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
-            freeConnection(conn);
-            close(stmt,rs);
-        }
-        return "1";
-    }
+
 }

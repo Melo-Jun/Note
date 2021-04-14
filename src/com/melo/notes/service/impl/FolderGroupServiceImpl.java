@@ -7,12 +7,15 @@ import com.melo.notes.entity.Folder;
 import com.melo.notes.entity.Group;
 import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
+import com.melo.notes.exception.DaoException;
+import com.melo.notes.service.constant.Status;
 import com.melo.notes.service.constant.TypeName;
 import com.melo.notes.service.inter.FolderGroupService;
 import com.melo.notes.util.BeanFactory;
 import com.melo.notes.view.FolderView;
 import com.melo.notes.view.LoginView;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -37,11 +40,6 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
     private final int GROUP_TYPE =3;
     private final int NOTE_TYPE =4;
     /**
-     * 相应对象名称
-     */
-    private final String DEFAULT=LoginView.USER.getUserName();
-
-    /**
      * 根据节点数判断是什么类
      * @param treePathCount 节点数
      * @return String 对象名称
@@ -58,7 +56,7 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
     }
 
     /**
-     * 根据登录的用户Id获取知识库名称
+     * 根据登录的用户Id获取知识库id和名称
      *
      * @return HashMap 知识库id-知识库名称
      */
@@ -76,86 +74,89 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
      */
     @Override
     public HashMap<Object, Object> showNoteGroup(String folderId) {
-        Folder folder = new Folder();
-        folder.setId(folderId);
-        return groupDao.showNoteGroup(folder);
+        if(super.notNull(folderId)) {
+            Folder folder = new Folder();
+            folder.setId(folderId);
+            return groupDao.showNoteGroup(folder);
+        }
+        return null;
     }
 
     /**
      * 根据传入类名删除对应类对象
      *
-     * @param selectedName  选中名称
+     * @param selectedName      对象名称
      * @param selectedType 对应类型
-     * @notice 删除知识库或分组会把其下的移至默认笔记分组
+     * @param selectedId 对应id
      * @return int 影响的行数
      */
     @Override
-    public int delete(String selectedName, String selectedType) {
-        if(super.notNull(selectedName,selectedType)) {
+    public int delete(String selectedName, String selectedType,String selectedId) {
         /*
           阻止删除默认知识库笔记分组
          */
-            if (DEFAULT.equals(selectedName)) {
-                return 0;
-            }
-            //删除知识库
-            if (selectedType.equals(TypeName.FOLDER.getMessage())) {
-                //构造临时对象获取id
-                Folder folder = new Folder();
-                folder.setFolderName(selectedName);
-                //根据id删除知识库
-                String folderId = getId(folder);
-                folderDao.deleteFolder(folderId);
+        if (TypeName.DEFAULT.getMessage().equals(selectedName)) {
+            return 0;
+        }
+        if(super.notNull(selectedName,selectedType,selectedId)) {
+            if (JOptionPane.showConfirmDialog(null,
+                    "确认删除请按是", "确认删除", JOptionPane.YES_NO_OPTION) == 0) {
+            /*
+            删除知识库
+             */
+                if (selectedType.equals(TypeName.FOLDER.getMessage())) {
+                    //根据id删除知识库
+                    String folderId = selectedId;
             /*
             将该知识库其下的笔记分组移至默认知识库
              */
-                Group group = new Group();
-                group.setLocatedFolder(folderId);
-                //获取该知识库其下所有笔记分组id
-                LinkedList groupIds = getIds(group);
-                if (!groupIds.isEmpty()) {
-                    //根据笔记分组id遍历删除
-                    for (Object groupId : groupIds) {
-                        Group temp = new Group();
-                        temp.setId(groupId.toString());
-                        groupDao.delete(temp);
+                    Group group = new Group();
+                    group.setLocatedFolder(folderId);
+                    //获取该知识库其下所有笔记分组id
+                    LinkedList groupIds = getIds(group);
+                    if (!groupIds.isEmpty()) {
+                        //根据笔记分组id遍历删除
+                        for (Object groupId : groupIds) {
+                            groupDao.deleteGroup(groupId.toString());
+                        }
                     }
+                    //可能该知识库下没有笔记分组,故需根据这个来返回值
+                    return folderDao.deleteFolder(folderId);
+                }
+        /*
+        删除笔记分组
+         */
+                if (selectedType.equals(TypeName.GROUP.getMessage())) {
+                    Group group = new Group();
+                    String groupId = FolderView.selectedId;
+                    group.setId(groupId);
+            /*
+            将该笔记分组其下的笔记移至默认笔记分组
+             */
+                    Note note = new Note();
+                    note.setLocatedGroup(groupId);
+                    //获取该笔记分组其下所有笔记id
+                    LinkedList noteIds = getIds(note);
+                    if (!noteIds.isEmpty()) {
+                        //根据笔记id遍历删除
+                        for (Object noteId : noteIds) {
+                            noteDao.deleteNote(noteId.toString());
+                        }
+                    }
+                    //可能该笔记分组下没有笔记,故需根据这个来返回值
+                    return groupDao.deleteGroup(groupId);
+                }
+        /*
+        删除笔记
+         */
+                if (selectedType.equals(TypeName.NOTE.getMessage())) {
+                    //构造临时对象获取id
+                    return noteDao.deleteNote(selectedId);
                 }
             }
             return 0;
         }
-        //删除笔记分组
-        if(selectedType.equals(TypeName.GROUP.getMessage())){
-            //构造临时对象获取id
-            Group tempGroup = new Group();
-            tempGroup.setGroupName(selectedName);
-            String groupId=getId(tempGroup);
-            groupDao.deleteGroup(groupId);
-            /*
-            将该笔记分组其下的笔记移至默认笔记分组
-             */
-            Note note = new Note();
-            note.setLocatedGroup(groupId);
-            //获取该笔记分组其下所有笔记id
-            LinkedList noteIds = getIds(note);
-            if(!noteIds.isEmpty()) {
-                //根据笔记id遍历删除
-                for (Object noteId : noteIds) {
-                    Note temp = new Note();
-                    temp.setId(noteId.toString());
-                    noteDao.delete(temp);
-                }
-            }
-        }
-        //删除笔记
-        if(selectedType.equals(TypeName.NOTE.getMessage())){
-            //构造临时对象获取id
-            Note tempNote = new Note();
-            tempNote.setTitle(selectedName);
-            String noteId=getId(tempNote);
-            noteDao.deleteNote(noteId);
-        }
-        return 1;
+        return 0;
     }
 
     /**
@@ -164,11 +165,12 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
      */
     @Override
     public void initFolderGroup(){
-        //如果该用户没有知识库
+        //如果该用户没有知识库,生成默认知识库和笔记分组
         if(showFolderName().isEmpty()) {
-            addFolder(DEFAULT, TypeName.PUBLIC.getMessage(), LoginView.USER.getId());
-            addGroup(DEFAULT, DEFAULT);
+            addFolder(TypeName.DEFAULT.getMessage(), TypeName.PUBLIC.getMessage(), LoginView.USER.getId());
+            addGroup(TypeName.DEFAULT.getMessage(), groupDao.getMaxId(new Folder()));
         }
+
     }
 
     /**
@@ -181,11 +183,16 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
     @Override
     public boolean addFolder(String name, String access,String authorId){
         if(super.notNull(name,access,authorId)) {
-            Folder folder = new Folder();
-            folder.setFolderName(name);
-            folder.setAccess(access);
-            folder.setAuthorId(authorId);
-            return folderDao.addFolder(folder);
+            try {
+                Folder folder = new Folder();
+                folder.setFolderName(name);
+                folder.setAccess(access);
+                folder.setAuthorId(authorId);
+                return folderDao.addFolder(folder);
+            }catch (Exception e) {
+                e.printStackTrace();
+                throw new DaoException("该知识库名称已存在");
+            }
         }
         return false;
     }
@@ -193,18 +200,15 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
     /**
      * 新增笔记分组
      * @param groupName 笔记分组名称
-     * @param locatedFolder 所在知识库名称
+     * @param folderId 所在知识库id
      * @return boolean 操作是否成功
      */
     @Override
-    public boolean addGroup(String groupName, String locatedFolder){
-        if(super.notNull(groupName,locatedFolder)) {
+    public boolean addGroup(String groupName, String folderId){
+        if(super.notNull(groupName,folderId)) {
+            //封装对象新增笔记分组
             Group group = new Group();
-            //根据知识库名称反向获取知识库id
-            Folder folder = new Folder();
-            folder.setFolderName(locatedFolder);
-            group.setLocatedFolder(getId(folder));
-
+            group.setLocatedFolder(folderId);
             group.setGroupName(groupName);
             group.setAuthorId(LoginView.USER.getId());
             return groupDao.insert(group) == 1;
@@ -213,39 +217,50 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
     }
 
     /**
+     * 新增笔记
+     * @param title 标题
+     * @param text 文本内容
+     * @param access 权限
+     * @param groupId 所在笔记分组id
+     * @return boolean 是否增加成功
+     */
+    @Override
+    public boolean addNote(String title, String text, String access, String groupId){
+        if(super.notNull(title,text,access,groupId)) {
+            Note note = new Note(title, LoginView.USER.getId(), text, access, 0, groupId);
+            return noteDao.addNote(note);
+        }
+        return false;
+    }
+
+    /**
      * 根据前台传入参数更新相应对象
      *
      * @param selectedName  oldName
-     * @param updateName  newName
      * @param selectedType 对应类型
      * @return int 影响的行数
      */
     @Override
-    public int update(String selectedName, String updateName, String selectedType) {
-        if(super.notNull(updateName,selectedName,selectedType)) {
+    public int update(String selectedName, String selectedType) {
         /*
           阻止修改默认知识库笔记分组
          */
-            if ( DEFAULT.equals(selectedName)) {
-                return 0;
-            }
+        if ( TypeName.DEFAULT.getMessage().equals(selectedName)) {
+            return 0;
+        }
+        String updateName = JOptionPane.showInputDialog("请输入修改名称");
+        if(super.notNull(updateName,selectedName,selectedType)) {
             if (selectedType.equals(TypeName.FOLDER.getMessage())) {
-                //先根据oldName获取id
+                //封装对象执行更新
                 Folder folder = new Folder();
-                folder.setFolderName(selectedName);
-                String folderId = getId(folder);
-                //newName覆盖oldName
-                folder.setId(folderId);
+                folder.setId(FolderView.selectedId);
                 folder.setFolderName(updateName);
                 return folderDao.updateFolderName(folder);
             }
             if (selectedType.equals(TypeName.GROUP.getMessage())) {
-                //先根据oldName获取id
+                //封装对象执行更新
                 Group group = new Group();
-                group.setGroupName(selectedName);
-                String groupId = getId(group);
-                //newName覆盖oldName
-                group.setId(groupId);
+                group.setId(FolderView.selectedId);
                 group.setGroupName(updateName);
                 return groupDao.updateGroup(group);
             }
@@ -255,26 +270,22 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
 
     /**
      * 设置笔记分组
-     * @param selectedGroup 选中的笔记分组
+     * @param groupName 选中的笔记分组名称
      * @param locatedFolder 目标知识库名称
+     * @param groupId 选中的笔记id
      * @return int 影响的行数
      */
     @Override
-    public int setGroup(String selectedGroup,String locatedFolder){
-        if(super.notNull(selectedGroup,locatedFolder)) {
+    public int setGroup(String groupName,String locatedFolder,String groupId){
+        if(super.notNull(groupName,locatedFolder,groupId)) {
             if (isGroup(FolderView.selectedType)) {
-                //根据知识库名称反向获取id
-                Folder folder = new Folder();
-                folder.setFolderName(locatedFolder);
-
-                //根据笔记分组名称反向获取id
+                //截断获取知识库id
+                int location = locatedFolder.indexOf("-");
+                String folderId = locatedFolder.substring(0, location);
+                //封装笔记对象,更新笔记
                 Group group = new Group();
-                group.setGroupName(selectedGroup);
-                String groupId = getId(group);
-
                 group.setId(groupId);
-                group.setLocatedFolder(getId(folder));
-                group.setGroupName(null);
+                group.setLocatedFolder(folderId);
                 return groupDao.update(group);
             }
         }
@@ -303,7 +314,10 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
      */
     @Override
     public String getId(Object obj ) {
-        return groupDao.getId(obj).getFirst().toString();
+        if(super.notNull(obj.toString())) {
+            return groupDao.getId(obj).getFirst().toString();
+        }
+        return null;
     }
 
     /**
@@ -313,7 +327,10 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
      */
     @Override
     public LinkedList getIds(Object obj){
-        return  groupDao.getId(obj);
+        if(super.notNull(obj.toString())) {
+            return groupDao.getId(obj);
+        }
+        return null;
     }
 
 }

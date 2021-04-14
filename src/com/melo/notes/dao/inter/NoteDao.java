@@ -2,6 +2,7 @@ package com.melo.notes.dao.inter;
 
 import com.melo.notes.entity.Note;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -18,7 +19,7 @@ public interface NoteDao {
      * @notice 无根据时则传null
      * @return LinkedList 笔记标题链表
      */
-     LinkedList<Object> showNoteTitle(Object obj);
+     HashMap showNoteTitle(Object obj);
 
     /**
      *分页查询文本

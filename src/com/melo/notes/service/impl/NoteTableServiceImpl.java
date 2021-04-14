@@ -70,8 +70,8 @@ public class NoteTableServiceImpl extends BaseServiceImpl implements NoteTableSe
      * @return 是否操作成功
      */
     @Override
-    public boolean updateLikeCount(String updateLikeCount, String noteId){
-        if(super.notNull(updateLikeCount,noteId)) {
+    public boolean updateLikeCount(Integer updateLikeCount, String noteId){
+        if(super.notNull(noteId)) {
             Note note = new Note();
             note.setId(noteId);
             note.setLikeCount(updateLikeCount);
@@ -87,8 +87,8 @@ public class NoteTableServiceImpl extends BaseServiceImpl implements NoteTableSe
      * @return 操作是否成功
      */
     @Override
-    public boolean increaseLikeCount(String updateLikeCount, String noteId){
-        if(super.notNull(updateLikeCount,noteId)) {
+    public boolean increaseLikeCount(Integer updateLikeCount, String noteId){
+        if(super.notNull(noteId)) {
             LinkedList likeUsers = showLikeUser(noteId);
             if (!likeUsers.isEmpty() && likeUsers.contains(LoginView.USER.getId())) {
                 return false;
@@ -110,9 +110,11 @@ public class NoteTableServiceImpl extends BaseServiceImpl implements NoteTableSe
      * @return 操作是否成功
      */
     @Override
-    public boolean decreaseLikeCount(String updateLikeCount, String noteId){
-        if(super.notNull(updateLikeCount,noteId)) {
+    public boolean decreaseLikeCount(Integer updateLikeCount, String noteId){
+        if(super.notNull(noteId)) {
+            //查询点赞过的用户
             LinkedList likeUsers = showLikeUser(noteId);
+            //如果没点赞过,则无法取消点赞
             if (!likeUsers.contains(LoginView.USER.getId())) {
                 return false;
             }
@@ -126,7 +128,7 @@ public class NoteTableServiceImpl extends BaseServiceImpl implements NoteTableSe
     }
 
     /**
-     * 展示笔记作者名
+     * 根据作者id展示笔记作者名
      * @param authorId 作者id
      * @return 作者名
      */

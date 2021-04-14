@@ -12,6 +12,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 
@@ -33,16 +35,18 @@ public class SetGroupView extends JFrame {
         /*
           初始化下拉框
          */
-        HashMap<Object, Object> folderName = folderGroupService.showFolderName();
-        Collection<Object> values = folderName.values();
-        for(Object temp:values){
-            selectedLocatedFolder.addItem(temp);
+        HashMap<Object, Object> folder = folderGroupService.showFolderName();
+        Set<Map.Entry<Object, Object>> folderSet =  folder.entrySet();
+        for(Map.Entry tempFolder:folderSet) {
+            String folderId = tempFolder.getKey().toString();
+            String folerName=tempFolder.getValue().toString();
+            selectedLocatedFolder.addItem(folderId+"--"+folerName);
         }
     }
 
     private void submitActionPerformed(ActionEvent e) {
         String locatedFolder = (String) selectedLocatedFolder.getSelectedItem();
-        if (folderGroupService.setGroup(FolderView.selectedName, locatedFolder) != 0) {
+        if (folderGroupService.setGroup(FolderView.selectedName, locatedFolder,FolderView.selectedId) != 0) {
             JOptionPane.showMessageDialog(null, "设置成功");
             this.dispose();
         } else {

@@ -37,9 +37,10 @@ public interface FolderGroupService {
      *
      * @param selectedName      对象名称
      * @param selectedType 对应类型
+     * @param selectedId 对应id
      * @return int 影响的行数
      */
-     int delete(String selectedName,String selectedType);
+     int delete(String selectedName,String selectedType,String selectedId);
 
     /**
      * 为新用户初始化知识库和笔记分组
@@ -59,28 +60,38 @@ public interface FolderGroupService {
     /**
      * 新增笔记分组
      * @param groupName 笔记分组名称
-     * @param locatedFolder 所在知识库
+     * @param folderId 所在知识库id
      * @return boolean 操作是否成功
      */
-     boolean addGroup(String groupName,String locatedFolder);
+     boolean addGroup(String groupName,String folderId);
+
+    /**
+     * 新增笔记
+     * @param title 标题
+     * @param text 文本内容
+     * @param access 权限
+     * @param groupId 所在笔记分组id
+     * @return boolean 是否增加成功
+     */
+     boolean addNote(String title,String text,String access,String groupId);
 
     /**
      * 根据前台传入参数更新相应对象
      *
      * @param selectedName  oldName
-     * @param updateName  newName
      * @param selectedType 对应类型
      * @return int 影响的行数
      */
-     int update(String selectedName, String updateName, String selectedType);
+     int update(String selectedName,  String selectedType);
 
     /**
      * 设置笔记分组
-     * @param selectedGroup 选中的笔记分组
-     * @param locatedFolder 目标知识库
+     * @param groupName 选中的笔记分组名称
+     * @param locatedFolder 目标知识库名称
+     * @param groupId 选中的笔记id
      * @return int 影响的行数
      */
-     int setGroup(String selectedGroup,String locatedFolder);
+    int setGroup(String groupName,String locatedFolder,String groupId);
 
     /**
      * 选择分组时判断是否为分组

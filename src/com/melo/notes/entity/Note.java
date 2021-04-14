@@ -15,13 +15,13 @@ public class Note extends BaseEntity {
     private String authorId;
     private String text;
     private String access;
-    private String likeCount;
+    private Integer likeCount;
     private String locatedGroup;
 
     public Note() {
     }
 
-    public Note(String title, String authorId, String text, String access, String likeCount, String locatedGroup) {
+    public Note(String title, String authorId, String text, String access, Integer likeCount, String locatedGroup) {
         this.title = title;
         this.authorId = authorId;
         this.text = text;
@@ -30,13 +30,12 @@ public class Note extends BaseEntity {
         this.locatedGroup = locatedGroup;
     }
 
-    public Note(String title, String authorId, String text, String access, String locatedGroup) {
+    public Note(String title, String text, String access) {
         this.title = title;
-        this.authorId = authorId;
         this.text = text;
         this.access = access;
-        this.locatedGroup = locatedGroup;
     }
+
 
     public String getTitle() {
         return title;
@@ -55,7 +54,7 @@ public class Note extends BaseEntity {
     }
 
 
-    public String getLikeCount() {
+    public Integer getLikeCount() {
         return likeCount;
     }
 
@@ -80,7 +79,7 @@ public class Note extends BaseEntity {
         this.access = access;
     }
 
-    public void setLikeCount(String likeCount) {
+    public void setLikeCount(Integer likeCount) {
         this.likeCount = likeCount;
     }
 

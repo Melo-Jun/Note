@@ -4,7 +4,6 @@
 
 package com.melo.notes.view;
 
-import javax.swing.plaf.*;
 import com.melo.notes.controller.LoginController;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.impl.LoginServiceImpl;
@@ -27,15 +26,6 @@ public class LoginView extends JFrame {
      */
     LoginServiceImpl loginViewService = (LoginServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.LoginService);
 
-    /**
-     * 管理员身份码
-     */
-    private final String ADMIN="管理员";
-    /**
-     * 登录成功状态码
-     */
-    private final String USERVIEW="登录成功";
-    private final String ADMINVIEW="欢迎管理员";
     /**
      * 存储登录进来的用户
      */
@@ -64,29 +54,8 @@ public class LoginView extends JFrame {
      */
     private void loginActionPerformed(ActionEvent e) {
         new LoginController().login(this);
-
-
-        /**
-         * 获取文本框内容和下拉权限值
-         */
-        /*String userName = userNameText.getText();
-        String password = String.valueOf(passwordField.getPassword());
-        String access = (String) this.access.getSelectedItem();
-        String message = loginViewService.login(userName, password, access);
-        JOptionPane.showMessageDialog(null,message);
-        if(message.equals(USERVIEW)) {
-            USER = new User(userName, password);
-            /**
-             * 销毁当前窗口并存储user设置id，跳转到用户界面
-             */
-            /*loginViewService.setId(USER);
-            this.dispose();
-            new UserView(USER).setVisible(true);
-        }
-        if(message.equals(ADMINVIEW)){
-            new AdminView();
-        }*/
     }
+
     /**
      * 注册按钮事件
      * @param e

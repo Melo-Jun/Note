@@ -3,6 +3,7 @@ package com.melo.notes.dao.impl;
 import com.melo.notes.dao.inter.NoteDao;
 import com.melo.notes.entity.Note;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 ;
 
@@ -29,8 +30,8 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
      * @return LinkedList 笔记标题链表
      */
     @Override
-    public LinkedList<Object> showNoteTitle(Object obj) {
-        StringBuilder sql = new StringBuilder( "select title from "+TABLE_NAME);
+    public HashMap showNoteTitle(Object obj) {
+        StringBuilder sql = new StringBuilder( "select id,title from "+TABLE_NAME);
         /*
           将对象映射成属性和值(属性会映射为数据库字段名)
          */
@@ -52,7 +53,7 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
         /*
           完成sql注入和执行
          */
-        return queryList(sql.toString(),obj);
+        return queryMap(sql.toString(),obj);
     }
 
     /**
@@ -106,7 +107,6 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
      */
     @Override
     public boolean addNote(Note note){
-        note.setId(getMaxId(note));
         return super.insert(note)==1;
     }
 

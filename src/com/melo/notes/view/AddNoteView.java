@@ -8,6 +8,7 @@ import com.melo.notes.dao.impl.NoteDaoImpl;
 import com.melo.notes.entity.Group;
 import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
+import com.melo.notes.service.constant.Status;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
@@ -27,7 +28,6 @@ public class AddNoteView extends JFrame {
     /**
      * 创建相关操作类对象
      */
-    NoteDaoImpl noteDao = (NoteDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.NoteDao);
     FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
 
     public AddNoteView(User user) {
@@ -43,16 +43,15 @@ public class AddNoteView extends JFrame {
      * @param e
      */
     private void summitActionPerformed(ActionEvent e) {
-        Group group = new Group();
-        group.setGroupName(FolderView.selectedName);
-        String groupId = folderGroupService.getId(group);
+        String groupId = FolderView.selectedId;
         String title = titleField.getText();
         String text = textArea.getText();
         String access = (String) this.accessSelect.getSelectedItem();
-        Note note = new Note( title, LoginView.USER.getId(), text, access ,"0",groupId );
-        if(noteDao.addNote(note)){
-            JOptionPane.showMessageDialog(null,"增加笔记成功");
+        if(folderGroupService.addNote(title,text,access,groupId)){
+            JOptionPane.showMessageDialog(null, Status.SUCCESS.getMessage());
             this.dispose();
+        }else {
+            JOptionPane.showMessageDialog(null,Status.FAILED.getMessage());
         }
     }
 

@@ -33,7 +33,7 @@ public interface NoteTableService {
      * @param noteId 笔记id
      * @return 是否操作成功
      */
-     boolean updateLikeCount(String updateLikeCount,String noteId);
+     boolean updateLikeCount(Integer updateLikeCount,String noteId);
 
     /**
      * 点赞
@@ -41,7 +41,7 @@ public interface NoteTableService {
      * @param noteId 笔记id
      * @return 操作是否成功
      */
-    boolean increaseLikeCount(String updateLikeCount, String noteId);
+    boolean increaseLikeCount(Integer updateLikeCount, String noteId);
 
     /**
      * 取消点赞
@@ -49,7 +49,7 @@ public interface NoteTableService {
      * @param noteId 笔记id
      * @return 操作是否成功
      */
-     boolean decreaseLikeCount(String updateLikeCount, String noteId);
+     boolean decreaseLikeCount(Integer updateLikeCount, String noteId);
 
     /**
      * 展示笔记作者名

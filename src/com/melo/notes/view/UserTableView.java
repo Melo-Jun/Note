@@ -32,7 +32,9 @@ public class UserTableView extends JFrame {
 
     private DefaultTableModel model= null;
     private JTable table=null;
+
     private String userId=null;
+
     public UserTableView() {
         initComponents();
         setVisible(true);
@@ -55,8 +57,11 @@ public class UserTableView extends JFrame {
      * @param e
      */
     private void blockActionPerformed(ActionEvent e) {
-        userTableService.updateValidity(TypeName.NOT_VALID.getMessage(), userId);
-        JOptionPane.showMessageDialog(null, Status.SUCCESS.getMessage());
+        if(userTableService.updateValidity(TypeName.NOT_VALID.getMessage(), userId)!=0) {
+            JOptionPane.showMessageDialog(null, Status.SUCCESS.getMessage());
+        }else {
+            JOptionPane.showMessageDialog(null,Status.FAILED.getMessage());
+        }
     }
 
     /**
@@ -64,8 +69,11 @@ public class UserTableView extends JFrame {
      * @param e
      */
     private void withdrawBlockActionPerformed(ActionEvent e) {
-        userTableService.updateValidity(TypeName.VALID.getMessage(), userId);
-        JOptionPane.showMessageDialog(null,Status.SUCCESS.getMessage());
+        if(userTableService.updateValidity(TypeName.VALID.getMessage(), userId)!=0) {
+            JOptionPane.showMessageDialog(null, Status.SUCCESS.getMessage());
+        }else {
+            JOptionPane.showMessageDialog(null,Status.FAILED.getMessage());
+        }
     }
 
     /**
@@ -76,8 +84,10 @@ public class UserTableView extends JFrame {
        new UserNoteView(userId);
     }
 
-
-
+    /**
+     * Ë¢ÐÂ
+     * @param e
+     */
     private void backActionPerformed(ActionEvent e) {
         fillTable(new User());
     }

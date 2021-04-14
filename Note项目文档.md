@@ -97,6 +97,8 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
     >   要在service去构造对象还是Dao里边构造对象呢,Dao里边吧?
     >
+    >   - 除非是service中太长了,就在dao里边构造吧
+    >
     >   几乎都在service中构造对象,除了fillTable需要一些业务对象的没办法避免
 
 - 解决资源关闭问题,return放在try里边就可以了阿,做完map再return![image-20210406202817792](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406202817792.png)
@@ -107,9 +109,11 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 # 优化
 
-- 展示笔记内容分页,以及显示字数
+- ~~展示笔记内容分页,以及显示字数~~
 
-- 修改笔记封装和增加笔记封装![image-20210411112338118](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210411112338118.png)
+- ~~**Jtree把id也显示出来吧,显示在左上角?新增笔记分组也选中知识库即可**~~
+
+- ~~修改笔记封装和增加笔记封装~~![image-20210411112338118](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210411112338118.png)
 
 - ![image-20210406164454733](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406164454733.png)
 
@@ -119,13 +123,13 @@ public LinkedList<Object> showNoteTitle(Object obj) {
     >
     > 可写个toxxx,在Dao中就泛型,先获取Base,再return toxxx之后的结果(小麻烦)
 
-- select语句到底要不要动态拼接,还是说要分成不同职能的函数,在特定Dao里边不同职能,只是Base通用即可?
+- ~~select语句到底要不要动态拼接,还是说要分成不同职能的函数,在特定Dao里边不同职能,只是Base通用即可?~~
 
     ![image-20210411105009044](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210411105009044.png)
 
-- 写判空不执行按钮![image-20210410153556119](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210410153556119.png)
+- ~~写判空不执行按钮~~![image-20210410153556119](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210410153556119.png)
 
-- 写个常量类
+- ~~写个常量类~~
 
     > ![image-20210408185551990](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210408185551990.png)
 
@@ -137,31 +141,41 @@ public LinkedList<Object> showNoteTitle(Object obj) {
 
 - 传class可以各个Dao里边先定义好常量
 
-- 可以写判断输入是否有效的父类,可变参数其实是数组,用for each
+- ~~可以写判断输入是否有效的父类,可变参数其实是数组,用for each~~
 
 - 此处的生成对象有没有必要封装成service,**都弄成service中即可吧**![image-20210406093435527](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210406093435527.png)
 
-- 都还未进行判空验证
+- ~~都还未进行判空验证~~
 
-- 选择笔记分组时加个提示当前选中的是?
+- ~~选择笔记分组时加个提示当前选中的是?~~
 
 # 待办
 
+- ~~不能删除默认笔记分组~~
+
+- StringUtils还没删掉
+
+- TreeView还没删掉
+
+- ~~Base的getMaxIdS可以放在groupDao~~
+
 - FolderView的魔法值还没修改
+
+- ~~**Folder和那些对象型的非空还没验证**~~
 
 - FolderGroupService修改一下,看一下需不需要Controller(其他似乎都不用了)
 
-- 删除掉那些注释掉的Controller View
+- ~~删除掉那些注释掉的Controller View~~
 
 - ~~personalservice中的isValid还没改成状态码~~
 
-- 设置默认笔记分组和知识库不可修改
+- ~~设置默认笔记分组和知识库不可修改~~
 
-    > 设置笔记不能修改名称,只调到那个页面即可
+    > ~~设置笔记不能修改名称,只调到那个页面即可~~
 
-- addNoteView可删掉设置分组了,以及UserView中的增加笔记功能可删除
+- addNoteView可删掉设置分组了,~~以及UserView中的增加笔记功能可删除~~
 
-- 修改其他表id为string,**只修改了User**
+- ~~修改其他表id为string,**只修改了User**~~
 
     > ~~其他应该不用改了~~
 

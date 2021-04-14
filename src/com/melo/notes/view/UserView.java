@@ -54,14 +54,27 @@ public class UserView extends JFrame {
         new AddNoteView(LoginView.USER);
     }
 
+
+    /**
+     * 设置笔记分组
+     * @param e
+     */
     private void setNoteActionPerformed(ActionEvent e) {
         new FolderView(LoginView.USER);
     }
 
+    /**
+     * 查看笔记
+     * @param e
+     */
     private void showNoteActionPerformed(ActionEvent e) {
         new NoteTableView();
     }
 
+    /**
+     * 更改个人信息
+     * @param e
+     */
     private void updateActionPerformed(ActionEvent e) {
         new PersonalUserView();
     }
@@ -82,7 +95,6 @@ public class UserView extends JFrame {
         menuBar = new JMenuBar();
         note = new JMenu();
         showNote = new JMenuItem();
-        addNote = new JMenuItem();
         setNote = new JMenuItem();
         user = new JMenu();
         update = new JMenuItem();
@@ -121,12 +133,6 @@ public class UserView extends JFrame {
                 showNote.setFont(new Font("Microsoft YaHei UI", showNote.getFont().getStyle() & ~Font.ITALIC, showNote.getFont().getSize() + 4));
                 showNote.addActionListener(e -> showNoteActionPerformed(e));
                 note.add(showNote);
-
-                //---- addNote ----
-                addNote.setText("\u589e\u52a0\u7b14\u8bb0");
-                addNote.setFont(new Font("Microsoft YaHei UI", addNote.getFont().getStyle() & ~Font.ITALIC, addNote.getFont().getSize() + 4));
-                addNote.addActionListener(e -> addNoteActionPerformed(e));
-                note.add(addNote);
 
                 //---- setNote ----
                 setNote.setText("\u8bbe\u7f6e\u5206\u7ec4");
@@ -215,7 +221,6 @@ public class UserView extends JFrame {
     private JMenuBar menuBar;
     private JMenu note;
     private JMenuItem showNote;
-    private JMenuItem addNote;
     private JMenuItem setNote;
     private JMenu user;
     private JMenuItem update;

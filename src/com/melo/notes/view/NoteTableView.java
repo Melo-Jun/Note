@@ -9,10 +9,10 @@ import java.awt.event.*;
 import com.melo.notes.bean.AuthorBean;
 import com.melo.notes.bean.NoteBean;
 import com.melo.notes.entity.Note;
+import com.melo.notes.service.constant.TypeName;
 import com.melo.notes.service.impl.NoteServiceImpl;
 import com.melo.notes.service.impl.NoteTableServiceImpl;
 import com.melo.notes.util.BeanFactory;
-import com.melo.notes.util.StringUtils;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -28,20 +28,20 @@ import javax.swing.table.*;
  */
 public class NoteTableView extends JFrame {
 
-    private final String PUBLIC="公开";
     private Note allNote=new Note();
     /**
      * 创建相关操作对象
      */
     private final NoteServiceImpl noteService =(NoteServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.NoteService);
     private final NoteTableServiceImpl noteTableService =(NoteTableServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.NoteTableViewService);
+
     private DefaultTableModel model= null;
     private JTable table=null;
 
     public NoteTableView() {
         initComponents();
         setVisible(true);
-        allNote.setAccess("公开");
+        allNote.setAccess(TypeName.PUBLIC.getMessage());
         fillTable(allNote);
     }
 
@@ -67,8 +67,8 @@ public class NoteTableView extends JFrame {
     private void noteTextActionPerformed(ActionEvent e) {
         int row=table.getSelectedRow();
         if(row!=-1) {
-            Object noteId = model.getValueAt(row, 0);
-            new NoteTextView(noteService.showNoteText(noteId.toString()));
+            String noteId =  model.getValueAt(row, 0).toString();
+            new NoteTextView(noteService.showNoteText(noteId));
         }
     }
 
@@ -78,7 +78,7 @@ public class NoteTableView extends JFrame {
      */
     private void searchByTitleActionPerformed(ActionEvent e) {
         String title = JOptionPane.showInputDialog("请输入标题");
-        NoteBean noteBean = new NoteBean(PUBLIC,title);
+        NoteBean noteBean = new NoteBean(TypeName.PUBLIC.getMessage(),title);
         fillTable(noteBean);
     }
 
@@ -88,7 +88,7 @@ public class NoteTableView extends JFrame {
      */
     private void searchByAuthorIdActionPerformed(ActionEvent e) {
         String authorId = JOptionPane.showInputDialog("请输入作者id");
-        AuthorBean authorBean = new AuthorBean(PUBLIC,authorId);
+        AuthorBean authorBean = new AuthorBean(TypeName.PUBLIC.getMessage(), authorId);
         fillTable(authorBean);
     }
 
@@ -121,13 +121,12 @@ public class NoteTableView extends JFrame {
         int row=table.getSelectedRow();
         if(row!=-1) {
             String id = (String) model.getValueAt(row, 0);
-            String likeCount = (String) model.getValueAt(row, 4);
-            String updateLikeCount = StringUtils.increaseOne(likeCount);
-            String authorId=(String) model.getValueAt(row,2);
+            Integer likeCount = Integer.parseInt( model.getValueAt(row, 4).toString());
+            String authorId=model.getValueAt(row,2).toString();
             if(LoginView.USER.getId().equals(authorId)){
                 JOptionPane.showMessageDialog(null, "不可以点赞自己的笔记");
             }
-            else if (noteTableService.increaseLikeCount(updateLikeCount, id)) {
+            else if (noteTableService.increaseLikeCount(++likeCount, id)) {
                 JOptionPane.showMessageDialog(null, "操作成功");
                 fillTable(allNote);
             } else {
@@ -144,9 +143,8 @@ public class NoteTableView extends JFrame {
         int row=table.getSelectedRow();
         if(row!=-1) {
             String id = (String) model.getValueAt(row, 0);
-            String likeCount = (String) model.getValueAt(row, 4);
-            String updateLikeCount = StringUtils.decreaseOne(likeCount);
-            if (noteTableService.decreaseLikeCount(updateLikeCount, id)) {
+            Integer likeCount = Integer.parseInt( model.getValueAt(row, 4).toString());
+            if (noteTableService.decreaseLikeCount(--likeCount, id)) {
                 JOptionPane.showMessageDialog(null, "操作成功");
                 fillTable(allNote);
             } else {

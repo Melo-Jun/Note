@@ -32,9 +32,11 @@ public class LoginServiceImpl extends BaseServiceImpl implements LoginService {
      */
     @Override
     public void setId(User user) {
-        User temp = new User();
-        temp.setUserName(user.getUserName());
-        userDao.setId(temp);
+        if(super.notNull(user.toString())) {
+            User temp = new User();
+            temp.setUserName(user.getUserName());
+            userDao.setId(temp);
+        }
     }
 
     /**

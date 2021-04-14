@@ -42,22 +42,6 @@ public class PersonalUserView extends JFrame {
 
     private void submitActionPerformed(ActionEvent e) {
         new PersonalUserController().updatePersonalUser(this);
-       /* userName = nameText.getText();
-        String oldPass=String.valueOf(oldPassword.getPassword());
-        String firstPass = String.valueOf(newPassword.getPassword());
-        String secondPass = String.valueOf(newPassword2.getPassword());
-        String message= personalUserService.isValid(userName,firstPass,secondPass);
-        if(message.equals(SUCCESS)){
-            if(personalUserService.judgePass(userName,oldPass)){
-                personalUserService.updateUser(userName,secondPass);
-                JOptionPane.showMessageDialog(null,"修改成功,需要手动重启");
-                System.exit(-1);
-            }else {
-                JOptionPane.showMessageDialog(null,"原密码输入有误");
-            }
-        }else {
-            JOptionPane.showMessageDialog(null,message);
-        }*/
     }
 
     private void initComponents() {

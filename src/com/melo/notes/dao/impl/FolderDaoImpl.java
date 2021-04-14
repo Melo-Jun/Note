@@ -37,7 +37,6 @@ public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
      */
     @Override
     public boolean addFolder(Folder folder){
-        folder.setId(getMaxId(folder));
         return insert(folder)==1;
     }
 

@@ -31,7 +31,6 @@ public class UpdateNoteView extends JFrame {
          * 创建相关操作类对象
          */
         NoteServiceImpl noteService=(NoteServiceImpl)BeanFactory.getBean(BeanFactory.ServiceType.NoteService);
-        FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
 
         Note note=null;
 
@@ -55,15 +54,11 @@ public class UpdateNoteView extends JFrame {
          * @param e
          */
         private void summitActionPerformed(ActionEvent e) {
-            Group group = new Group();
-            group.setGroupName(TreeView.selectedName);
-            TreeView.selectedId= folderGroupService.getId(group);
             String title = titleField.getText();
             String text = textArea.getText();
             String access = (String) this.accessSelect.getSelectedItem();
-            Note note = new Note( title, LoginView.USER.getId(), text, access ,TreeView.selectedId);
-            note.setId(idText.getText());
-            if(noteService.update(note)!=0){
+            String noteId=idText.getText();
+            if(noteService.updateNote(noteId,title,text,access)!=0){
                 JOptionPane.showMessageDialog(null,Status.SUCCESS.getMessage());
                 this.dispose();
             }else {

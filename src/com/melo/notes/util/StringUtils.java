@@ -50,9 +50,12 @@ public class StringUtils {
      * @return String 修改后的字符串
      */
     public static String increaseOne(String temp) {
+        int i1 = Integer.parseInt(temp);
         char[] chars = temp.toCharArray();
         int i = (int)chars[0] + 1;
-        return String.valueOf((char)i);
+        System.out.println(i1+"整数是多少");
+        i1+=1;
+        return String.valueOf(i1);
     }
 
     /**
@@ -65,4 +68,7 @@ public class StringUtils {
         int i = (int)chars[0] - 1;
         return "0".equals(temp)?temp: String.valueOf((char)i);
     }
+
+
+
 }

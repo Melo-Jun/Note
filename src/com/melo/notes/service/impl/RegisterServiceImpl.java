@@ -47,7 +47,6 @@ UserDaoImpl userDao=(UserDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.UserDa
             User user = new User();
             user.setUserName(userName);
             user.setPassword(getDigest(password));
-            user.setId(userDao.getMaxId(user));
             return userDao.addUser(user);
         }
         return false;

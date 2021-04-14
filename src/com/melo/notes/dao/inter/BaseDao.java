@@ -101,14 +101,5 @@ public interface BaseDao {
      */
     LinkedList getId(Object obj);
 
-    /**
-     * 获取最大Id
-     * 用于插入一条记录时使用
-     * @description 数据库id设置为String无法自增(设置int映射时无法转化为object)
-     * @notice 无最大时则返回1
-     * @param obj 对象
-     * @return String  该对象表中最大id
-     */
-    String getMaxId(Object obj);
 
 }

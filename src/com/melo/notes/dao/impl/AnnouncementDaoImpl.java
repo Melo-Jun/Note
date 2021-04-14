@@ -31,7 +31,6 @@ public class AnnouncementDaoImpl extends BaseDaoImpl implements AnnouncementDao 
      */
     @Override
     public boolean addAnnouncement(Announcement announcement){
-        announcement.setId(getMaxId(announcement));
         return super.insert(announcement)==1;
     }
 

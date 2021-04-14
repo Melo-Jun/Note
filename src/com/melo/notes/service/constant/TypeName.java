@@ -20,7 +20,10 @@ public enum TypeName {
      * 笔记分组类型
      */
     GROUP("笔记分组"),
-
+    /**
+     * 默认
+     */
+    DEFAULT("默认"),
     /**
      * 身份
      */

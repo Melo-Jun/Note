@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 
@@ -33,17 +35,29 @@ public class AddGroupView extends JFrame {
         /*
           初始化下拉框
          */
-        HashMap<Object, Object> folderName = folderGroupService.showFolderName();
-        Collection<Object> values = folderName.values();
+        HashMap<Object, Object> folder = folderGroupService.showFolderName();
+        /*Collection<Object> values = folderName.values();
         for(Object temp:values){
             selectedLocatedFolder.addItem(temp);
+        }*/
+        /*
+        遍历获取folderId和folderName
+        */
+        Set<Map.Entry<Object, Object>> folderSet =  folder.entrySet();
+        for(Map.Entry tempFolder:folderSet) {
+            String folderId = tempFolder.getKey().toString();
+            String folerName=tempFolder.getValue().toString();
+            selectedLocatedFolder.addItem(folderId+"--"+folerName);
         }
     }
 
     private void submitActionPerformed(ActionEvent e) {
         String groupName = nameText.getText();
-        Object locatedFolder= selectedLocatedFolder.getSelectedItem();
-        if(folderGroupService.addGroup(groupName,locatedFolder.toString())&&!groupName.isEmpty()){
+        String locatedFolder= selectedLocatedFolder.getSelectedItem().toString();
+        //截断获取知识库id
+        int location = locatedFolder.indexOf("-");
+        String folderId = locatedFolder.substring(0, location);
+        if(folderGroupService.addGroup(groupName,folderId)){
             JOptionPane.showMessageDialog(null,"增加成功");
             this.dispose();
         }else {

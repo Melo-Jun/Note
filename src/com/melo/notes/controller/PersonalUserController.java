@@ -4,6 +4,7 @@ import com.melo.notes.service.Result;
 import com.melo.notes.service.constant.Status;
 import com.melo.notes.service.impl.PersonalUserServiceImpl;
 import com.melo.notes.util.BeanFactory;
+import com.melo.notes.view.LoginView;
 import com.melo.notes.view.PersonalUserView;
 
 import javax.swing.*;
@@ -30,7 +31,7 @@ public class PersonalUserController {
         Status status = valid.getStatus();
         switch (status) {
             case SUCCESS:
-                if (personalUserService.judgePass(userName, oldPass)) {
+                if (personalUserService.judgePass(LoginView.USER.getUserName(), oldPass)) {
                     personalUserService.updateUser(userName, secondPass);
                     JOptionPane.showMessageDialog(null, Status.REOPEN.getMessage());
                     System.exit(-1);

@@ -4,7 +4,14 @@ import com.melo.notes.dao.inter.GroupDao;
 import com.melo.notes.entity.Folder;
 import com.melo.notes.entity.Group;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
+
+import static com.melo.notes.util.JdbcUtils.*;
+import static com.melo.notes.util.JdbcUtils.close;
 
 
 /**
@@ -57,8 +64,7 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
      * @return boolean 是否增加成功
      */
     @Override
-    public boolean addFolder(Group group){
-        group.setId(getMaxId(group));
+    public boolean addGroup(Group group){
         return insert(group)==1;
     }
 
@@ -82,6 +88,39 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
     public String countGroup(Group group){
         String sql="select count(*) from " +TABLE_NAME+" where author_id=?";
         return queryList(sql,group).getFirst().toString();
+    }
+
+    /**
+     * 获取最大Id
+     * 用于生成默认笔记分组(需获取最新加入进来的知识库)id设置自增了
+     * @description
+     * @notice 无最大时则返回1
+     * @param obj 对象
+     * @return String  该对象表中最大id
+     */
+    @Override
+    public String getMaxId(Object obj) {
+        String sql = "select MAX(id) from " + getTableName(obj);
+        Connection conn=getConnection();
+        Statement stmt=null;
+        ResultSet rs=null;
+        try {
+            assert conn != null;
+            stmt=conn.createStatement();
+            rs=stmt.executeQuery(sql);
+            if(rs.next()){
+                /*
+                  获取最大后+1
+                 */
+                return rs.getObject(1)==null?"1":rs.getString(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            freeConnection(conn);
+            close(stmt,rs);
+        }
+        return "1";
     }
 
 }

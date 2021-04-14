@@ -86,8 +86,11 @@ public class UserNoteView extends JFrame {
      * @param e
      */
     private void deleteActionPerformed(ActionEvent e) {
-        noteService.delete(noteId);
-        JOptionPane.showMessageDialog(null, Status.SUCCESS.getMessage());
+        if(noteService.delete(noteId)!=0) {
+            JOptionPane.showMessageDialog(null, Status.SUCCESS.getMessage());
+        }else {
+            JOptionPane.showMessageDialog(null,Status.FAILED.getMessage());
+        }
     }
 
     /**

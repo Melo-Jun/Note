@@ -1,5 +1,7 @@
 package com.melo.notes.service.constant;
 
+import com.melo.notes.view.LoginView;
+
 /**
  * @author Jun
  * @program Note
@@ -26,6 +28,9 @@ public enum Status {
      * ·Ç·¨¿Õ¸ñ·û
      */
     SPACE(" "),
+
+
+    USER_ID(LoginView.USER.getId()),
 
 
     /*
