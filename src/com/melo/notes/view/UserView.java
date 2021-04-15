@@ -5,8 +5,9 @@
 package com.melo.notes.view;
 
 import com.melo.notes.entity.Announcement;
-import com.melo.notes.entity.User;
+import com.melo.notes.service.constant.Status;
 import com.melo.notes.service.impl.AdminServiceImpl;
+import com.melo.notes.service.impl.ForumServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
@@ -25,22 +26,31 @@ public class UserView extends JFrame {
     /**
      * 相关操作类
      */
-    AdminServiceImpl adminService=(AdminServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.AdminServiceImpl);
+    AdminServiceImpl adminService=(AdminServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.AdminService);
+    ForumServiceImpl forumService=(ForumServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.ForumService);
 
     /**
      * 所有公告对象链表
      */
     LinkedList<Announcement> announcements=adminService.showAnnouncementAll();
 
-    public UserView(User user) {
+    /**
+     * 选中的论坛id
+     */
+    private String forumId=null;
+
+    public UserView() {
         initComponents();
         setVisible(true);
         welcome.setText("欢迎回来, "+LoginView.USER.getUserName());
         titleText.setText( "欢迎使用本软件");
         textArea.setText("请注意,本软件仅供学习交流使用,开发者:Melo");
+        //根据公告数量初始化下拉框
         for(int i=1;i<=announcements.size();i++){
             selectedPage.addItem(String.valueOf(i));
         }
+        //初始化论坛
+        list.setListData(forumService.listForumTitle());
         setSize(650, 650);
         setLocation(600, 260);
     }
@@ -89,6 +99,48 @@ public class UserView extends JFrame {
         textArea.setText(announcements.get(page-1).getText());
     }
 
+    /**
+     * 查看论坛内容
+     * @param e
+     */
+    private void lookActionPerformed(ActionEvent e) {
+        if(forumId!=null) {
+            new ForumTextView(forumId);
+        }else {
+            JOptionPane.showMessageDialog(null, Status.FAILED.getMessage());
+        }
+    }
+
+    /**
+     * 新增论坛内容
+     * @param e
+     */
+    private void addForumActionPerformed(ActionEvent e) {
+        new AddForumView();
+    }
+
+    /**
+     * list监听器
+     * 获取论坛id
+     * @param e
+     */
+    private void listMouseClicked(MouseEvent e) {
+        if(list.getMaxSelectionIndex()!=-1) {
+            //截断":"之前的为id
+            String idTitle = list.getSelectedValue().toString();
+            int location = idTitle.indexOf(":");
+            forumId = idTitle.substring(0, location);
+        }
+    }
+
+    /**
+     * 刷新按钮
+     * @param e
+     */
+    private void flushActionPerformed(ActionEvent e) {
+        list.setListData(forumService.listForumTitle());
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -105,6 +157,12 @@ public class UserView extends JFrame {
         textArea = new JTextArea();
         selectedPage = new JComboBox();
         toPage = new JButton();
+        scrollPane2 = new JScrollPane();
+        list = new JList();
+        addForum = new JButton();
+        look = new JButton();
+        flush = new JButton();
+        label3 = new JLabel();
         photo = new JLabel();
 
         //======== this ========
@@ -161,18 +219,21 @@ public class UserView extends JFrame {
         welcome.setHorizontalAlignment(SwingConstants.CENTER);
         welcome.setText("\u6b22\u8fce\u56de\u6765");
         welcome.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
-        welcome.setForeground(new Color(51, 153, 255));
+        welcome.setForeground(new Color(102, 255, 255));
         contentPane.add(welcome);
         welcome.setBounds(350, 105, 283, 116);
+
+        //---- titleText ----
+        titleText.setForeground(new Color(102, 204, 255));
         contentPane.add(titleText);
         titleText.setBounds(780, 65, 150, 30);
 
         //---- label2 ----
         label2.setText("\u516c\u544a");
+        label2.setForeground(new Color(102, 255, 255));
         label2.setHorizontalAlignment(SwingConstants.CENTER);
-        label2.setForeground(new Color(102, 204, 255));
         contentPane.add(label2);
-        label2.setBounds(830, 5, 50, 50);
+        label2.setBounds(835, 20, 50, 35);
 
         //======== scrollPane1 ========
         {
@@ -194,10 +255,52 @@ public class UserView extends JFrame {
         contentPane.add(toPage);
         toPage.setBounds(825, 310, 75, toPage.getPreferredSize().height);
 
+        //======== scrollPane2 ========
+        {
+
+            //---- list ----
+            list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            list.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    listMouseClicked(e);
+                }
+            });
+            scrollPane2.setViewportView(list);
+        }
+        contentPane.add(scrollPane2);
+        scrollPane2.setBounds(10, 260, 195, 250);
+
+        //---- addForum ----
+        addForum.setText("\u5410\u69fd\u4e00\u4e0b");
+        addForum.addActionListener(e -> addForumActionPerformed(e));
+        contentPane.add(addForum);
+        addForum.setBounds(new Rectangle(new Point(10, 530), addForum.getPreferredSize()));
+
+        //---- look ----
+        look.setText("\u67e5\u770b");
+        look.addActionListener(e -> lookActionPerformed(e));
+        contentPane.add(look);
+        look.setBounds(new Rectangle(new Point(220, 370), look.getPreferredSize()));
+
+        //---- flush ----
+        flush.setText("\u5237\u65b0");
+        flush.addActionListener(e -> flushActionPerformed(e));
+        contentPane.add(flush);
+        flush.setBounds(new Rectangle(new Point(135, 530), flush.getPreferredSize()));
+
+        //---- label3 ----
+        label3.setText("\u8bba\u575b");
+        label3.setForeground(new Color(102, 204, 255));
+        label3.setHorizontalAlignment(SwingConstants.CENTER);
+        label3.setBackground(new Color(102, 255, 255));
+        contentPane.add(label3);
+        label3.setBounds(70, 220, 50, 35);
+
         //---- photo ----
         photo.setIcon(new ImageIcon(getClass().getResource("/img/UserView.jpg")));
         contentPane.add(photo);
-        photo.setBounds(0, -30, 945, 620);
+        photo.setBounds(0, -60, 945, 650);
 
         {
             // compute preferred size
@@ -231,6 +334,12 @@ public class UserView extends JFrame {
     private JTextArea textArea;
     private JComboBox selectedPage;
     private JButton toPage;
+    private JScrollPane scrollPane2;
+    private JList list;
+    private JButton addForum;
+    private JButton look;
+    private JButton flush;
+    private JLabel label3;
     private JLabel photo;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

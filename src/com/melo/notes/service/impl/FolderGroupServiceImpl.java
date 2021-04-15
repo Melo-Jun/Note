@@ -228,6 +228,7 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
     public boolean addNote(String title, String text, String access, String groupId){
         if(super.notNull(title,text,access,groupId)) {
             Note note = new Note(title, LoginView.USER.getId(), text, access, 0, groupId);
+            System.out.println(LoginView.USER.getId()+"µ±Ç°ÊÇ"+LoginView.USER.getUserName());
             return noteDao.addNote(note);
         }
         return false;

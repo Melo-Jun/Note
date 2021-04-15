@@ -45,21 +45,21 @@ public class UserNoteView extends JFrame {
     /**
      *该用户笔记数量
      */
-    private int NoteCount=0;
+    private int noteCount =0;
 
     /**
      *该用户笔记分组数量
      */
-    private String GroupCount=null;
+    private String groupCount =null;
 
     public UserNoteView(String userId) {
         initComponents();
         setVisible(true);
         allNote.setAuthorId(userId);
         fillTable(allNote);
-        NoteCount=model.getRowCount();
-        GroupCount=userNoteService.countGroup(userId);
-        information.setText("笔记数量:"+NoteCount+"\n"+"笔记分组数量:"+GroupCount+"\n");
+        noteCount =model.getRowCount();
+        groupCount =userNoteService.countGroup(userId);
+        information.setText("笔记数量:"+ noteCount +"\n"+"笔记分组数量:"+ groupCount +"\n");
     }
 
     /**

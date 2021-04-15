@@ -4,9 +4,6 @@ import com.melo.notes.dao.impl.NoteDaoImpl;
 import com.melo.notes.entity.Note;
 import com.melo.notes.service.inter.NoteService;
 import com.melo.notes.util.BeanFactory;
-import com.melo.notes.view.FolderView;
-import com.melo.notes.view.LoginView;
-import com.melo.notes.view.TreeView;
 
 import java.util.HashMap;
 import java.util.LinkedList;

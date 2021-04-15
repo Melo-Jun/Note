@@ -80,7 +80,7 @@ public interface BaseDao {
      * @param sql 查询语句
      * @param obj 用以填充的语句
      * @param clazz 相关类名(决定映射为什么对象)
-     * @return LinkedList<Object> values 所有值
+     * @return LinkedList  封装后的对象集合
      */
     LinkedList queryAll(String sql,Object obj,Class clazz);
 
@@ -93,6 +93,13 @@ public interface BaseDao {
      * @throws DaoException 数据库类异常
      */
     void fieldMapper(Object obj, LinkedList fieldNames, LinkedList fieldValues) throws DaoException;
+
+    /**
+     * 填充where条件给sql语句
+     * @param sql sql语句
+     * @param obj 属性值对象
+     */
+     void appendWhereToSql(StringBuilder sql, Object obj);
 
     /**
      * 根据xxx获取id

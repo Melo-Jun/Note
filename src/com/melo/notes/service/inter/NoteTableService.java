@@ -2,7 +2,6 @@ package com.melo.notes.service.inter;
 
 import com.melo.notes.entity.Note;
 
-import java.util.LinkedList;
 import java.util.Vector;
 
 /**
@@ -21,11 +20,11 @@ public interface NoteTableService {
      Vector<Object> fillTable(Note tempNote);
 
     /**
-     * 获取点赞过该笔记的用户
-     * @param noteId 笔记id
-     * @return 用户链表
+     * 判断该用户是否点赞过该笔记
+     * @param noteId 该笔记id
+     * @return boolean 是否点赞过
      */
-     LinkedList showLikeUser(String noteId);
+     boolean everLike(String noteId);
 
     /**
      * 更新点赞数

@@ -9,7 +9,6 @@ import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -32,32 +31,32 @@ public class AddGroupView extends JFrame {
     public AddGroupView() {
         initComponents();
         setVisible(true);
-        /*
-          初始化下拉框
-         */
-        HashMap<Object, Object> folder = folderGroupService.showFolderName();
-        /*Collection<Object> values = folderName.values();
-        for(Object temp:values){
-            selectedLocatedFolder.addItem(temp);
-        }*/
-        /*
-        遍历获取folderId和folderName
-        */
-        Set<Map.Entry<Object, Object>> folderSet =  folder.entrySet();
-        for(Map.Entry tempFolder:folderSet) {
-            String folderId = tempFolder.getKey().toString();
-            String folerName=tempFolder.getValue().toString();
-            selectedLocatedFolder.addItem(folderId+"--"+folerName);
-        }
+//        /*
+//          初始化下拉框
+//         */
+//        HashMap<Object, Object> folder = folderGroupService.showFolderName();
+//        /*
+//        遍历获取folderId和folderName
+//        */
+//        Set<Map.Entry<Object, Object>> folderSet =  folder.entrySet();
+//        for(Map.Entry tempFolder:folderSet) {
+//            String folderId = tempFolder.getKey().toString();
+//            String folerName=tempFolder.getValue().toString();
+//            selectedLocatedFolder.addItem(folderId+"--"+folerName);
+//        }
     }
 
+    /**
+     * 确认增加笔记分组
+     * @param e
+     */
     private void submitActionPerformed(ActionEvent e) {
         String groupName = nameText.getText();
-        String locatedFolder= selectedLocatedFolder.getSelectedItem().toString();
-        //截断获取知识库id
-        int location = locatedFolder.indexOf("-");
-        String folderId = locatedFolder.substring(0, location);
-        if(folderGroupService.addGroup(groupName,folderId)){
+//        String locatedFolder= selectedLocatedFolder.getSelectedItem().toString();
+//        //截断获取知识库id
+//        int location = locatedFolder.indexOf("-");
+//        String folderId = locatedFolder.substring(0, location);
+        if(folderGroupService.addGroup(groupName,FolderView.selectedId)){
             JOptionPane.showMessageDialog(null,"增加成功");
             this.dispose();
         }else {
@@ -67,8 +66,6 @@ public class AddGroupView extends JFrame {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        label3 = new JLabel();
-        selectedLocatedFolder = new JComboBox();
         submit = new JButton();
         name = new JLabel();
         nameText = new JTextField();
@@ -77,9 +74,6 @@ public class AddGroupView extends JFrame {
         //======== this ========
         setIconImage(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")).getImage());
         Container contentPane = getContentPane();
-
-        //---- label3 ----
-        label3.setText("\u6240\u5728\u77e5\u8bc6\u5e93");
 
         //---- submit ----
         submit.setText("\u786e\u5b9a");
@@ -96,20 +90,15 @@ public class AddGroupView extends JFrame {
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup()
+                .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                    .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(submit)
+                    .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(contentPaneLayout.createSequentialGroup()
-                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                        .addGroup(GroupLayout.Alignment.LEADING, contentPaneLayout.createSequentialGroup()
-                            .addGap(55, 55, 55)
-                            .addComponent(name)
-                            .addGap(18, 18, 18)
-                            .addComponent(nameText, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE))
-                        .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                .addComponent(submit)
-                                .addComponent(label3))
-                            .addGap(18, 18, 18)
-                            .addComponent(selectedLocatedFolder, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                    .addGap(55, 55, 55)
+                    .addComponent(name)
+                    .addGap(18, 18, 18)
+                    .addComponent(nameText, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(61, Short.MAX_VALUE))
                 .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
                     .addGap(0, 127, Short.MAX_VALUE)
@@ -127,11 +116,7 @@ public class AddGroupView extends JFrame {
                             .addGap(8, 8, 8)
                             .addComponent(name))
                         .addComponent(nameText, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(selectedLocatedFolder, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(label3))
-                    .addGap(18, 18, 18)
+                    .addGap(74, 74, 74)
                     .addComponent(submit)
                     .addGap(24, 24, 24))
         );
@@ -141,8 +126,6 @@ public class AddGroupView extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private JLabel label3;
-    private JComboBox selectedLocatedFolder;
     private JButton submit;
     private JLabel name;
     private JTextField nameText;

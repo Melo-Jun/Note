@@ -20,29 +20,29 @@ import static com.melo.notes.util.StringUtils.*;
 /**
  * @author Jun
  * @program Note
- * @description æ•°æ®åº“é€šç”¨æ“ä½œå®ç°ç±»
+ * @description Êı¾İ¿âÍ¨ÓÃ²Ù×÷ÊµÏÖÀà
  * @date 2021-3-28 20:36
  */
 public class BaseDaoImpl implements BaseDao {
 
-    //private Class<?> cls;
 
     /**
-     * å°è£…æ•°æ®åº“æ›´æ–°æ“ä½œ
+     * ·â×°Êı¾İ¿â¸üĞÂ²Ù×÷
      *
-     * @param obj å¯¹è±¡
-     * @param sql sqlè¯­å¥
-     * @return int å½±å“çš„è¡Œæ•°
+     * @param obj ¶ÔÏó
+     * @param sql sqlÓï¾ä
+     * @return int Ó°ÏìµÄĞĞÊı
      */
     @Override
     public int executeUpdate(Object obj, String sql) {
-        //å½±å“çš„è¡Œæ•°
+        //Ó°ÏìµÄĞĞÊı
         int count = 0;
         Connection conn = getConnection();
         PreparedStatement ps = null;
         try {
+            assert conn != null;
             ps = conn.prepareStatement(sql);
-            //æ³¨å…¥Sqlå¡«å……å‚æ•°
+            //×¢ÈëSqlÌî³ä²ÎÊı
             setParams(ps, obj);
             count = ps.executeUpdate();
         } catch (SQLException throwables) {
@@ -55,12 +55,12 @@ public class BaseDaoImpl implements BaseDao {
     }
 
     /**
-     * æ‰§è¡Œä¸€æ¡æŸ¥è¯¢è¯­å¥,å¹¶å¯¹ç»“æœé›†è¿›è¡Œå°è£…
+     * Ö´ĞĞÒ»Ìõ²éÑ¯Óï¾ä,²¢¶Ô½á¹û¼¯½øĞĞ·â×°
      *
-     * @param obj          å¯¹è±¡
-     * @param sql          sqlè¯­å¥
-     * @param resultMapper å®ç°ä¸åŒåŠŸèƒ½æ˜ å°„çš„å®ç°ç±»
-     * @return æ˜ å°„ç»“æœ
+     * @param obj          ¶ÔÏó
+     * @param sql          sqlÓï¾ä
+     * @param resultMapper ÊµÏÖ²»Í¬¹¦ÄÜÓ³ÉäµÄÊµÏÖÀà
+     * @return Ó³Éä½á¹û
      */
     @Override
     public Object executeQuery(Object obj, String sql, ResultMapper resultMapper) {
@@ -70,7 +70,7 @@ public class BaseDaoImpl implements BaseDao {
         try {
             assert conn != null;
             ps = conn.prepareStatement(sql);
-            //æ ¹æ®objæ³¨å…¥Sqlå¡«å……å‚æ•°
+            //¸ù¾İobj×¢ÈëSqlÌî³ä²ÎÊı
             if (obj != null) {
                 setParams(ps, obj);
             }
@@ -78,7 +78,7 @@ public class BaseDaoImpl implements BaseDao {
             return resultMapper.doMap(rs);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            throw new DaoException("é¢„ç¼–è¯‘æŸ¥è¯¢è¯­å¥å¼‚å¸¸ï¼š");
+            throw new DaoException("Ô¤±àÒë²éÑ¯Óï¾äÒì³££º");
         } finally {
             freeConnection(conn);
             close(ps, rs);
@@ -87,10 +87,10 @@ public class BaseDaoImpl implements BaseDao {
 
 
     /**
-     * å¢åŠ ä¸€æ¡è®°å½•è¿›å…¥æ•°æ®åº“
+     * Ôö¼ÓÒ»Ìõ¼ÇÂ¼½øÈëÊı¾İ¿â
      *
-     * @param obj ä¸å¢åŠ æœ‰å…³çš„å¯¹è±¡
-     * @return int å½±å“çš„æ•°æ®åº“è¡Œæ•°
+     * @param obj ÓëÔö¼ÓÓĞ¹ØµÄ¶ÔÏó
+     * @return int Ó°ÏìµÄÊı¾İ¿âĞĞÊı
      */
     @Override
     public int insert(Object obj) {
@@ -98,13 +98,13 @@ public class BaseDaoImpl implements BaseDao {
         LinkedList<Object> fieldValues = new LinkedList<>();
         fieldMapper(obj, fieldNames, fieldValues);
         /*
-          æ ¹æ®å±æ€§åç”Ÿæˆé¢„ç¼–è¯‘sqlæ’å…¥è¯­å¥
+          ¸ù¾İÊôĞÔÃûÉú³ÉÔ¤±àÒësql²åÈëÓï¾ä
          */
         StringBuilder sql = new StringBuilder("insert into " + getTableName(obj) + " (");
         for (Object name : fieldNames) {
-            sql.append(name.toString() + ",");
+            sql.append(name.toString()).append(",");
         }
-        //å°†æœ€åä¸€ä¸ª","æ”¹ä¸º")"ï¼Œçœå»åˆ¤æ–­æ˜¯å¦ä¸ºæœ€åä¸€ä¸ª")"
+        //½«×îºóÒ»¸ö","¸ÄÎª")"£¬Ê¡È¥ÅĞ¶ÏÊÇ·ñÎª×îºóÒ»¸ö")"
         sql.setCharAt(sql.length() - 1, ')');
         sql.append(" values (");
         for (int i = 0; i < fieldNames.size(); i++) {
@@ -115,70 +115,53 @@ public class BaseDaoImpl implements BaseDao {
     }
 
     /**
-     * åˆ é™¤è®°å½•
+     * É¾³ı¼ÇÂ¼
      *
-     * @param obj ä¸åˆ é™¤æœ‰å…³çš„å¯¹è±¡
-     * @return int å½±å“çš„æ•°æ®åº“è®°å½•æ•°
+     * @param obj ÓëÉ¾³ıÓĞ¹ØµÄ¶ÔÏó
+     * @return int Ó°ÏìµÄÊı¾İ¿â¼ÇÂ¼Êı
      */
     @Override
     public int delete(Object obj) {
         StringBuilder sql = new StringBuilder( "delete from "+getTableName(obj));
         /*
-          å°†å¯¹è±¡æ˜ å°„æˆå±æ€§å’Œå€¼(å±æ€§ä¼šæ˜ å°„ä¸ºæ•°æ®åº“å­—æ®µå)
+          Íê³Ésql×¢ÈëºÍÖ´ĞĞ
          */
-        LinkedList<Object> fieldNames = new LinkedList<>();
-        LinkedList<Object> fieldValues = new LinkedList<>();
-        fieldMapper(obj,fieldNames,fieldValues);
-        /*
-          å°†å­—æ®µåå¡«å…¥sqlè¯­å¥
-          æ²¡æœ‰whereæ¡ä»¶åˆ™ä¸æ·»åŠ 
-         */
-        if(fieldValues.size()!=0) {
-            sql.append(" where ");
-            for (Object fieldName : fieldNames) {
-                sql.append(fieldName).append("=? AND ");
-            }
-        }
-        //åˆ é™¤æœ€åä¸€ä¸ªAND
-        sql.delete(sql.length()-4,sql.length());
-        /*
-          å®Œæˆsqlæ³¨å…¥å’Œæ‰§è¡Œ
-         */
+        appendWhereToSql(sql,obj);
         return executeUpdate(obj, sql.toString());
     }
 
     /**
-     * æ›´æ–°è®°å½•
-     * @param obj ä¸æ›´æ–°æœ‰å…³çš„å¯¹è±¡
-     * @return int å½±å“çš„æ•°æ®åº“è®°å½•æ•°
+     * ¸üĞÂ¼ÇÂ¼
+     * @param obj Óë¸üĞÂÓĞ¹ØµÄ¶ÔÏó
+     * @return int Ó°ÏìµÄÊı¾İ¿â¼ÇÂ¼Êı
      */
     @Override
     public int update(Object obj) {
         /*
-          æ ¹æ®æ›´æ–°ä¾æ®çš„å­—æ®µåæ„é€ å¯¹è±¡ï¼Œå–å‡ºå¯¹åº”æ•°æ®åº“å­—æ®µåå’Œå€¼
+          ¸ù¾İ¸üĞÂÒÀ¾İµÄ×Ö¶ÎÃû¹¹Ôì¶ÔÏó£¬È¡³ö¶ÔÓ¦Êı¾İ¿â×Ö¶ÎÃûºÍÖµ
          */
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();
         fieldMapper(obj, fieldNames, fieldValues);
         StringBuilder sql = new StringBuilder("update " + getTableName(obj) + " set ");
         for(Object fieldName:fieldNames) {
-            //å…ˆè¿‡æ»¤id,idè¦ç•™åˆ°æœ€åä½œä¸ºæ ¹æ®
+            //ÏÈ¹ıÂËid,idÒªÁôµ½×îºó×÷Îª¸ù¾İ
             if(!"id".equals(fieldName.toString())) {
-                sql.append(fieldName + "=?, ");
+                sql.append(fieldName).append("=?, ");
             }
         }
-        //åˆ é™¤æœ€åä¸€ä¸ªé€—å·
+        //É¾³ı×îºóÒ»¸ö¶ººÅ
         sql.deleteCharAt(sql.length()-2);
         sql.append("where id=?");
         return executeUpdate(obj, sql.toString());
     }
 
     /**
-     * æŸ¥æ‰¾è®°å½•å°è£…æˆMapé”®å€¼å¯¹
+     * ²éÕÒ¼ÇÂ¼·â×°³ÉMap¼üÖµ¶Ô
      *
-     * @param sql ç‰¹å®šæŸ¥è¯¢è¯­å¥
-     * @param obj æ ¹æ®çš„å¯¹è±¡(ç”¨æ¥å¡«å……å‚æ•°)
-     * @return HashMap ç»“æœé›†å°è£…Map
+     * @param sql ÌØ¶¨²éÑ¯Óï¾ä
+     * @param obj ¸ù¾İµÄ¶ÔÏó(ÓÃÀ´Ìî³ä²ÎÊı)
+     * @return HashMap ½á¹û¼¯·â×°Map
      */
     @Override
     public HashMap queryMap(String sql, Object obj) {
@@ -196,11 +179,11 @@ public class BaseDaoImpl implements BaseDao {
     }
 
     /**
-     * æŸ¥æ‰¾è®°å½•(åªæŸ¥æ‰¾å•ä¸€å€¼)
+     * ²éÕÒ¼ÇÂ¼(Ö»²éÕÒµ¥Ò»Öµ)
      *
-     * @param sql æŸ¥è¯¢è¯­å¥
-     * @param obj ç”¨ä»¥å¡«å……çš„å±æ€§å€¼
-     * @return LinkedList ç»“æœé›†å°è£…LinkedList
+     * @param sql ²éÑ¯Óï¾ä
+     * @param obj ÓÃÒÔÌî³äµÄÊôĞÔÖµ
+     * @return LinkedList ½á¹û¼¯·â×°LinkedList
      */
     @Override
     public LinkedList queryList(String sql, Object obj) {
@@ -219,11 +202,11 @@ public class BaseDaoImpl implements BaseDao {
 
 
     /**
-     * æŸ¥æ‰¾æ‰€æœ‰å±æ€§
-     * @param sql æŸ¥è¯¢è¯­å¥
-     * @param obj ç”¨ä»¥å¡«å……çš„è¯­å¥
-     * @param clazz ç›¸å…³ç±»å(å†³å®šæ˜ å°„ä¸ºä»€ä¹ˆå¯¹è±¡)
-     * @return LinkedList<Object> values æ‰€æœ‰å€¼
+     * ²éÕÒËùÓĞÊôĞÔ
+     * @param sql ²éÑ¯Óï¾ä
+     * @param obj ÓÃÒÔÌî³äµÄÓï¾ä
+     * @param clazz Ïà¹ØÀàÃû(¾ö¶¨Ó³ÉäÎªÊ²Ã´¶ÔÏó)
+     * @return LinkedList  ·â×°ºóµÄ¶ÔÏó¼¯ºÏ
      */
     @Override
     public LinkedList queryAll(String sql, Object obj,Class clazz) {
@@ -233,16 +216,16 @@ public class BaseDaoImpl implements BaseDao {
             try {
                 rsmd = rs.getMetaData();
                 LinkedList<Method> methods = getMethods(clazz.newInstance());
-                //å­˜å‚¨setæ–¹æ³•
+                //´æ´¢set·½·¨
                 LinkedList<Method> setMethods = new LinkedList<>();
                 for (int i = 1; i <= rsmd.getColumnCount(); i++) {
                     /*
-                      å°†åˆ—åè½¬åŒ–ä¸ºå®ä½“ç±»å±æ€§å
+                      ½«ÁĞÃû×ª»¯ÎªÊµÌåÀàÊôĞÔÃû
                      */
                     String columnName = rsmd.getColumnName(i);
                     String fieldName = toEntityField(columnName);
                     /*
-                      è·å–ä¸åˆ—åæœ‰å…³çš„setæ–¹æ³•,ä¸”ä¼šä¸€ä¸€å¯¹åº”ä¿è¯é¡ºåº
+                      »ñÈ¡ÓëÁĞÃûÓĞ¹ØµÄset·½·¨,ÇÒ»áÒ»Ò»¶ÔÓ¦±£Ö¤Ë³Ğò
                      */
                     for (Method method : methods) {
                         if (method.getName().startsWith("set") && method.getName().substring(3).equalsIgnoreCase(fieldName)) {
@@ -251,7 +234,7 @@ public class BaseDaoImpl implements BaseDao {
                     }
                 }
                 /*
-                  è°ƒç”¨invokeæ‰§è¡Œsetæ–¹æ³•,æ˜ å°„æˆå¯¹è±¡åŠ å…¥é“¾è¡¨ä¸­
+                  µ÷ÓÃinvokeÖ´ĞĞset·½·¨,Ó³Éä³É¶ÔÏó¼ÓÈëÁ´±íÖĞ
                  */
                 while (rs.next()) {
                     Object newInstance = clazz.newInstance();
@@ -266,18 +249,18 @@ public class BaseDaoImpl implements BaseDao {
                     values.add(newInstance);
                 }
             } catch (SQLException | InstantiationException | IllegalAccessException | InvocationTargetException throwables) {
-                throw new DaoException("æ˜ å°„å¯¹è±¡å‡ºç°å¼‚å¸¸");
+                throw new DaoException("Ó³Éä¶ÔÏó³öÏÖÒì³£");
             }
             return values;
     });
 }
 
     /**
-     * å°†å¯¹è±¡æ˜ å°„æˆå±æ€§åå’Œå±æ€§å€¼
-     * @param obj å¯¹è±¡
-     * @param fieldNames å±æ€§å
-     * @param fieldValues å±æ€§å€¼
-     * @throws DaoException æ•°æ®åº“ç±»å¼‚å¸¸
+     * ½«¶ÔÏóÓ³Éä³ÉÊôĞÔÃûºÍÊôĞÔÖµ
+     * @param obj ¶ÔÏó
+     * @param fieldNames ÊôĞÔÃû
+     * @param fieldValues ÊôĞÔÖµ
+     * @throws DaoException Êı¾İ¿âÀàÒì³£
      */
     @Override
     public void fieldMapper(Object obj, LinkedList fieldNames, LinkedList fieldValues) throws DaoException {
@@ -285,13 +268,13 @@ public class BaseDaoImpl implements BaseDao {
             return;
         }
         /*
-          å–å‡ºåŒ…æ‹¬çˆ¶ç±»åœ¨å†…çš„æ‰€æœ‰æ–¹æ³•å’Œå±æ€§
+          È¡³ö°üÀ¨¸¸ÀàÔÚÄÚµÄËùÓĞ·½·¨ºÍÊôĞÔ
          */
         LinkedList<Method> methods = getMethods(obj);
         LinkedList<Field> fields = getFields(obj);
         for (Field field : fields) {
             /*
-              è·å–getæ–¹æ³•å¹¶invokeæ‰§è¡Œå–å¾—å±æ€§å€¼
+              »ñÈ¡get·½·¨²¢invokeÖ´ĞĞÈ¡µÃÊôĞÔÖµ
              */
             for (Method method : methods) {
                 if (method.getName().startsWith("get") && method.getName().substring(3).equalsIgnoreCase(field.getName())) {
@@ -300,15 +283,15 @@ public class BaseDaoImpl implements BaseDao {
                         value = method.invoke(obj);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        throw new DaoException("åå°„æ‰§è¡Œgetæ–¹æ³•å¼‚å¸¸ï¼š" + method.getName(), e);
+                        throw new DaoException("·´ÉäÖ´ĞĞget·½·¨Òì³££º" + method.getName(), e);
                     }
                     /*
-                      åªæ·»åŠ ä¸ä¸ºnullå€¼çš„å­—æ®µ
+                      Ö»Ìí¼Ó²»ÎªnullÖµµÄ×Ö¶Î
                      */
                     if (value != null) {
                         fieldValues.add(value);
                         /*
-                          å–å‡ºè¯¥å±æ€§çš„åç§°ï¼Œæ˜ å°„æˆæ•°æ®åº“å­—æ®µå
+                          È¡³ö¸ÃÊôĞÔµÄÃû³Æ£¬Ó³Éä³ÉÊı¾İ¿â×Ö¶ÎÃû
                          */
                          fieldNames.add(toColumnName(field.getName()));
                     }
@@ -317,16 +300,43 @@ public class BaseDaoImpl implements BaseDao {
         }
     }
 
+    /**
+     * Ìî³äwhereÌõ¼ş¸øsqlÓï¾ä
+     * @param sql sqlÓï¾ä
+     * @param obj ÊôĞÔÖµ¶ÔÏó
+     */
+    @Override
+    public void appendWhereToSql(StringBuilder sql, Object obj){
+        /*
+          ½«¶ÔÏóÓ³Éä³ÉÊôĞÔºÍÖµ(ÊôĞÔ»áÓ³ÉäÎªÊı¾İ¿â×Ö¶ÎÃû)
+         */
+        LinkedList<Object> fieldNames = new LinkedList<>();
+        LinkedList<Object> fieldValues = new LinkedList<>();
+        fieldMapper(obj,fieldNames,fieldValues);
+        /*
+          ½«×Ö¶ÎÃûÌîÈësqlÓï¾ä
+          Ã»ÓĞwhereÌõ¼şÔò²»Ìí¼Ó
+         */
+        if(fieldValues.size()!=0) {
+            sql.append(" where ");
+            for (Object fieldName : fieldNames) {
+                sql.append(fieldName + "=? AND ");
+            }
+            //É¾³ı×îºóÒ»¸öAND
+            sql.delete(sql.length()-4,sql.length());
+        }
+    }
+
 
     /**
-     * æ ¹æ®xxxè·å–id
+     * ¸ù¾İxxx»ñÈ¡id
      * @param obj xxx
      * @return String id
      */
     @Override
     public LinkedList getId(Object obj) {
         /*
-          æ ¹æ®å‰å°æ‰€é€‰ä¸­çš„ä¿¡æ¯æ„é€ å¯¹è±¡ï¼Œå–å‡ºå¯¹åº”æ•°æ®åº“å­—æ®µåå’Œå€¼
+          ¸ù¾İÇ°Ì¨ËùÑ¡ÖĞµÄĞÅÏ¢¹¹Ôì¶ÔÏó£¬È¡³ö¶ÔÓ¦Êı¾İ¿â×Ö¶ÎÃûºÍÖµ
          */
         LinkedList<Object> fieldNames = new LinkedList<>();
         LinkedList<Object> fieldValues = new LinkedList<>();

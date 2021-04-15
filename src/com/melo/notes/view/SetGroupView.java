@@ -5,6 +5,7 @@
 package com.melo.notes.view;
 
 import com.melo.notes.entity.User;
+import com.melo.notes.service.constant.Status;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
@@ -29,6 +30,7 @@ public class SetGroupView extends JFrame {
      * 创建相关操作对象
      */
     FolderGroupServiceImpl folderGroupService=(FolderGroupServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.FolderGroupService);
+
     public SetGroupView() {
         initComponents();
         setVisible(true);
@@ -44,13 +46,17 @@ public class SetGroupView extends JFrame {
         }
     }
 
+    /**
+     * 确认修改按钮
+     * @param e
+     */
     private void submitActionPerformed(ActionEvent e) {
         String locatedFolder = (String) selectedLocatedFolder.getSelectedItem();
         if (folderGroupService.setGroup(FolderView.selectedName, locatedFolder,FolderView.selectedId) != 0) {
-            JOptionPane.showMessageDialog(null, "设置成功");
+            JOptionPane.showMessageDialog(null, Status.SUCCESS.getMessage());
             this.dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "请确认你选择的是笔记分组类型");
+            JOptionPane.showMessageDialog(null, Status.FAILED.getMessage());
             this.dispose();
         }
     }

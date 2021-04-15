@@ -1,7 +1,6 @@
 package com.melo.notes.dao.inter;
 
 import java.sql.ResultSet;
-import java.util.LinkedList;
 
 /**
  * @author Jun

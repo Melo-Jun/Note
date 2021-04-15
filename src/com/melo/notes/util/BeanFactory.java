@@ -27,7 +27,8 @@ import java.util.Properties;
              */
             BaseDao("BaseDao"),UserDao("UserDao"), AdminDao("AdminDao"),
             AnnouncementDao("AnnouncementDao"), NoteDao("NoteDao"), LoginDao("LoginDao"),
-            FolderDao("FolderDao"),GroupDao("GroupDao"),LikeListDao("LikeListDao");
+            FolderDao("FolderDao"),GroupDao("GroupDao"),LikeListDao("LikeListDao"),
+            ForumDao("ForumDao");
 
             private String name;
             /**
@@ -46,7 +47,8 @@ import java.util.Properties;
         FolderGroupService("FolderGroupService"), LoginService("LoginService"),
         RegisterService("RegisterService"), NoteService("NoteService"),
         NoteTableViewService("NoteTableViewService"),PersonalUserService("PersonalUserService"),
-        UserNoteService("UserNoteService"),UserTableService("UserTableService"),AdminServiceImpl("AdminServiceImpl");
+        UserNoteService("UserNoteService"),UserTableService("UserTableService"),
+        AdminService("AdminService"),ForumService("ForumService");
         private String name;
         /**
          * 构造方法

@@ -33,26 +33,9 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
     public HashMap showNoteTitle(Object obj) {
         StringBuilder sql = new StringBuilder( "select id,title from "+TABLE_NAME);
         /*
-          将对象映射成属性和值(属性会映射为数据库字段名)
-         */
-        LinkedList<Object> fieldNames = new LinkedList<>();
-        LinkedList<Object> fieldValues = new LinkedList<>();
-        fieldMapper(obj,fieldNames,fieldValues);
-        /*
-          将字段名填入sql语句
-          没有where条件则不添加
-         */
-        if(fieldValues.size()!=0) {
-            sql.append(" where ");
-            for (Object fieldName : fieldNames) {
-                sql.append(fieldName + "=? AND ");
-            }
-        }
-        //删除最后一个AND
-        sql.delete(sql.length()-4,sql.length());
-        /*
           完成sql注入和执行
          */
+        super.appendWhereToSql(sql,obj);
         return queryMap(sql.toString(),obj);
     }
 
@@ -63,7 +46,6 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
      */
     @Override
     public String showNoteText(Object obj) {
-        //String sql="select text from "+TABLE_NAME+" where title=? ";
         String sql="select text from "+TABLE_NAME+" where id=? ";
         return queryList(sql,obj).getFirst().toString();
     }
@@ -77,26 +59,9 @@ public class NoteDaoImpl extends BaseDaoImpl implements NoteDao {
     public LinkedList showNoteAll(Object obj) {
         StringBuilder sql = new StringBuilder( "select "+ALL_FIELD_NAME+" from "+TABLE_NAME);
         /*
-          将对象映射成属性和值(属性会映射为数据库字段名)
-         */
-        LinkedList<Object> fieldNames = new LinkedList<>();
-        LinkedList<Object> fieldValues = new LinkedList<>();
-        fieldMapper(obj,fieldNames,fieldValues);
-        /*
-          将字段名填入sql语句
-          没有where条件则不添加
-         */
-        if(fieldValues.size()!=0) {
-            sql.append(" where ");
-            for (Object fieldName : fieldNames) {
-                sql.append(fieldName + "=? AND ");
-            }
-        }
-        //删除最后一个AND
-        sql.delete(sql.length()-4,sql.length());
-        /*
           完成sql注入和执行
          */
+        super.appendWhereToSql(sql,obj);
         return queryAll(sql.toString(),obj,Note.class);
     }
 

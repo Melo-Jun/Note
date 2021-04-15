@@ -24,7 +24,7 @@ public class AddAnnouncementView extends JFrame {
     /**
      * 相关操作类
      */
-    AdminServiceImpl adminService=(AdminServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.AdminServiceImpl);
+    AdminServiceImpl adminService=(AdminServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.AdminService);
 
     public AddAnnouncementView() {
         initComponents();

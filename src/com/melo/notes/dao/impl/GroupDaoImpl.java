@@ -21,7 +21,9 @@ import static com.melo.notes.util.JdbcUtils.close;
  * @date 2021-3-20 9:06
  */
 public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
-
+    /**
+     * 本查询对应表名
+     */
     private final String TABLE_NAME="located_group";
 
     /**

@@ -40,6 +40,10 @@ public class PersonalUserView extends JFrame {
         return  String.valueOf(newPassword2.getPassword());
     }
 
+    /**
+     * 确认修改按钮
+     * @param e
+     */
     private void submitActionPerformed(ActionEvent e) {
         new PersonalUserController().updatePersonalUser(this);
     }

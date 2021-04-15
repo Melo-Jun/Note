@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
 
     /**
-     * 本表查询所用到所有字段以及表名
+     * 该类对应表名
      */
     private final String TABLE_NAME="located_folder";
 
@@ -55,6 +55,7 @@ public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
 
     /**
      * 更改知识库名称
+     *
      * @param folder 在service完成封装后的对象
      * @return int 影响的行数
      */
@@ -62,6 +63,5 @@ public class FolderDaoImpl extends BaseDaoImpl implements FolderDao  {
     public int updateFolderName(Folder folder) {
         return update(folder);
     }
-
 
 }

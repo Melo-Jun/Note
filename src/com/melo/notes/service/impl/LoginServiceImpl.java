@@ -22,7 +22,7 @@ public class LoginServiceImpl extends BaseServiceImpl implements LoginService {
      * 相关操作类对象
      */
     UserDaoImpl userDao = (UserDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.UserDao);
-    AdminServiceImpl adminService=(AdminServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.AdminServiceImpl);
+    AdminServiceImpl adminService=(AdminServiceImpl) BeanFactory.getBean(BeanFactory.ServiceType.AdminService);
 
 
     /**

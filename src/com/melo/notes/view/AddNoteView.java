@@ -4,9 +4,6 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.dao.impl.NoteDaoImpl;
-import com.melo.notes.entity.Group;
-import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
 import com.melo.notes.service.constant.Status;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;

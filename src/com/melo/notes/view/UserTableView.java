@@ -212,7 +212,6 @@ public class UserTableView extends JFrame {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JScrollPane scrollPane1;
-    //private JTable table;
     private JButton block;
     private JButton withdrawBlock;
     private JButton noteInformation;

@@ -38,22 +38,12 @@ public class RegisterView extends JFrame {
         return String.valueOf(passwordField2.getPassword());
     }
 
+    /**
+     * 注册按钮
+     * @param e
+     */
     private void registerActionPerformed(ActionEvent e) {
         new RegisterController().register(this);
-//        /*
-//          获取文本框内容
-//         */
-//        String userName = userNameText.getText();
-//        String firstPass = String.valueOf(passwordField1.getPassword());
-//        String secondPass = String.valueOf(passwordField2.getPassword());
-//
-//        String message = registerService.isValid(userName, firstPass, secondPass);
-//        JOptionPane.showMessageDialog(null,message);
-//        if(message.equals(SUCCESS)){
-//            registerService.addUser(userName,secondPass);
-//            this.dispose();
-//        }
-
     }
 
     private void initComponents() {

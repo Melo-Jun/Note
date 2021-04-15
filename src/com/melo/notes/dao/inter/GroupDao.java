@@ -3,9 +3,7 @@ package com.melo.notes.dao.inter;
 import com.melo.notes.entity.Folder;
 import com.melo.notes.entity.Group;
 
-import java.sql.ResultSet;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * @author Jun

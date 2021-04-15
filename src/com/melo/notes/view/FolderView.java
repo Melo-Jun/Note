@@ -8,13 +8,11 @@ import com.melo.notes.service.constant.TypeName;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.service.impl.NoteServiceImpl;
 import com.melo.notes.util.BeanFactory;
-import com.melo.notes.util.StringUtils;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.*;
@@ -81,11 +79,11 @@ public class FolderView extends JFrame {
 
             update.setBounds(100,5,100,40);
             setGroup.setBounds(200,5,120,40);
-            addNote.setBounds(400,5,120,40);
+            delete.setBounds(400,5,120,40);
 
             flush.setBounds(600,200,120,50);
 
-            delete.setBounds(600,300,120,50);
+            addNote.setBounds(600,300,120,50);
             addFolder.setBounds(600,350,120,50);
             addGroup.setBounds(600,400,120,50);
 
@@ -190,7 +188,8 @@ public class FolderView extends JFrame {
                         selectedId = selectedName.substring(0, location);
                         selectedName = selectedName.substring(location + 2);
                         selectedType = folderGroupService.judgeType(e.getPath().getPathCount());
-                        textArea.setText("你选中的类型为:" + selectedType+"\n'默认'不可修改或删除\n修改等操作需选中目标\n新增笔记请选中笔记分组");
+                        textArea.setText("你选中的类型为:" + selectedType+"\n\n'默认'不可修改或删除\n修改等操作需选中目标\n新增笔记分组请选中知识库" +
+                                "\n新增笔记请选择笔记分组\n迁移分组请选择笔记分组");
                     }
                 }
             });
@@ -235,34 +234,28 @@ public class FolderView extends JFrame {
              */
 
             //修改笔记或修改知识库笔记分组名称
-            if(e.getSource()==update){
-                if(selectedType.equals(TypeName.NOTE.getMessage())){
+            if(e.getSource()==update) {
+                //修改笔记的情况
+                if (selectedType.equals(TypeName.NOTE.getMessage())) {
                     new UpdateNoteView(LoginView.USER);
-                }else {
-                    if(folderGroupService.update(selectedName ,selectedType)!=0) {
-                            JOptionPane.showMessageDialog(null, Status.SUCCESS.getMessage());
-                            jf.dispose();
-                            new FolderView(LoginView.USER);
-                    }else {
+                } else {
+                    if (folderGroupService.update(selectedName, selectedType) != 0) {
+                        JOptionPane.showMessageDialog(null, Status.SUCCESS.getMessage());
+                        jf.dispose();
+                        new FolderView(LoginView.USER);
+                    } else {
                         JOptionPane.showMessageDialog(null, Status.FAILED.getMessage());
                     }
                 }
-                /*if(folderGroupService.update(selectedName,updateName,selectedType)!=0){
-                    JOptionPane.showMessageDialog(null,"修改成功");
-                    jf.dispose();
-                    new FolderView(LoginView.USER);
-                }else {
-                    JOptionPane.showMessageDialog(null,"修改失败");
-                }*/
             }
-            //修改笔记内容
-            /*if(e.getSource()==updateNote){
-                if(selectedType.equals(TypeName.NOTE.getMessage())) {
-                    new UpdateNoteView(LoginView.USER);
+            //设置笔记分组
+            if(e.getSource()==setGroup){
+                if(selectedType.equals(TypeName.GROUP.getMessage())) {
+                    new SetGroupView();
                 }else {
-                    JOptionPane.showMessageDialog(null,"请确认你选中的是笔记");
+                    JOptionPane.showMessageDialog(null,"请确认你选中的是笔记分组");
                 }
-            }*/
+            }
             //新增笔记
             if(e.getSource()==addNote){
                 if(selectedType.equals(TypeName.GROUP.getMessage())){
@@ -271,17 +264,17 @@ public class FolderView extends JFrame {
                     JOptionPane.showMessageDialog(null,"请确认你选中的是待加入笔记的笔记分组");
                 }
             }
-            //设置笔记分组
-            if(e.getSource()==setGroup){
-                new SetGroupView();
-            }
             //增加知识库操作
             if(e.getSource()== addFolder){
                new AddFolderView();
             }
             //增加笔记分组操作
             if(e.getSource()==addGroup) {
-                new AddGroupView();
+                if(selectedType.equals(TypeName.FOLDER.getMessage())) {
+                    new AddGroupView();
+                }else {
+                    JOptionPane.showMessageDialog(null,"请确认你选中的是待加入笔记分组的知识库");
+                }
             }
         }
         @Override

@@ -1,6 +1,16 @@
 # 常用方法/策略
 - dao中增删查改统一运用反射，参数设置为对象，根据传进来的对象，获取属性名和属性值，动态填充sql语句
+
+  > select和delete的sql填充方法
+  >
+  > ![image-20210415174745960](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210415174745960.png)
+  >
+  > update(统一根据id)![image-20210415174857900](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210415174857900.png)
+  >
+  > insert,根据传进来的对象有什么值,就填充属性后values(属性值)![image-20210415175108560](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210415175108560.png)
+
 - 统一前台传文本框输入内容,在Service中封装对象传给Dao去执行
+
 - Controller中监听到事件后调用Service,Service返回Result(返回结果封装类),Controller根据返回结果再进行页面跳转或其他操作
 
 # 配置文件
@@ -122,10 +132,26 @@
 
 - 管理员展示设置用户信息(可以进行列入黑名单操作),查看用户笔记详情信息
 
-  > 
 
-# 不足
+## Jlist
 
-- 由于知识库和笔记分组界面采用了JTree(只显示标题),故需要根据标题反向获取id
+- 实现论坛展示
 
-  > 故得设置标题不能重名,包括了自己跟他人的不能重名??
+  > 可以点击行查看详情内容
+
+# 改进
+
+- 多线程并发问题(二轮再多加注意)
+- 运用工厂模式,每次新增一个Dao或Service都得修改配置文件和BeanFactory
+- 二轮考虑要不要直接传object数组传要填充的参数进来,目前Service总是得封装对象
+- 泛型还未修改,由于ResultMapper中doMap的原因,Object没法强转为带泛型的集合
+
+# 项目展示
+
+- 登录
+
+  ![image-20210414220300437](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210414220300437.png)
+
+- 用户界面
+
+  ![image-20210415175703024](C:\Users\Jun\AppData\Roaming\Typora\typora-user-images\image-20210415175703024.png)

@@ -2,6 +2,7 @@ package com.melo.notes.dao.impl;
 
 import com.melo.notes.dao.inter.UserDao;
 import com.melo.notes.entity.User;
+import com.melo.notes.service.constant.TypeName;
 import com.melo.notes.view.LoginView;
 
 import java.util.LinkedList;
@@ -15,7 +16,9 @@ import static com.melo.notes.util.Md5Utils.getDigest;
  * @date 2021-3-28 20:45
  */
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
-
+    /**
+     * 本表对应所有字段和表名
+     */
     private final String TABLE_NAME="user";
     private final String ALL_FIELD_NAME="id,user_name,password,validity";
 
@@ -43,7 +46,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public boolean isValidUser(User user){
         String sql="select validity from "+TABLE_NAME +" where user_name=? ";
         LinkedList<Object> validity = queryList(sql, user);
-        return "有效".equals(validity.getFirst().toString());
+        return TypeName.VALID.getMessage().equals(validity.getFirst().toString());
     }
 
     /**
@@ -71,12 +74,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     @Override
     public boolean addUser(User user) {
-        /*
-          发现用户名为空也会被增加进去才修改
-         */
-        if(user==null||user.getUserName().isEmpty()){
-            return false;
-        }
         return super.insert(user) == 1;
     }
 

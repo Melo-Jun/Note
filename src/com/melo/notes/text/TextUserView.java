@@ -15,6 +15,6 @@ public class TextUserView {
     public static void main(String[] args) {
         LoginView.USER=new User();
         LoginView.USER.setId("1");
-        new UserView(LoginView.USER);
+        new UserView();
     }
 }

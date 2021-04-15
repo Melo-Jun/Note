@@ -28,18 +28,19 @@ public class LoginController {
         String pass = loginView.getPass();
         String access = loginView.getAccess();
         Result login = loginViewService.login(userName, pass, access);
-        Status status=login.getStatus();
-        switch (status){
+        Status status = login.getStatus();
+        switch (status) {
             case LOGIN_SUCCESS:
                 LoginView.USER.setUserName(userName);
                 LoginView.USER.setPassword(pass);
                 loginViewService.setId(LoginView.USER);
-                JOptionPane.showMessageDialog(null,status.getMessage());
+                System.out.println("µÚÒ»¸ö" + LoginView.USER.getId() + "--" + LoginView.USER.getUserName());
+                JOptionPane.showMessageDialog(null, status.getMessage());
                 loginView.dispose();
-                new UserView(LoginView.USER);
+                new UserView();
                 break;
             case WELCOME_ADMIN:
-                JOptionPane.showMessageDialog(null,status.getMessage());
+                JOptionPane.showMessageDialog(null, status.getMessage());
                 loginView.dispose();
                 new AdminView();
                 break;
@@ -48,7 +49,7 @@ public class LoginController {
             case NOT_VALID_USER:
             case NOT_ADMIN:
             case ERROR_PASS:
-                JOptionPane.showMessageDialog(null,status.getMessage());
+                JOptionPane.showMessageDialog(null, status.getMessage());
             default:
         }
     }

@@ -2,7 +2,7 @@ package com.melo.notes.exception;
 
 /**
  * @author Jun
- * @description DaoÂ±ÇÂºÇÂ∏∏
+ * @description Dao≤„“Ï≥£
  * @data 2021-3-27 10:30
  */
 public class DaoException extends RuntimeException {

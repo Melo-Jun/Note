@@ -48,18 +48,19 @@ public class NoteTableServiceImpl extends BaseServiceImpl implements NoteTableSe
     }
 
     /**
-     * 获取点赞过该笔记的用户
-     * @param noteId 笔记id
-     * @return 用户链表
+     * 判断该用户是否点赞过该笔记
+     * @param noteId 该笔记id
+     * @return boolean 是否点赞过
      */
     @Override
-    public LinkedList showLikeUser(String noteId){
+    public boolean everLike(String noteId){
         if(super.notNull(noteId)) {
             LikeList likeList = new LikeList();
             likeList.setNoteId(noteId);
-            return likeListDao.showLikeUser(likeList);
+            likeList.setUserId(LoginView.USER.getId());
+            return likeListDao.everLike(likeList);
         }
-        return null;
+        return false;
     }
 
     /**
@@ -89,8 +90,7 @@ public class NoteTableServiceImpl extends BaseServiceImpl implements NoteTableSe
     @Override
     public boolean increaseLikeCount(Integer updateLikeCount, String noteId){
         if(super.notNull(noteId)) {
-            LinkedList likeUsers = showLikeUser(noteId);
-            if (!likeUsers.isEmpty() && likeUsers.contains(LoginView.USER.getId())) {
+            if(everLike(noteId)){
                 return false;
             }
             LikeList likeList = new LikeList();
@@ -112,10 +112,8 @@ public class NoteTableServiceImpl extends BaseServiceImpl implements NoteTableSe
     @Override
     public boolean decreaseLikeCount(Integer updateLikeCount, String noteId){
         if(super.notNull(noteId)) {
-            //查询点赞过的用户
-            LinkedList likeUsers = showLikeUser(noteId);
             //如果没点赞过,则无法取消点赞
-            if (!likeUsers.contains(LoginView.USER.getId())) {
+            if (!everLike(noteId)) {
                 return false;
             }
             LikeList likeList = new LikeList();
