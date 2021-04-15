@@ -335,14 +335,9 @@ public class BaseDaoImpl implements BaseDao {
      */
     @Override
     public LinkedList getId(Object obj) {
-        /*
-          根据前台所选中的信息构造对象，取出对应数据库字段名和值
-         */
-        LinkedList<Object> fieldNames = new LinkedList<>();
-        LinkedList<Object> fieldValues = new LinkedList<>();
-        fieldMapper(obj,fieldNames,fieldValues);
-        String sql = "select id from " + getTableName(obj) + " where "+fieldNames.getFirst()+" =?";
-        return queryList(sql,obj);
+        StringBuilder sql =new StringBuilder( "select id from " + getTableName(obj) );
+        appendWhereToSql(sql,obj);
+        return queryList(sql.toString(),obj);
     }
 
 

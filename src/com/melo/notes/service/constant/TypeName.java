@@ -12,14 +12,17 @@ public enum TypeName {
      * 知识库类型
      */
      FOLDER("知识库") ,
-    /**
-     * 笔记类型
-     */
-    NOTE("笔记"),
+     FOLDER_TYPE(2),
     /**
      * 笔记分组类型
      */
     GROUP("笔记分组"),
+    GROUP_TYPE(3),
+    /**
+     * 笔记类型
+     */
+    NOTE("笔记"),
+    NOTE_TYPE(4),
     /**
      * 默认
      */
@@ -46,13 +49,13 @@ public enum TypeName {
 
 
 
-
-
     private String message;
+    private int treePath;
 
     TypeName(String message){
         this.setMessage(message);
     }
+    TypeName(int treePath){ this.setTreePath(treePath);}
 
     public String getMessage() {
         return message;
@@ -60,5 +63,13 @@ public enum TypeName {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getTreePath() {
+        return treePath;
+    }
+
+    public void setTreePath(int treePath) {
+        this.treePath = treePath;
     }
 }

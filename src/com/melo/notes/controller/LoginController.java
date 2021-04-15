@@ -5,8 +5,8 @@ import com.melo.notes.service.constant.Status;
 import com.melo.notes.service.impl.LoginServiceImpl;
 import com.melo.notes.util.BeanFactory;
 import com.melo.notes.util.ViewUtils;
-import com.melo.notes.view.AdminView;
 import com.melo.notes.view.LoginView;
+import com.melo.notes.view.AdminView;
 import com.melo.notes.view.UserView;
 
 import javax.swing.*;
@@ -34,7 +34,6 @@ public class LoginController {
                 LoginView.USER.setUserName(userName);
                 LoginView.USER.setPassword(pass);
                 loginViewService.setId(LoginView.USER);
-                System.out.println("µÚÒ»¸ö" + LoginView.USER.getId() + "--" + LoginView.USER.getUserName());
                 JOptionPane.showMessageDialog(null, status.getMessage());
                 loginView.dispose();
                 new UserView();

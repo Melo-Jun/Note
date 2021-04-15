@@ -61,9 +61,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         User temp = new User();
         temp.setUserName(user.getUserName());
         LinkedList<Object> password = queryList(sql, temp);
+        //搜不到密码
         if(password.isEmpty()){
             return false;
         }
+        //md5后验证
         return password.getFirst().equals(getDigest(user.getPassword()));
     }
 

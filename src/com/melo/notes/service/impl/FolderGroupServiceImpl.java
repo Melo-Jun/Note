@@ -8,7 +8,6 @@ import com.melo.notes.entity.Group;
 import com.melo.notes.entity.Note;
 import com.melo.notes.entity.User;
 import com.melo.notes.exception.DaoException;
-import com.melo.notes.service.constant.Status;
 import com.melo.notes.service.constant.TypeName;
 import com.melo.notes.service.inter.FolderGroupService;
 import com.melo.notes.util.BeanFactory;
@@ -35,6 +34,7 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
     NoteDaoImpl noteDao=(NoteDaoImpl) BeanFactory.getBean(BeanFactory.DaoType.NoteDao);
     /**
      * 各对象所在层级
+     * 此处难以放在常量类
      */
     private final int FOLDER_TYPE =2;
     private final int GROUP_TYPE =3;
@@ -108,7 +108,7 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
                     //根据id删除知识库
                     String folderId = selectedId;
             /*
-            将该知识库其下的笔记分组移至默认知识库
+            将该知识库其下的笔记分组一并删除
              */
                     Group group = new Group();
                     group.setLocatedFolder(folderId);
@@ -131,7 +131,7 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
                     String groupId = FolderView.selectedId;
                     group.setId(groupId);
             /*
-            将该笔记分组其下的笔记移至默认笔记分组
+            将该笔记分组其下的笔记一并删除
              */
                     Note note = new Note();
                     note.setLocatedGroup(groupId);
@@ -183,16 +183,11 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
     @Override
     public boolean addFolder(String name, String access,String authorId){
         if(super.notNull(name,access,authorId)) {
-            try {
                 Folder folder = new Folder();
                 folder.setFolderName(name);
                 folder.setAccess(access);
                 folder.setAuthorId(authorId);
                 return folderDao.addFolder(folder);
-            }catch (Exception e) {
-                e.printStackTrace();
-                throw new DaoException("该知识库名称已存在");
-            }
         }
         return false;
     }
@@ -228,21 +223,20 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
     public boolean addNote(String title, String text, String access, String groupId){
         if(super.notNull(title,text,access,groupId)) {
             Note note = new Note(title, LoginView.USER.getId(), text, access, 0, groupId);
-            System.out.println(LoginView.USER.getId()+"当前是"+LoginView.USER.getUserName());
             return noteDao.addNote(note);
         }
         return false;
     }
 
     /**
-     * 根据前台传入参数更新相应对象
+     * 根据前台传入参数更新相应对象名称
      *
      * @param selectedName  oldName
      * @param selectedType 对应类型
      * @return int 影响的行数
      */
     @Override
-    public int update(String selectedName, String selectedType) {
+    public int updateName(String selectedName, String selectedType) {
         /*
           阻止修改默认知识库笔记分组
          */
@@ -307,22 +301,10 @@ public class FolderGroupServiceImpl extends BaseServiceImpl implements FolderGro
         return false;
     }
 
-    /**
-     * 根据xxx获取单一id
-     * @description 执行update或delete操作都需要根据id
-     * @param obj xxx
-     * @return String id
-     */
-    @Override
-    public String getId(Object obj ) {
-        if(super.notNull(obj.toString())) {
-            return groupDao.getId(obj).getFirst().toString();
-        }
-        return null;
-    }
 
     /**
      * 根据xxx获取其下所有id
+     * @description 用于删除下级子类,如知识库下级笔记
      * @param obj xxx
      * @return LinkedList id链表
      */

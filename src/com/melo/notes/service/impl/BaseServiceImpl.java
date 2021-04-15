@@ -25,7 +25,7 @@ public class BaseServiceImpl implements BaseService {
 
     /**
      * 验证是否已存在该用户
-     *
+     * @description isValid中要用到
      * @param userName 用户名
      * @return boolean 是否存在该用户
      */

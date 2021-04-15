@@ -185,7 +185,7 @@ public class NoteTableView extends JFrame {
                 }
             ) {
                 boolean[] columnEditable = new boolean[] {
-                    true, true, true, true, false, true
+                    false, false, false, false, false, false
                 };
                 @Override
                 public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -216,6 +216,7 @@ public class NoteTableView extends JFrame {
 
             //---- authorFolder ----
             authorFolder.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
+            authorFolder.setEditable(false);
             scrollPane2.setViewportView(authorFolder);
         }
 

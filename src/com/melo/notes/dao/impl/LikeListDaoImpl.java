@@ -3,7 +3,6 @@ package com.melo.notes.dao.impl;
 import com.melo.notes.dao.inter.LikeListDao;
 import com.melo.notes.entity.LikeList;
 
-import java.util.LinkedList;
 
 /**
  * @author Jun

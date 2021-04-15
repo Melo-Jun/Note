@@ -4,14 +4,12 @@
 
 package com.melo.notes.view;
 
-import com.melo.notes.entity.User;
 import com.melo.notes.service.constant.Status;
 import com.melo.notes.service.impl.FolderGroupServiceImpl;
 import com.melo.notes.util.BeanFactory;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;

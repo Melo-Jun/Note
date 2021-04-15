@@ -11,7 +11,7 @@ import java.util.Vector;
 /**
  * @author Jun
  * @program Note
- * @description 所有用户信息页面相关逻辑实现类
+ * @description 管理员查看所有用户信息页面相关逻辑接口
  * @date 2021-4-3 14:30
  */
 public class UserTableServiceImpl extends BaseServiceImpl implements UserTableService {

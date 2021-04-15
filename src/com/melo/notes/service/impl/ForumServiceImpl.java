@@ -20,12 +20,13 @@ public class ForumServiceImpl extends BaseServiceImpl implements ForumService {
 
     /**
      * 展示论坛标题
-     * @description Jlist需要用到
+     * @description Jlist需要用到String数组
      * @return String[]
      */
     @Override
     public String[] listForumTitle(){
         LinkedList<Forum> forums = forumDao.showForumAll(new Forum());
+        //根据论坛数量动态生成
         int count=forums.size();
         int index=0;
         String[] titles = new String[count];

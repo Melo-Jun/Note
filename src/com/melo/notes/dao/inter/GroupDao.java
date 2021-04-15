@@ -42,7 +42,7 @@ public interface GroupDao {
     boolean addGroup(Group group);
 
     /**
-     * 更改笔记分组名称
+     * 更改笔记分组
      *
      * @param group 在service完成封装后的对象
      * @return int 影响的行数
@@ -58,8 +58,7 @@ public interface GroupDao {
 
     /**
      * 获取最大Id
-     * 用于生成默认笔记分组(需获取最新加入进来的知识库)id设置自增了
-     * @description
+     * @description 用于生成默认笔记分组(需获取最新加入进来的知识库id)id设置自增了
      * @notice 无最大时则返回1
      * @param obj 对象
      * @return String  该对象表中最大id

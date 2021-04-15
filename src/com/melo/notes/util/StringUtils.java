@@ -44,31 +44,6 @@ public class StringUtils {
         return filedName.toString();
     }
 
-    /**
-     * 将字符串+1
-     * @param temp 待修改字符串
-     * @return String 修改后的字符串
-     */
-    public static String increaseOne(String temp) {
-        int i1 = Integer.parseInt(temp);
-        char[] chars = temp.toCharArray();
-        int i = (int)chars[0] + 1;
-        System.out.println(i1+"整数是多少");
-        i1+=1;
-        return String.valueOf(i1);
-    }
-
-    /**
-     * 将字符串-1
-     * @param temp 待修改字符串
-     * @return String 修改后的字符串
-     */
-    public static String decreaseOne(String temp) {
-        char[] chars = temp.toCharArray();
-        int i = (int)chars[0] - 1;
-        return "0".equals(temp)?temp: String.valueOf((char)i);
-    }
-
 
 
 }

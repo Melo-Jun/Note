@@ -71,7 +71,7 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
     }
 
     /**
-     * 更改笔记分组名称
+     * 更改笔记分组
      *
      * @param group 在service完成封装后的对象
      * @return int 影响的行数
@@ -93,9 +93,8 @@ public class GroupDaoImpl extends BaseDaoImpl implements GroupDao {
     }
 
     /**
-     * 获取最大Id
-     * 用于生成默认笔记分组(需获取最新加入进来的知识库)id设置自增了
-     * @description
+     * 获取最大Id(新用户会新生成默认知识库,此时该知识库id最大),id设置自增了
+     * @description 用于生成默认笔记分组(需获取最大知识库id)
      * @notice 无最大时则返回1
      * @param obj 对象
      * @return String  该对象表中最大id

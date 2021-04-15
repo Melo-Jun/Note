@@ -7,7 +7,7 @@ import java.util.Vector;
 /**
  * @author Jun
  * @program Note
- * @description 用户笔记信息页面相关逻辑接口
+ * @description 管理员查看用户笔记信息页面相关逻辑实现类
  * @date 2021-4-11 19:19
  */
 public interface UserNoteService {

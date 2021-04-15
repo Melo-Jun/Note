@@ -13,6 +13,9 @@ import java.util.LinkedList;
  */
 public class ForumDaoImpl extends BaseDaoImpl implements ForumDao {
 
+    /**
+     * 该类对应表名
+     */
     private final String TABLE_NAME="forum";
     /**
      *本表对应所有字段

@@ -87,8 +87,10 @@ public class UserNoteView extends JFrame {
      */
     private void deleteActionPerformed(ActionEvent e) {
         if(noteService.delete(noteId)!=0) {
+            System.out.println("成功了");
             JOptionPane.showMessageDialog(null, Status.SUCCESS.getMessage());
         }else {
+            System.out.println("失败了");
             JOptionPane.showMessageDialog(null,Status.FAILED.getMessage());
         }
     }
@@ -125,7 +127,7 @@ public class UserNoteView extends JFrame {
         delete = new JButton();
 
         //======== this ========
-        setTitle("\u67e5\u770b\u7b14\u8bb0");
+        setTitle("\u7528\u6237\u7b14\u8bb0\u4fe1\u606f");
         setIconImage(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")).getImage());
         Container contentPane = getContentPane();
 
@@ -170,13 +172,11 @@ public class UserNoteView extends JFrame {
 
         //---- information ----
         information.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
+        information.setEditable(false);
 
         //---- delete ----
         delete.setText("\u5220\u9664");
-        delete.addActionListener(e -> {
-			deleteActionPerformed(e);
-			deleteActionPerformed(e);
-		});
+        delete.addActionListener(e -> deleteActionPerformed(e));
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);

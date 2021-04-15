@@ -1,10 +1,6 @@
 package com.melo.notes.service.inter;
 
-import com.melo.notes.entity.User;
-import com.melo.notes.exception.DaoException;
 import com.melo.notes.service.Result;
-
-import java.util.LinkedList;
 
 
 /**
@@ -16,7 +12,7 @@ import java.util.LinkedList;
 public interface BaseService {
     /**
      * 验证是否已存在该用户
-     *
+     * @description isValid中要用到
      * @param userName 用户名
      * @return boolean 是否存在该用户
      */

@@ -46,7 +46,7 @@ public class FolderView extends JFrame {
      */
     public static String selectedId=" ";
 
-    JFrame jf = new JFrame("设置笔记分组");
+    JFrame jf = new JFrame("设置知识库,笔记分组,笔记");
     private Listener l = new Listener();
     private JButton delete = new JButton("删除");
     private JButton flush = new JButton("刷新");
@@ -190,6 +190,7 @@ public class FolderView extends JFrame {
                         selectedType = folderGroupService.judgeType(e.getPath().getPathCount());
                         textArea.setText("你选中的类型为:" + selectedType+"\n\n'默认'不可修改或删除\n修改等操作需选中目标\n新增笔记分组请选中知识库" +
                                 "\n新增笔记请选择笔记分组\n迁移分组请选择笔记分组");
+                        textArea.setEditable(false);
                     }
                 }
             });
@@ -220,10 +221,14 @@ public class FolderView extends JFrame {
             //删除操作
             if(e.getSource()==delete) {
                     if (folderGroupService.delete(selectedName, selectedType,selectedId) != 0) {
-                        jf.dispose();
-                        new FolderView(LoginView.USER);
+                        if(selectedName.equals(TypeName.DEFAULT.getMessage())){
+                            JOptionPane.showMessageDialog(null,Status.IS_DEFAULT.getMessage());
+                        }else {
+                            jf.dispose();
+                            new FolderView(LoginView.USER);
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "请确认已正确选择节点");
+                        JOptionPane.showMessageDialog(null, Status.WRONG_CHOICE.getMessage());
                     }
             }
 
@@ -239,7 +244,10 @@ public class FolderView extends JFrame {
                 if (selectedType.equals(TypeName.NOTE.getMessage())) {
                     new UpdateNoteView(LoginView.USER);
                 } else {
-                    if (folderGroupService.update(selectedName, selectedType) != 0) {
+                    if(selectedName.equals(TypeName.DEFAULT.getMessage())){
+                        JOptionPane.showMessageDialog(null,Status.IS_DEFAULT.getMessage());
+                    }
+                    else if (folderGroupService.updateName(selectedName, selectedType) != 0) {
                         JOptionPane.showMessageDialog(null, Status.SUCCESS.getMessage());
                         jf.dispose();
                         new FolderView(LoginView.USER);
@@ -251,9 +259,13 @@ public class FolderView extends JFrame {
             //设置笔记分组
             if(e.getSource()==setGroup){
                 if(selectedType.equals(TypeName.GROUP.getMessage())) {
-                    new SetGroupView();
+                    if(selectedName.equals(TypeName.DEFAULT.getMessage())){
+                        JOptionPane.showMessageDialog(null,Status.IS_DEFAULT.getMessage());
+                    }else {
+                        new SetGroupView();
+                    }
                 }else {
-                    JOptionPane.showMessageDialog(null,"请确认你选中的是笔记分组");
+                    JOptionPane.showMessageDialog(null,Status.NOT_GROUP.getMessage());
                 }
             }
             //新增笔记
@@ -261,7 +273,7 @@ public class FolderView extends JFrame {
                 if(selectedType.equals(TypeName.GROUP.getMessage())){
                     new AddNoteView(LoginView.USER);
                 }else {
-                    JOptionPane.showMessageDialog(null,"请确认你选中的是待加入笔记的笔记分组");
+                    JOptionPane.showMessageDialog(null,Status.NOT_DES_GROUP.getMessage());
                 }
             }
             //增加知识库操作
@@ -273,7 +285,7 @@ public class FolderView extends JFrame {
                 if(selectedType.equals(TypeName.FOLDER.getMessage())) {
                     new AddGroupView();
                 }else {
-                    JOptionPane.showMessageDialog(null,"请确认你选中的是待加入笔记分组的知识库");
+                    JOptionPane.showMessageDialog(null,Status.NOT_DES_FOLDER.getMessage());
                 }
             }
         }

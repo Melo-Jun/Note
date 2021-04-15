@@ -76,13 +76,13 @@ public interface FolderGroupService {
      boolean addNote(String title,String text,String access,String groupId);
 
     /**
-     * 根据前台传入参数更新相应对象
+     * 根据前台传入参数更新相应对象名称
      *
      * @param selectedName  oldName
      * @param selectedType 对应类型
      * @return int 影响的行数
      */
-     int update(String selectedName,  String selectedType);
+     int updateName(String selectedName, String selectedType);
 
     /**
      * 设置笔记分组
@@ -100,13 +100,6 @@ public interface FolderGroupService {
      */
      boolean isGroup(String selectedClassName);
 
-    /**
-     * 根据xxx获取单一id
-     * @description 执行update或delete操作都需要根据id
-     * @param obj xxx
-     * @return String id
-     */
-    String getId(Object obj);
 
     /**
      * 根据xxx获取所有id

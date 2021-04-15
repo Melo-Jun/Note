@@ -115,7 +115,8 @@ public class UserTableView extends JFrame {
         back = new JButton();
 
         //======== this ========
-        setTitle("\u67e5\u770b\u7b14\u8bb0");
+        setTitle("\u6240\u6709\u7528\u6237\u4fe1\u606f");
+        setIconImage(new ImageIcon(getClass().getResource("/img/blueLogo(new).png")).getImage());
         Container contentPane = getContentPane();
 
         //======== scrollPane1 ========
@@ -125,11 +126,20 @@ public class UserTableView extends JFrame {
             //---- table ----
             table.setModel(new DefaultTableModel(
                 new Object[][] {
+                    {null, null, null, null},
                 },
                 new String[] {
                     "id", "userName", "password", "validity"
                 }
-            ));
+            ) {
+                boolean[] columnEditable = new boolean[] {
+                    false, false, false, false
+                };
+                @Override
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return columnEditable[columnIndex];
+                }
+            });
             table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             table.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
             table.setFillsViewportHeight(true);

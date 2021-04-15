@@ -60,7 +60,7 @@ public class AddForumView extends JFrame {
         //======== this ========
         setMaximizedBounds(new Rectangle(0, 0, 1300, 800));
         setMinimumSize(new Dimension(950, 650));
-        setTitle("\u8bba\u575b\u5185\u5bb9");
+        setTitle("\u65b0\u589e\u8bba\u575b");
         setResizable(false);
         Container contentPane = getContentPane();
 
